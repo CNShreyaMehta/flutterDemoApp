@@ -1,10 +1,9 @@
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
-  var isLoading = false.obs;
+  var rememberMe = false.obs;
 
-  void login() {
-    // Implement your login logic here
-    // For example, API call, validation, etc.
+  void toggleRememberMe() {
+    rememberMe.value = !rememberMe.value;
   }
 }
