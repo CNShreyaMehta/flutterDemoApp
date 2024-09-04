@@ -2,6 +2,7 @@ import 'package:demo_app/presentation/routes/app_pages.dart';
 import 'package:demo_app/presentation/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -49,23 +50,16 @@ class MyApp extends StatelessWidget {
   }
  TextTheme _buildTextTheme(TextTheme base) {
     return base.copyWith(
-      displayLarge: const TextStyle(
-        fontSize: 30,
-        fontWeight: FontWeight.bold,
-        color: Colors.black,
-        fontFamily: 'Poppins',
-        // GoogleFonts.poppins(
-                //   fontSize: 24,
-                //   fontWeight: FontWeight.bold,
-                // ),
-      ),
-      displayMedium: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-        color: Colors.black,
-        fontFamily: 'Poppins',
-      ),
-      bodyLarge: const TextStyle(
+      displayLarge: GoogleFonts.poppins(
+      fontSize: 30,
+      fontWeight: FontWeight.w500,
+      color: Colors.black,
+    ),
+      displayMedium: GoogleFonts.poppins(
+      fontSize: 16,
+      color: const Color.fromARGB(255, 76, 75, 75),
+    ),
+      displaySmall: const TextStyle(
         fontSize: 16,
         color: Colors.black,
         fontFamily: 'Poppins',

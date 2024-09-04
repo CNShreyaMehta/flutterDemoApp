@@ -19,12 +19,13 @@ class ForgotPasswordScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 40),
+              const SizedBox(height: 50),
               Text(
                 "Forgot Password",
                 style: GoogleFonts.poppins(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
               ),
               const SizedBox(height: 10),
@@ -71,6 +72,7 @@ class ForgotPasswordScreen extends StatelessWidget {
           label,
           style: GoogleFonts.poppins(fontSize: 16),
         ),
+        const SizedBox(height: 10),
         TextField(
           decoration: InputDecoration(
             hintText: hint,

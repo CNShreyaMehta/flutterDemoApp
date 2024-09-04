@@ -1,6 +1,7 @@
 import 'package:demo_app/presentation/controllers/splash_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // ignore: use_key_in_widget_constructors
 class SplashScreen extends StatelessWidget {
@@ -22,24 +23,24 @@ class SplashScreen extends StatelessWidget {
             end: Alignment.bottomRight,
           ),
         ),
-        child: const Center(
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'Welcome to Flutter learning app',
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontSize: 24,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w500,
                   color: Colors.white,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(
                 'Loading...',
-                style: TextStyle(
-                  fontSize: 30,
-                  color: Colors.white70,
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  color: Colors.white,
                 ),
               ),
             ],
