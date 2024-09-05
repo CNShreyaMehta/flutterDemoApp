@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
-class ForgotPasswordController extends GetxController {
+class HomeController extends GetxController {
   // You can add any logic or state management here if needed
   final emailController = TextEditingController();
 

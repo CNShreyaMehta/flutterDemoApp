@@ -1,15 +1,19 @@
+import 'package:demo_app/presentation/controllers/login_controller.dart';
 import 'package:demo_app/presentation/routes/app_pages.dart';
 import 'package:demo_app/presentation/routes/app_routes.dart';
+import 'package:demo_app/presentation/screens/home_screen.dart';
+import 'package:demo_app/presentation/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+   MyApp({super.key});
+  final LoginController authController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +23,17 @@ class MyApp extends StatelessWidget {
       initialRoute: AppRoutes.splash,
       getPages: AppPages.routes,
       theme: _buildAppTheme(), // Apply the custom theme
+      home: FutureBuilder(
+        future: authController.checkAuthToken(), // Check token on app startup
+        builder: (context, snapshot) {
+          // Show a loading indicator while token is being checked
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          // If logged in, show Home screen, otherwise show Login screen
+          return Obx(() => authController.isLoggedIn.value ? const HomeScreen() : const LoginScreen());
+        },
+      ),
 
     );
   }
@@ -48,6 +63,7 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+ 
  TextTheme _buildTextTheme(TextTheme base) {
     return base.copyWith(
       displayLarge: GoogleFonts.poppins(

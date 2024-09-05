@@ -7,7 +7,6 @@ import '../controllers/login_controller.dart';
 
 // ignore: must_be_immutable
 class LoginScreen extends StatefulWidget {
-
   const LoginScreen({super.key});
 
   @override
@@ -17,7 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final LoginController controller = Get.put(LoginController());
 
-bool _obscurePassword = true; 
+  bool _obscurePassword = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +39,7 @@ bool _obscurePassword = true;
                 const SizedBox(height: 20),
                 // _buildTextField("Email*", "example@site.com",
                 //     controller.emailController, false),
-                     TextInput(
+                TextInput(
                   label: "Email*",
                   hint: "example@site.com",
                   controller: controller.emailController,
@@ -57,7 +56,8 @@ bool _obscurePassword = true;
                   obscureText: _obscurePassword,
                   onTogglePassword: () {
                     setState(() {
-                      _obscurePassword = !_obscurePassword; // Toggle password visibility
+                      _obscurePassword =
+                          !_obscurePassword; // Toggle password visibility
                     });
                   },
                 ),
@@ -94,8 +94,9 @@ bool _obscurePassword = true;
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {
-                    controller.validateAndLogin();
+                  onPressed: () async {
+                   await controller.validateAndLogin();
+                    await LoginController().login(controller.emailController.text, controller.passwordController.text);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 14),

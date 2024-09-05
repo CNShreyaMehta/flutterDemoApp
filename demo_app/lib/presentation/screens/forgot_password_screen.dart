@@ -1,4 +1,4 @@
-import 'package:demo_app/presentation/routes/app_routes.dart';
+import 'package:demo_app/presentation/widgets/text_Input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,9 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 import '../controllers/forgot_password_controller.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
-  final ForgotPasswordController controller = Get.put(ForgotPasswordController());
+  final ForgotPasswordController controller =
+      Get.put(ForgotPasswordController());
 
-   ForgotPasswordScreen({super.key});
+  ForgotPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +37,18 @@ class ForgotPasswordScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              _buildTextField("Email*", "Enter email"),
+              TextInput(
+                label: "Email*",
+                hint: "example@site.com",
+                controller: controller.emailController,
+                obscureText: false,
+                onTogglePassword: () {}, // Not required for email
+              ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                Get.offNamed(AppRoutes.login);
+                  controller.validateAndforgotPass();
+                  //Get.offNamed(AppRoutes.login);
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 14),
@@ -76,7 +84,8 @@ class ForgotPasswordScreen extends StatelessWidget {
         TextField(
           decoration: InputDecoration(
             hintText: hint,
-            contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
             ),
