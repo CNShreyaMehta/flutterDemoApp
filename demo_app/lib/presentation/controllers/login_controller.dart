@@ -15,6 +15,9 @@ class LoginController extends GetxController {
   final passwordController = TextEditingController();
   var isLoggedIn = false.obs; // Observable to track login status
   final storage = GetStorage(); // Local storage using GetStorage
+// RxString for managing error messages
+  var emailError = ''.obs;
+  var passwordError = ''.obs;
 
  @override
   void onInit() {
@@ -24,13 +27,17 @@ class LoginController extends GetxController {
 
   // Validate email and password
   Future<void> validateAndLogin() async {
+    emailError.value = '';
+    passwordError.value = '';
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
       Fluttertoast.showToast(msg: "Please fill all the fields");
+      emailError.value = 'Email is required';
     } else if (!GetUtils.isEmail(email)) {
       Fluttertoast.showToast(msg: "Please enter a valid email");
+      passwordError.value = 'Password is required';
     } else if (password.length < 8) {
       Fluttertoast.showToast(msg: "Password must be at least 8 characters");
     } else {

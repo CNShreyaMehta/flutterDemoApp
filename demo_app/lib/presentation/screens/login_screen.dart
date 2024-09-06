@@ -1,4 +1,7 @@
 import 'package:demo_app/presentation/routes/app_routes.dart';
+import 'package:demo_app/presentation/widgets/custom_elevated_button.dart';
+import 'package:demo_app/presentation/widgets/custom_outlined_button.dart';
+import 'package:demo_app/presentation/widgets/custom_text_button.dart';
 import 'package:demo_app/presentation/widgets/text_Input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -39,28 +42,34 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 20),
                 // _buildTextField("Email*", "example@site.com",
                 //     controller.emailController, false),
-                TextInput(
-                  label: "Email*",
-                  hint: "example@site.com",
-                  controller: controller.emailController,
-                  obscureText: false,
-                  onTogglePassword: () {}, // Not required for email
-                ),
+                Obx(() => TextInput(
+                      label: "Email*",
+                      hint: "example@site.com",
+                      controller: controller.emailController,
+                      obscureText: false,
+                      onTogglePassword: () {}, // Not required for email
+                      errorText: controller.emailError.value.isNotEmpty
+                          ? controller.emailError.value
+                          : null, // Display error if exists
+                    )),
                 // _buildTextField("Password*", "enter password",
                 //     controller.passwordController, true),
-                TextInput(
-                  label: "Password*",
-                  hint: "enter password",
-                  controller: controller.passwordController,
-                  isPassword: true,
-                  obscureText: _obscurePassword,
-                  onTogglePassword: () {
-                    setState(() {
-                      _obscurePassword =
-                          !_obscurePassword; // Toggle password visibility
-                    });
-                  },
-                ),
+                Obx(() => TextInput(
+                      label: "Password*",
+                      hint: "enter password",
+                      controller: controller.passwordController,
+                      isPassword: true,
+                      obscureText: _obscurePassword,
+                      errorText: controller.passwordError.value.isNotEmpty
+                          ? controller.passwordError.value
+                          : null,
+                      onTogglePassword: () {
+                        setState(() {
+                          _obscurePassword =
+                              !_obscurePassword; // Toggle password visibility
+                        });
+                      },
+                    )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -93,25 +102,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton(
+                // Use the custom button
+                CustomElevatedButton(
                   onPressed: () async {
-                   await controller.validateAndLogin();
-                    await LoginController().login(controller.emailController.text, controller.passwordController.text);
+                    await controller.validateAndLogin();
+                    await LoginController().login(
+                        controller.emailController.text,
+                        controller.passwordController.text);
                   },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Login"),
-                      SizedBox(width: 10),
-                      Icon(Icons.arrow_forward),
-                    ],
-                  ),
+                  text: "Login",
+                  icon: Icons.arrow_forward,
                 ),
                 const SizedBox(height: 20),
                 const Center(
@@ -120,18 +120,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
-                  child: OutlinedButton.icon(
+                  child: CustomOutlinedButton(
                     onPressed: () {},
                     icon: Image.asset('assets/images/google.png',
                         width: 30, height: 30),
-                    label: const Text("Google"),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      side: const BorderSide(color: Colors.black),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
+                    label: "Google", // Button label
+                    borderSide: const BorderSide(color: Colors.black),
+                    labelColor: Colors.black, // Label color
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -140,18 +135,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text("Don’t have an account yet? "),
-                      TextButton(
+                      CustomTextButton(
                         onPressed: () {
                           Get.offNamed(AppRoutes.signup);
                         },
-                        style: TextButton.styleFrom(
-                          foregroundColor: Colors.black,
-                          textStyle: const TextStyle(
-                            fontSize: 16, // Font size
-                            fontWeight: FontWeight.bold, // Font weight
-                          ),
-                        ),
-                        child: const Text("Sign-up"),
+                        text: "Sign-up",
+                        textStyle: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                        foregroundColor: Colors.black, // Custom text color
                       ),
                     ],
                   ),

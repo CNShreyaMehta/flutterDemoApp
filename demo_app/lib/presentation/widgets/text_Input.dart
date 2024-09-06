@@ -9,6 +9,7 @@ class TextInput extends StatelessWidget {
   final bool isPassword;
   final bool obscureText;
   final VoidCallback onTogglePassword;
+  final String? errorText;
 
   const TextInput({
     super.key,
@@ -17,6 +18,7 @@ class TextInput extends StatelessWidget {
     required this.controller,
     this.isPassword = false,
     this.obscureText = true,
+    this.errorText,
     required this.onTogglePassword,
   });
 
@@ -34,6 +36,7 @@ class TextInput extends StatelessWidget {
           controller: controller,
           obscureText: isPassword ? obscureText : false, // Control password visibility
           decoration: InputDecoration(
+            errorText: errorText, // Error text shown when there's a validation error
             hintText: hint,
             suffixIcon: isPassword
                 ? IconButton(
@@ -48,6 +51,7 @@ class TextInput extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
+         
       ],
     );
   }
