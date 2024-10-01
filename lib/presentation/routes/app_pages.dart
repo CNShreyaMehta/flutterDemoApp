@@ -1,0 +1,68 @@
+import 'package:demo_app/presentation/modules/base/bindings/base_binding.dart';
+import 'package:demo_app/presentation/modules/base/views/base_view.dart';
+import 'package:demo_app/presentation/modules/home/bindings/home_binding.dart';
+import 'package:demo_app/presentation/modules/profile/bindings/profile_binding.dart';
+import 'package:demo_app/presentation/modules/profile/views/profile_view.dart';
+import 'package:demo_app/presentation/modules/profile_details/bindings/profile_details.dart';
+import 'package:demo_app/presentation/modules/profile_details/views/profile_details_view.dart';
+import 'package:demo_app/presentation/modules/setting/bindings/setting_binding.dart';
+import 'package:demo_app/presentation/modules/setting/views/setting_view.dart';
+import 'package:demo_app/presentation/routes/app_routes.dart';
+import 'package:demo_app/presentation/screens/forgot_password_screen.dart';
+import 'package:demo_app/presentation/screens/home_screen.dart';
+import 'package:demo_app/presentation/screens/login_screen.dart';
+import 'package:demo_app/presentation/screens/on_boarding_screen.dart';
+import 'package:demo_app/presentation/screens/otp_verification_screen.dart';
+import 'package:demo_app/presentation/screens/product_details.dart';
+import 'package:demo_app/presentation/screens/signup_screen.dart';
+import 'package:demo_app/presentation/screens/splash_screen.dart';
+import 'package:get/get.dart';
+
+class AppPages {
+    static const afterAuthentication = AppRoutes.home;
+
+  static final routes = [
+    // Auth Flow
+    GetPage(name: AppRoutes.splash, page: () => SplashScreen()),
+    GetPage(name: AppRoutes.onboarding, page: () => const OnBoardingScreen()),
+    GetPage(name: AppRoutes.login, page: () => const LoginScreen()),
+    GetPage(name: AppRoutes.signup, page: () => const SignupScreen()),
+    GetPage(name: AppRoutes.forgotPassword, page: () => ForgotPasswordScreen()),
+    GetPage(
+        name: AppRoutes.otpVerification, page: () => OtpVerificationScreen()),
+
+    // Main Flow
+     GetPage(
+      name: AppRoutes.base,
+      page: () => const BaseView(),
+      binding: BaseBinding(),
+    ),
+    GetPage(name: AppRoutes.home, 
+    page: () => const HomeScreen(),
+    binding: HomeBinding(),
+    ),
+    //page: () => const HomeView(),
+    //binding: HomeBinding(),
+    GetPage(
+      name: AppRoutes.settings,
+      page: () => const SettingView(),
+      binding: SettingBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.profile,
+      page: () => const ProfileView(),
+      binding: ProfileBinding(),
+    ),
+       GetPage(
+      name: AppRoutes.profileDetails,
+      page: () => const ProfileDetailsView(),
+      binding: ProfileDetailsBinding(),
+    ),
+    GetPage(
+        name: AppRoutes.productDetails,
+        page: () => ProductDetails(
+              productInfo: Get.arguments,
+            ),
+        binding: HomeBinding()),
+  ];
+}
