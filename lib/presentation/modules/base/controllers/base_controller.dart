@@ -1,5 +1,5 @@
-import 'package:demo_app/presentation/modules/base/views/profile_wrapper.dart';
 import 'package:demo_app/presentation/modules/home/views/home_wrapper.dart';
+import 'package:demo_app/presentation/modules/profile/views/profile_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

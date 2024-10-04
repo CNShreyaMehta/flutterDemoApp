@@ -19,7 +19,8 @@ import 'package:demo_app/presentation/screens/splash_screen.dart';
 import 'package:get/get.dart';
 
 class AppPages {
-    static const afterAuthentication = AppRoutes.home;
+    static const beforeAuthentication = AppRoutes.splash;
+    static const afterAuthentication = AppRoutes.base;
 
   static final routes = [
     // Auth Flow

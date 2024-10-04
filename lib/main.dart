@@ -1,6 +1,5 @@
 import 'package:demo_app/presentation/controllers/login_controller.dart';
 import 'package:demo_app/presentation/routes/app_pages.dart';
-import 'package:demo_app/presentation/routes/app_routes.dart';
 import 'package:demo_app/presentation/screens/home_screen.dart';
 import 'package:demo_app/presentation/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +19,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter GetX Example',
-      initialRoute: AppRoutes.splash,
+      initialRoute: AppPages.beforeAuthentication,
       getPages: AppPages.routes,
       theme: _buildAppTheme(), // Apply the custom theme
       darkTheme: ThemeData.dark(),  // Define dark theme

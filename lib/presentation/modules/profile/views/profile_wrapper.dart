@@ -4,9 +4,9 @@ import 'package:demo_app/presentation/routes/navigation_ids.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../profile/bindings/profile_binding.dart';
-import '../../profile/views/profile_view.dart';
 import '../../setting/bindings/setting_binding.dart';
+import '../bindings/profile_binding.dart';
+import 'profile_view.dart';
 
 class ProfileWrapper extends StatelessWidget {
   const ProfileWrapper({super.key});
