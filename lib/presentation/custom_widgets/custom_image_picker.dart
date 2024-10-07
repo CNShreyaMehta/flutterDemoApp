@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:demo_app/presentation/custom_widgets/custom_bottom_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CustomImagePicker extends StatefulWidget {
@@ -25,6 +27,29 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
       });
       widget.onImageSelected(File(pickedImage.path)); // Pass the selected image to the parent
     }
+  }
+
+    void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return CustomBottomSheet(
+          onGalleryTap: () {
+            Navigator.of(context).pop(); // Close the bottom sheet
+            Get.snackbar("Gallery", "Take photo from gallery tapped");
+          },
+          onCameraTap: () {
+            Navigator.of(context).pop(); // Close the bottom sheet
+            Get.snackbar("Camera", "Take photo from camera tapped");
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -57,7 +82,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
             ),
             const SizedBox(width: 10),
             ElevatedButton.icon(
-              onPressed: () => _pickImage(ImageSource.camera),
+              onPressed: () => _showBottomSheet(context), //_pickImage(ImageSource.camera),
               icon: const Icon(Icons.camera_alt),
               label: const Text("Camera"),
             ),
