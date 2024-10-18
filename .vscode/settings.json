@@ -1,5 +1,8 @@
 {
     "workbench.preferredDarkColorTheme": "Visual Studio Light",
     "workbench.preferredHighContrastColorTheme": "Visual Studio Light",
-    "workbench.colorTheme": "Monokai"
+    "workbench.colorTheme": "Monokai",
+    "cSpell.words": [
+        "Screenheight"
+    ]
 }

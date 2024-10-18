@@ -30,14 +30,20 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Login in Your",
-                  style: Theme.of(context).textTheme.displayLarge,
+                  style:TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 5),
-                Text(
+                const Text(
                   "Account",
-                  style: Theme.of(context).textTheme.displayLarge,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 20),
                 // _buildTextField("Email*", "example@site.com",
@@ -94,9 +100,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {
                         Get.offNamed(AppRoutes.forgotPassword);
                       },
-                      child: Text(
+                      child: const Text(
                         "Forgot password?",
-                        style: Theme.of(context).textTheme.displaySmall,
+                        style: TextStyle(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          fontStyle: FontStyle.italic,
+
+                        ),
                       ),
                     ),
                   ],

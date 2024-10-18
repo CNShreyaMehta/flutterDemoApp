@@ -1,5 +1,5 @@
-import 'package:demo_app/presentation/constants/colors.dart';
-import 'package:demo_app/presentation/constants/image_strings.dart';
+import 'package:demo_app/presentation/utils/constants/colors.dart';
+import 'package:demo_app/presentation/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -25,12 +25,12 @@ class OnBoardingScreen extends StatelessWidget {
             enableSideReveal: true,
             pages: [
               Container(
-                color: onboardingColorOne,
+                color: TColors.onboardingColorOne,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Image(
-                      image: const AssetImage(onBoardingScreenOne),
+                      image: const AssetImage(TImages.onBoardingScreenOne),
                       height: size.height * 0.4,
                     ),
                     const Column(
@@ -62,8 +62,8 @@ class OnBoardingScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(color: onboardingColorTwo),
-              Container(color: onboardingColorThree),
+              Container(color: TColors.onboardingColorTwo),
+              Container(color: TColors.onboardingColorThree),
             ]),
         Positioned(
           bottom: 60,
