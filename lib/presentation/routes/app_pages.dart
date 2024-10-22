@@ -16,6 +16,7 @@ import 'package:demo_app/presentation/screens/otp_verification_screen.dart';
 import 'package:demo_app/presentation/screens/product_details.dart';
 import 'package:demo_app/presentation/screens/signup_screen.dart';
 import 'package:demo_app/presentation/screens/splash_screen.dart';
+import 'package:demo_app/presentation/screens/sudoku_screen.dart';
 import 'package:get/get.dart';
 
 class AppPages {
@@ -26,6 +27,7 @@ class AppPages {
     // Auth Flow
     GetPage(name: AppRoutes.splash, page: () => SplashScreen()),
     GetPage(name: AppRoutes.onboarding, page: () => const OnBoardingScreen()),
+    GetPage(name: AppRoutes.sudoku, page: () => SudokuScreen()),
     GetPage(name: AppRoutes.login, page: () => const LoginScreen()),
     GetPage(name: AppRoutes.signup, page: () => const SignupScreen()),
     GetPage(name: AppRoutes.forgotPassword, page: () => ForgotPasswordScreen()),
