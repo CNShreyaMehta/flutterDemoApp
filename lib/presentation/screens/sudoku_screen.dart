@@ -27,6 +27,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
   List<List<int>> gridData = [];
   int? selectedRow;
   int? selectedCol;
+  int? selectedNumber; // Variable to store the selected number from the numeric pad
 
   @override
   void initState() {
@@ -108,6 +109,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
       gridData = generateSudoku();
       selectedRow = null;
       selectedCol = null;
+      selectedNumber = null; // Reset selected number
     });
   }
 
@@ -116,10 +118,15 @@ class _SudokuScreenState extends State<SudokuScreen> {
       solveSudoku(gridData);
     });
   }
+
   Row buildRow(List<String?> texts) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: texts.map((text) => NumberBox(text: text)).toList(),
+      children: texts.map((text) => NumberBox(text: text, onTap: () {
+        setState(() {
+          selectedNumber = int.parse(text!); // Update selected number
+        });
+      })).toList(),
     );
   }
 
@@ -142,10 +149,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
                       int colIndex = entry.key;
                       int colValue = entry.value;
 
-                      bool isSelected =
-                          (selectedRow == rowIndex && selectedCol == colIndex);
-                      bool isHighlighted = selectedRow != null &&
-                          gridData[selectedRow!][colIndex] == 0;
+                      bool isSelected = (selectedRow == rowIndex && selectedCol == colIndex);
 
                       return InkWell(
                         onTap: () {
@@ -153,14 +157,11 @@ class _SudokuScreenState extends State<SudokuScreen> {
                             selectedRow = rowIndex;
                             selectedCol = colIndex;
 
-                            // Toggle the state of the clicked cell
-                            if (gridData[selectedRow!][selectedCol!] == 0) 
-                            {
-                              gridData[selectedRow!][selectedCol!] = -1; // Highlight the clicked empty cell
-                            } else if (gridData[selectedRow!][selectedCol!] == -1) {
-                              gridData[selectedRow!][selectedCol!] = 0; // Reset highlighted cell back to original
+                            // If a number is selected, place it in the grid cell
+                            if (selectedNumber != null && gridData[selectedRow!][selectedCol!] == 0) {
+                              gridData[selectedRow!][selectedCol!] = selectedNumber!;
+                              selectedNumber = null; // Reset selected number after placing
                             }
-                            // No need to reset other cells since we want to allow multiple selections
                           });
                         },
                         child: Container(
@@ -172,10 +173,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
                                 ? Colors.blue
                                 : (colValue == 0
                                     ? Colors.white
-                                    : (colValue == -1
-                                        ? Colors.red // Highlighted empty cell
-                                        : const Color.fromARGB(
-                                            232, 219, 205, 205))),
+                                    : const Color.fromARGB(232, 219, 205, 205)),
                           ),
                           alignment: Alignment.center,
                           child: Text(
@@ -185,18 +183,13 @@ class _SudokuScreenState extends State<SudokuScreen> {
                         ),
                       );
                     }).toList(),
-                    
                   );
                 }).toList(),
               ),
             ),
             const SizedBox(height: 20),
-       const SizedBox(
-              height: 20,
-
-            ),
+            const SizedBox(height: 20),
             Container(
-              //color: Colors.blue,
               alignment: Alignment.center,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -213,9 +206,6 @@ class _SudokuScreenState extends State<SudokuScreen> {
               ),
             ),
             Container(
-
-              //color: Colors.blue,
-              //height: 100,
               alignment: Alignment.center,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -267,20 +257,20 @@ class _SudokuScreenState extends State<SudokuScreen> {
     );
   }
 }
+
 class NumberBox extends StatelessWidget {
   final String? text;
+  final VoidCallback? onTap;
 
-  const NumberBox({super.key, this.text});
+  const NumberBox({super.key, this.text, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        print('tapped');
-      },
+      onTap: onTap, // Trigger the callback when tapped
       child: Container(
-        width: 20,
-        height: 20,
+        width: 40,
+        height: 40,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black),
         ),
