@@ -197,9 +197,11 @@ class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMix
         return NumberBox(
           text: text,
           onTap: () {
-            
-            if (selectedRow != null && selectedCol != null && gridData[selectedRow!][selectedCol!] == 0) {
+            if (selectedRow != null 
+            && selectedCol != null 
+            && gridData[selectedRow!][selectedCol!] == 0) {
               int numberToPlace = int.parse(text!);
+
               if (isValidMove(gridData, selectedRow!, selectedCol!, numberToPlace)) {
         setState(() {
           gridData[selectedRow!] [selectedCol!] = numberToPlace;
@@ -207,6 +209,9 @@ class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMix
           selectedCol = null;
           checkGameWon();
         });
+//FIXME
+        // if() check empty grid data or not if not then call solveddata anomation 
+
       } else {
         // Optionally, you can show a message or visual feedback for invalid moves
         ScaffoldMessenger.of(context).showSnackBar(
@@ -267,7 +272,7 @@ class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMix
                                           ? Colors.white
                                           : (isFixed
                                               ? Colors.grey.shade300
-                                              : const Color.fromARGB(232, 253, 97, 97))),
+                                              : const Color.fromARGB(232, 158, 233, 187))),
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(
@@ -281,6 +286,7 @@ class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMix
                       }).toList(),
                     ),
                   ),
+                  //FIXME box with be round with shadow and color
                   const SizedBox(height: 5),
                   Container(
                     alignment: Alignment.center,
