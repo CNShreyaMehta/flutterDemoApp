@@ -27,7 +27,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
   List<List<int>> gridData = [];
   int? selectedRow;
   int? selectedCol;
-  int? selectedNumber; // Variable to store the selected number from the numeric pad
+  int? selectedNumber;
 
   @override
   void initState() {
@@ -109,7 +109,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
       gridData = generateSudoku();
       selectedRow = null;
       selectedCol = null;
-      selectedNumber = null; // Reset selected number
+      selectedNumber = null;
     });
   }
 
@@ -122,11 +122,21 @@ class _SudokuScreenState extends State<SudokuScreen> {
   Row buildRow(List<String?> texts) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: texts.map((text) => NumberBox(text: text, onTap: () {
-        setState(() {
-          selectedNumber = int.parse(text!); // Update selected number
-        });
-      })).toList(),
+      children: texts.map((text) {
+        return NumberBox(
+          text: text,
+          onTap: () {
+            if (selectedRow != null && selectedCol != null && gridData[selectedRow!][selectedCol!] == 0) {
+              setState(() {
+                gridData[selectedRow!][selectedCol!] = int.parse(text!);
+                selectedRow = null;
+                selectedCol = null;
+                selectedNumber = null;
+              });
+            }
+          },
+        );
+      }).toList(),
     );
   }
 
@@ -156,12 +166,6 @@ class _SudokuScreenState extends State<SudokuScreen> {
                           setState(() {
                             selectedRow = rowIndex;
                             selectedCol = colIndex;
-
-                            // If a number is selected, place it in the grid cell
-                            if (selectedNumber != null && gridData[selectedRow!][selectedCol!] == 0) {
-                              gridData[selectedRow!][selectedCol!] = selectedNumber!;
-                              selectedNumber = null; // Reset selected number after placing
-                            }
                           });
                         },
                         child: Container(
@@ -187,8 +191,8 @@ class _SudokuScreenState extends State<SudokuScreen> {
                 }).toList(),
               ),
             ),
-            const SizedBox(height: 20),
-            const SizedBox(height: 20),
+            const SizedBox(height: 0),
+            const SizedBox(height: 0),
             Container(
               alignment: Alignment.center,
               child: Padding(
@@ -267,7 +271,7 @@ class NumberBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap, // Trigger the callback when tapped
+      onTap: onTap,
       child: Container(
         width: 40,
         height: 40,
