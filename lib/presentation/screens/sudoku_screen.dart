@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:confetti/confetti.dart'; // Import confetti package
 
 void main() {
   runApp(const MyApp());
@@ -23,16 +24,47 @@ class SudokuScreen extends StatefulWidget {
   _SudokuScreenState createState() => _SudokuScreenState();
 }
 
-class _SudokuScreenState extends State<SudokuScreen> {
+class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMixin {
   List<List<int>> gridData = [];
+  List<List<bool>> fixedCells = [];
   int? selectedRow;
   int? selectedCol;
-  int? selectedNumber;
+  bool gameWon = false; // Track if the game has been won
+  late ConfettiController _confettiController; // Confetti controller
+  List<AnimationController> _balloonControllers = []; // Controllers for multiple balloons
+  List<Animation<double>> _balloonAnimations = []; // Animations for multiple balloons
 
   @override
   void initState() {
     super.initState();
+    _confettiController = ConfettiController(duration: const Duration(seconds: 5)); // Initialize confetti controller
+    
+    // Create multiple balloons
+    for (int i = 0; i < 15; i++) { // Adjust the number of balloons here
+      AnimationController controller = AnimationController(
+        vsync: this,
+        duration: const Duration(seconds: 6),
+      );
+
+      Animation<double> animation = Tween<double>(begin: 1.5, end: 0.0).animate(CurvedAnimation(
+        parent: controller,
+        curve: Curves.easeOut, // Smooth out the animation
+      ));
+
+      _balloonControllers.add(controller);
+      _balloonAnimations.add(animation);
+    }
+
     gridData = generateSudoku();
+  }
+
+  @override
+  void dispose() {
+    _confettiController.dispose(); // Dispose confetti controller
+    for (var controller in _balloonControllers) {
+      controller.dispose(); // Dispose each balloon controller
+    }
+    super.dispose();
   }
 
   List<List<int>> generateSudoku() {
@@ -50,12 +82,15 @@ class _SudokuScreenState extends State<SudokuScreen> {
         remainingCells--;
       }
     }
+
+    fixedCells = List.generate(9, (i) => List.generate(9, (j) => grid[i][j] != 0));
+
     return grid;
   }
 
   bool solveSudoku(List<List<int>> grid) {
     final emptyCell = findEmptyCell(grid);
-    if (emptyCell == null) return true; // Puzzle solved
+    if (emptyCell == null) return true;
 
     final int row = emptyCell['row'] ?? 0;
     final int col = emptyCell['col'] ?? 0;
@@ -67,8 +102,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
         if (solveSudoku(grid)) {
           return true;
         }
-
-        grid[row][col] = 0; // Backtrack
+        grid[row][col] = 0;
       }
     }
     return false;
@@ -82,7 +116,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
         }
       }
     }
-    return null; // No empty cell found
+    return null;
   }
 
   bool isValidMove(List<List<int>> grid, int row, int col, int num) {
@@ -109,14 +143,50 @@ class _SudokuScreenState extends State<SudokuScreen> {
       gridData = generateSudoku();
       selectedRow = null;
       selectedCol = null;
-      selectedNumber = null;
+      gameWon = false;
     });
   }
+
+
 
   void solveData() {
     setState(() {
       solveSudoku(gridData);
+      checkGameWon();
     });
+  }
+
+  void checkGameWon() {
+    bool isComplete = true;
+
+    // Check if any cell is empty
+    for (int i = 0; i < 9; i++) {
+      for (int j = 0; j < 9; j++) {
+        if (gridData[i][j] == 0) {
+          isComplete = false;
+          break;
+        }
+      }
+    }
+
+    // If complete, trigger confetti and balloon animations
+    if (isComplete) {
+      
+      setState(() {
+        gameWon = true;
+        // _confettiController.play();
+         for (int i = 0; i < 5; i++) {
+      Future.delayed(Duration(seconds: i), () {
+        _confettiController.play();
+      });
+    }
+
+        // Start balloon animations
+        for (var controller in _balloonControllers) {
+          controller.forward();
+        }
+      });
+    }
   }
 
   Row buildRow(List<String?> texts) {
@@ -126,13 +196,22 @@ class _SudokuScreenState extends State<SudokuScreen> {
         return NumberBox(
           text: text,
           onTap: () {
+            
             if (selectedRow != null && selectedCol != null && gridData[selectedRow!][selectedCol!] == 0) {
-              setState(() {
-                gridData[selectedRow!][selectedCol!] = int.parse(text!);
-                selectedRow = null;
-                selectedCol = null;
-                selectedNumber = null;
-              });
+              int numberToPlace = int.parse(text!);
+              if (isValidMove(gridData, selectedRow!, selectedCol!, numberToPlace)) {
+        setState(() {
+          gridData[selectedRow!] [selectedCol!] = numberToPlace;
+          selectedRow = null;
+          selectedCol = null;
+          checkGameWon();
+        });
+      } else {
+        // Optionally, you can show a message or visual feedback for invalid moves
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Invalid move!')),
+        );
+      }
             }
           },
         );
@@ -145,118 +224,150 @@ class _SudokuScreenState extends State<SudokuScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sudoku'),
+          backgroundColor: Colors.lightBlueAccent, // Set the background color to blue
+      
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Center(
-              child: Column(
-                children: gridData.map((row) {
-                  int rowIndex = gridData.indexOf(row);
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: row.asMap().entries.map((entry) {
-                      int colIndex = entry.key;
-                      int colValue = entry.value;
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Column(
+              children: [
+                Center(
+                  child: Column(
+                    children: gridData.map((row) {
+                      int rowIndex = gridData.indexOf(row);
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: row.asMap().entries.map((entry) {
+                          int colIndex = entry.key;
+                          int colValue = entry.value;
 
-                      bool isSelected = (selectedRow == rowIndex && selectedCol == colIndex);
+                          bool isSelected = (selectedRow == rowIndex && selectedCol == colIndex);
+                          bool isFixed = fixedCells[rowIndex][colIndex];
 
-                      return InkWell(
-                        onTap: () {
-                          setState(() {
-                            selectedRow = rowIndex;
-                            selectedCol = colIndex;
-                          });
-                        },
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            color: isSelected
-                                ? Colors.blue
-                                : (colValue == 0
-                                    ? Colors.white
-                                    : const Color.fromARGB(232, 219, 205, 205)),
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            colValue > 0 ? '$colValue' : '',
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                        ),
+                          return InkWell(
+                            onTap: () {
+                              if (!isFixed) {
+                                setState(() {
+                                  selectedRow = rowIndex;
+                                  selectedCol = colIndex;
+                                });
+                              }
+                            },
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black),
+                                color: isSelected
+                                    ? Colors.blue
+                                    : (colValue == 0
+                                        ? Colors.white
+                                        : (isFixed
+                                            ? Colors.grey.shade300
+                                            : const Color.fromARGB(232, 219, 205, 205))),
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                colValue > 0 ? '$colValue' : '',
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                            ),
+                          );
+                        }).toList(),
                       );
                     }).toList(),
-                  );
-                }).toList(),
-              ),
-            ),
-            const SizedBox(height: 0),
-            const SizedBox(height: 0),
-            Container(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    buildRow(['1', '2', '3']),
-                    const SizedBox(height: 10),
-                    buildRow(['4', '5', '6']),
-                    const SizedBox(height: 10),
-                    buildRow(['7', '8', '9']),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.black,
-                      side: const BorderSide(color: Colors.black),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 30),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      textStyle: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Poppins',
-                      ),
-                      backgroundColor: Colors.white,
+                const SizedBox(height: 20),
+                Container(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        buildRow(['1', '2', '3']),
+                        const SizedBox(height: 10),
+                        buildRow(['4', '5', '6']),
+                        const SizedBox(height: 10),
+                        buildRow(['7', '8', '9']),
+                      ],
                     ),
-                    onPressed: solveData,
-                    child: const Text("Solve"),
                   ),
-                  OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.black,
-                      side: const BorderSide(color: Colors.black),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 30),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.black,
+                          side: const BorderSide(color: Colors.black),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 30),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          textStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins',
+                          ),
+                          backgroundColor: Colors.white,
+                        ),
+                        onPressed: solveData,
+                        child: const Text("Solve"),
                       ),
-                      textStyle: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Poppins',
+                      const SizedBox(width: 20),
+                      OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.black,
+                          side: const BorderSide(color: Colors.black),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 30),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          textStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins',
+                          ),
+                          backgroundColor: Colors.white,
+                        ),
+                        onPressed: resetValue,
+                        child: const Text("Reset"),
                       ),
-                      backgroundColor: Colors.white,
-                    ),
-                    onPressed: resetValue,
-                    child: const Text("Reset"),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          // Confetti animation widget
+          Align(
+            alignment: Alignment.topCenter,
+            child: ConfettiWidget(
+              confettiController: _confettiController,
+              blastDirection: pi / 2, // Direction is downward
+              blastDirectionality: BlastDirectionality.explosive,
+              shouldLoop: true,
+              gravity: 0.2, // Control how fast confetti falls
+              colors: const [
+                Colors.green,
+                Colors.blue,
+                Colors.pink,
+                Colors.orange,
+                Colors.purple,
+                Colors.red,
+                Colors.lightBlue,
+              ], // Colors of the confetti
+              numberOfParticles: 60, // Adjust this for more/less confetti
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -266,25 +377,24 @@ class NumberBox extends StatelessWidget {
   final String? text;
   final VoidCallback? onTap;
 
-  const NumberBox({super.key, this.text, this.onTap});
+  const NumberBox({Key? key, this.text, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.black),
-        ),
+        width: 30,
+        height: 30,
         alignment: Alignment.center,
-        child: text != null
-            ? Text(
-                text!,
-                style: const TextStyle(fontSize: 20, color: Colors.black),
-              )
-            : null,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade300,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(
+          text ?? '',
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }
