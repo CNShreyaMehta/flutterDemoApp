@@ -1,6 +1,7 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
+
 import 'package:confetti/confetti.dart'; // Import confetti package
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
@@ -230,120 +231,122 @@ class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMix
       body: Stack(
         children: [
           SafeArea(
-            child: Column(
-              children: [
-                Center(
-                  child: Column(
-                    children: gridData.map((row) {
-                      int rowIndex = gridData.indexOf(row);
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: row.asMap().entries.map((entry) {
-                          int colIndex = entry.key;
-                          int colValue = entry.value;
-
-                          bool isSelected = (selectedRow == rowIndex && selectedCol == colIndex);
-                          bool isFixed = fixedCells[rowIndex][colIndex];
-
-                          return InkWell(
-                            onTap: () {
-                              if (!isFixed) {
-                                setState(() {
-                                  selectedRow = rowIndex;
-                                  selectedCol = colIndex;
-                                });
-                              }
-                            },
-                            child: Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black),
-                                color: isSelected
-                                    ? Colors.blue
-                                    : (colValue == 0
-                                        ? Colors.white
-                                        : (isFixed
-                                            ? Colors.grey.shade300
-                                            : const Color.fromARGB(232, 219, 205, 205))),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                colValue > 0 ? '$colValue' : '',
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Center(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: gridData.map((row) {
+                        int rowIndex = gridData.indexOf(row);
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: row.asMap().entries.map((entry) {
+                            int colIndex = entry.key;
+                            int colValue = entry.value;
+              
+                            bool isSelected = (selectedRow == rowIndex && selectedCol == colIndex);
+                            bool isFixed = fixedCells[rowIndex][colIndex];
+              
+                            return InkWell(
+                              onTap: () {
+                                if (!isFixed) {
+                                  setState(() {
+                                    selectedRow = rowIndex;
+                                    selectedCol = colIndex;
+                                  });
+                                }
+                              },
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black),
+                                  color: isSelected
+                                      ? Colors.blue
+                                      : (colValue == 0
+                                          ? Colors.white
+                                          : (isFixed
+                                              ? Colors.grey.shade300
+                                              : const Color.fromARGB(232, 253, 97, 97))),
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  colValue > 0 ? '$colValue' : '',
+                                  style: const TextStyle(fontSize: 20),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Container(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          buildRow(['1', '2', '3']),
+                          const SizedBox(height: 10),
+                          buildRow(['4', '5', '6']),
+                          const SizedBox(height: 10),
+                          buildRow(['7', '8', '9']),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        buildRow(['1', '2', '3']),
-                        const SizedBox(height: 10),
-                        buildRow(['4', '5', '6']),
-                        const SizedBox(height: 10),
-                        buildRow(['7', '8', '9']),
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.black,
+                            side: const BorderSide(color: Colors.black),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 30),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Poppins',
+                            ),
+                            backgroundColor: Colors.white,
+                          ),
+                          onPressed: solveData,
+                          child: const Text("Solve"),
+                        ),
+                        const SizedBox(width: 20),
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.black,
+                            side: const BorderSide(color: Colors.black),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 30),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Poppins',
+                            ),
+                            backgroundColor: Colors.white,
+                          ),
+                          onPressed: resetValue,
+                          child: const Text("Reset"),
+                        ),
                       ],
                     ),
                   ),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.black,
-                          side: const BorderSide(color: Colors.black),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 30),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          textStyle: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Poppins',
-                          ),
-                          backgroundColor: Colors.white,
-                        ),
-                        onPressed: solveData,
-                        child: const Text("Solve"),
-                      ),
-                      const SizedBox(width: 20),
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.black,
-                          side: const BorderSide(color: Colors.black),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 30),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          textStyle: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Poppins',
-                          ),
-                          backgroundColor: Colors.white,
-                        ),
-                        onPressed: resetValue,
-                        child: const Text("Reset"),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           // Confetti animation widget
@@ -377,15 +380,15 @@ class NumberBox extends StatelessWidget {
   final String? text;
   final VoidCallback? onTap;
 
-  const NumberBox({Key? key, this.text, this.onTap}) : super(key: key);
+  const NumberBox({super.key, this.text, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 30,
-        height: 30,
+       width: MediaQuery.of(context).size.width * 0.2, // Adjust the percentage as needed
+  height: MediaQuery.of(context).size.height * 0.08, // A
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.grey.shade300,
