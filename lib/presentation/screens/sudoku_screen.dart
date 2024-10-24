@@ -116,6 +116,12 @@ class _SudokuScreenState extends State<SudokuScreen> {
       solveSudoku(gridData);
     });
   }
+  Row buildRow(List<String?> texts) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: texts.map((text) => NumberBox(text: text)).toList(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -179,26 +185,112 @@ class _SudokuScreenState extends State<SudokuScreen> {
                         ),
                       );
                     }).toList(),
+                    
                   );
                 }).toList(),
               ),
             ),
             const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                OutlinedButton(
-                  onPressed: solveData,
-                  child: const Text("Solve"),
+       const SizedBox(
+              height: 20,
+
+            ),
+            Container(
+              //color: Colors.blue,
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    buildRow(['1', '2', '3']),
+                    const SizedBox(height: 10),
+                    buildRow(['4', '5', '6']),
+                    const SizedBox(height: 10),
+                    buildRow(['7', '8', '9']),
+                  ],
                 ),
-                OutlinedButton(
-                  onPressed: resetValue,
-                  child: const Text("Reset"),
-                ),
-              ],
+              ),
+            ),
+            Container(
+
+              //color: Colors.blue,
+              //height: 100,
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.black,
+                      side: const BorderSide(color: Colors.black),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 30),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins',
+                      ),
+                      backgroundColor: Colors.white,
+                    ),
+                    onPressed: solveData,
+                    child: const Text("Solve"),
+                  ),
+                  OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.black,
+                      side: const BorderSide(color: Colors.black),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 30),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins',
+                      ),
+                      backgroundColor: Colors.white,
+                    ),
+                    onPressed: resetValue,
+                    child: const Text("Reset"),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+class NumberBox extends StatelessWidget {
+  final String? text;
+
+  const NumberBox({super.key, this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        print('tapped');
+      },
+      child: Container(
+        width: 20,
+        height: 20,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+        ),
+        alignment: Alignment.center,
+        child: text != null
+            ? Text(
+                text!,
+                style: const TextStyle(fontSize: 20, color: Colors.black),
+              )
+            : null,
       ),
     );
   }
