@@ -25,29 +25,35 @@ class SudokuScreen extends StatefulWidget {
   _SudokuScreenState createState() => _SudokuScreenState();
 }
 
-class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMixin {
+class _SudokuScreenState extends State<SudokuScreen>
+    with TickerProviderStateMixin {
   List<List<int>> gridData = [];
   List<List<bool>> fixedCells = [];
   int? selectedRow;
   int? selectedCol;
   bool gameWon = false; // Track if the game has been won
   late ConfettiController _confettiController; // Confetti controller
-  List<AnimationController> _balloonControllers = []; // Controllers for multiple balloons
-  List<Animation<double>> _balloonAnimations = []; // Animations for multiple balloons
+  final List<AnimationController> _balloonControllers =
+      []; // Controllers for multiple balloons
+  final List<Animation<double>> _balloonAnimations =
+      []; // Animations for multiple balloons
 
   @override
   void initState() {
     super.initState();
-    _confettiController = ConfettiController(duration: const Duration(seconds: 5)); // Initialize confetti controller
-    
+    _confettiController = ConfettiController(
+        duration: const Duration(seconds: 5)); // Initialize confetti controller
+
     // Create multiple balloons
-    for (int i = 0; i < 15; i++) { // Adjust the number of balloons here
+    for (int i = 0; i < 15; i++) {
+      // Adjust the number of balloons here
       AnimationController controller = AnimationController(
         vsync: this,
         duration: const Duration(seconds: 6),
       );
 
-      Animation<double> animation = Tween<double>(begin: 1.5, end: 0.0).animate(CurvedAnimation(
+      Animation<double> animation =
+          Tween<double>(begin: 1.5, end: 0.0).animate(CurvedAnimation(
         parent: controller,
         curve: Curves.easeOut, // Smooth out the animation
       ));
@@ -72,7 +78,7 @@ class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMix
     List<List<int>> grid = List.generate(9, (_) => List.generate(9, (_) => 0));
     solveSudoku(grid);
 
-    const int difficulty = 40;
+    const int difficulty = 75;
     int remainingCells = 81 - difficulty;
     Random random = Random();
     while (remainingCells > 0) {
@@ -84,7 +90,8 @@ class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMix
       }
     }
 
-    fixedCells = List.generate(9, (i) => List.generate(9, (j) => grid[i][j] != 0));
+    fixedCells =
+        List.generate(9, (i) => List.generate(9, (j) => grid[i][j] != 0));
 
     return grid;
   }
@@ -148,12 +155,10 @@ class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMix
     });
   }
 
-
-
   void solveData() {
     setState(() {
       solveSudoku(gridData);
-      checkGameWon();
+      //checkGameWon();
     });
   }
 
@@ -172,15 +177,14 @@ class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMix
 
     // If complete, trigger confetti and balloon animations
     if (isComplete) {
-      
       setState(() {
         gameWon = true;
         // _confettiController.play();
-         for (int i = 0; i < 5; i++) {
-      Future.delayed(Duration(seconds: i), () {
-        _confettiController.play();
-      });
-    }
+        for (int i = 0; i < 5; i++) {
+          Future.delayed(Duration(seconds: i), () {
+            _confettiController.play();
+          });
+        }
 
         // Start balloon animations
         for (var controller in _balloonControllers) {
@@ -197,27 +201,44 @@ class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMix
         return NumberBox(
           text: text,
           onTap: () {
-            if (selectedRow != null 
-            && selectedCol != null 
-            && gridData[selectedRow!][selectedCol!] == 0) {
+            if (selectedRow != null &&
+                selectedCol != null &&
+                gridData[selectedRow!][selectedCol!] == 0) {
               int numberToPlace = int.parse(text!);
 
-              if (isValidMove(gridData, selectedRow!, selectedCol!, numberToPlace)) {
-        setState(() {
-          gridData[selectedRow!] [selectedCol!] = numberToPlace;
-          selectedRow = null;
-          selectedCol = null;
-          checkGameWon();
-        });
+              if (isValidMove(
+                  gridData, selectedRow!, selectedCol!, numberToPlace)) {
+                setState(() {
+                  gridData[selectedRow!][selectedCol!] = numberToPlace;
+                  selectedRow = null;
+                  selectedCol = null;
+                  checkGameWon();
+                });
 //FIXME
-        // if() check empty grid data or not if not then call solveddata anomation 
-
-      } else {
-        // Optionally, you can show a message or visual feedback for invalid moves
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Invalid move!')),
-        );
-      }
+                if (gridData[0][0] != 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+  const SnackBar(
+    content: Text(
+      'Hooray You Won!',
+      style: TextStyle(color: Colors.black,fontWeight: FontWeight.w400,fontSize: 20), // Set text color to black
+    ),
+    backgroundColor: Colors.green, // Set background color to green
+  ),
+);
+                }
+                // if() check empty grid data or not if not then call solveddata anomation
+              } else {
+                // Optionally, you can show a message or visual feedback for invalid moves
+               ScaffoldMessenger.of(context).showSnackBar(
+  const SnackBar(
+    content: Text(
+      'Invalid Move!',
+      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400,fontSize: 20), // Set text color to black
+    ),
+    backgroundColor: Color.fromARGB(255, 255, 0, 0), // Set background color to green
+  ),
+);
+              }
             }
           },
         );
@@ -230,8 +251,20 @@ class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMix
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sudoku'),
-          backgroundColor: Colors.lightBlueAccent, // Set the background color to blue
-      
+          centerTitle: true, // Center the title
+
+        backgroundColor:
+            const Color.fromARGB(255, 210, 235, 247), // Set the background color to blue
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.slow_motion_video),
+            onPressed: solveData,
+          ),
+          IconButton(
+            icon: const Icon(Icons.restore),
+            onPressed: resetValue,
+          )
+        ],
       ),
       body: Stack(
         children: [
@@ -239,6 +272,8 @@ class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMix
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  const SizedBox(height: 20),
+
                   Center(
                     child: Column(
                       children: gridData.map((row) {
@@ -248,10 +283,11 @@ class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMix
                           children: row.asMap().entries.map((entry) {
                             int colIndex = entry.key;
                             int colValue = entry.value;
-              
-                            bool isSelected = (selectedRow == rowIndex && selectedCol == colIndex);
+
+                            bool isSelected = (selectedRow == rowIndex &&
+                                selectedCol == colIndex);
                             bool isFixed = fixedCells[rowIndex][colIndex];
-              
+
                             return InkWell(
                               onTap: () {
                                 if (!isFixed) {
@@ -271,13 +307,13 @@ class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMix
                                       : (colValue == 0
                                           ? Colors.white
                                           : (isFixed
-                                              ? Colors.grey.shade300
-                                              : const Color.fromARGB(232, 158, 233, 187))),
+                                              ? const Color.fromARGB(255, 197, 196, 196)
+                                              : const Color.fromARGB(232, 123, 239, 168))),
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(
                                   colValue > 0 ? '$colValue' : '',
-                                  style: const TextStyle(fontSize: 20),
+                                  style: const TextStyle(fontSize: 20,color: Colors.black),
                                 ),
                               ),
                             );
@@ -296,61 +332,61 @@ class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMix
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           buildRow(['1', '2', '3']),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 15),
                           buildRow(['4', '5', '6']),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 15),
                           buildRow(['7', '8', '9']),
                         ],
                       ),
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: Colors.black,
-                            side: const BorderSide(color: Colors.black),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 30),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Poppins',
-                            ),
-                            backgroundColor: Colors.white,
-                          ),
-                          onPressed: solveData,
-                          child: const Text("Solve"),
-                        ),
-                        const SizedBox(width: 20),
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: Colors.black,
-                            side: const BorderSide(color: Colors.black),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 30),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Poppins',
-                            ),
-                            backgroundColor: Colors.white,
-                          ),
-                          onPressed: resetValue,
-                          child: const Text("Reset"),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   alignment: Alignment.center,
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //     children: [
+                  //       OutlinedButton(
+                  //         style: OutlinedButton.styleFrom(
+                  //           foregroundColor: Colors.black,
+                  //           side: const BorderSide(color: Colors.black),
+                  //           padding: const EdgeInsets.symmetric(
+                  //               vertical: 10, horizontal: 30),
+                  //           shape: RoundedRectangleBorder(
+                  //             borderRadius: BorderRadius.circular(10),
+                  //           ),
+                  //           textStyle: const TextStyle(
+                  //             fontSize: 16,
+                  //             fontWeight: FontWeight.bold,
+                  //             fontFamily: 'Poppins',
+                  //           ),
+                  //           backgroundColor: Colors.white,
+                  //         ),
+                  //         onPressed: solveData,
+                  //         child: const Text("Solve"),
+                  //       ),
+                  //       const SizedBox(width: 20),
+                  //       OutlinedButton(
+                  //         style: OutlinedButton.styleFrom(
+                  //           foregroundColor: Colors.black,
+                  //           side: const BorderSide(color: Colors.black),
+                  //           padding: const EdgeInsets.symmetric(
+                  //               vertical: 10, horizontal: 30),
+                  //           shape: RoundedRectangleBorder(
+                  //             borderRadius: BorderRadius.circular(10),
+                  //           ),
+                  //           textStyle: const TextStyle(
+                  //             fontSize: 16,
+                  //             fontWeight: FontWeight.bold,
+                  //             fontFamily: 'Poppins',
+                  //           ),
+                  //           backgroundColor: Colors.white,
+                  //         ),
+                  //         onPressed: resetValue,
+                  //         child: const Text("Reset"),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -362,7 +398,7 @@ class _SudokuScreenState extends State<SudokuScreen> with TickerProviderStateMix
               confettiController: _confettiController,
               blastDirection: pi / 2, // Direction is downward
               blastDirectionality: BlastDirectionality.explosive,
-              shouldLoop: true,
+              shouldLoop: false,
               gravity: 0.2, // Control how fast confetti falls
               colors: const [
                 Colors.green,
@@ -393,16 +429,27 @@ class NumberBox extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-       width: MediaQuery.of(context).size.width * 0.2, // Adjust the percentage as needed
-  height: MediaQuery.of(context).size.height * 0.08, // A
+        width: MediaQuery.of(context).size.width *
+            0.18, // Adjust the percentage as needed
+        height: MediaQuery.of(context).size.height * 0.08, // A
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.grey.shade300,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(100),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2), // Shadow color with opacity
+              spreadRadius: 3, // Spread radius of shadow
+              blurRadius: 4, // Blur effect to make the shadow softer
+              offset: const Offset(
+                  0, 4), // Offset the shadow to the bottom (x: 0, y: 4)
+            ),
+          ],
         ),
         child: Text(
           text ?? '',
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+              fontSize: 26, fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
     );

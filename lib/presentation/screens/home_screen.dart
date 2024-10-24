@@ -26,6 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
+        backgroundColor:
+            const Color.fromARGB(255, 210, 235, 247), // Set the background color to blue
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -41,11 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text('Menu'),
+              decoration: BoxDecoration(color: Color.fromARGB(255, 210, 235, 247),),
+              child: Text('WELCOME'),
             ),
             ListTile(
-              title: const Text('Item 1'),
+              title: const Text('Sudoku Game'),
               onTap: () {
                 Navigator.push(
               context,
@@ -54,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
-              title: const Text('Item 2'),
+              title: const Text('Game 2048'),
               onTap: () {
                 Navigator.pop(context);
               },
