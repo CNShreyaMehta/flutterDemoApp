@@ -111,7 +111,7 @@ class _SudokuScreenState extends State<SudokuScreen>
     List<List<int>> grid = List.generate(9, (_) => List.generate(9, (_) => 0));
     solveSudoku(grid);
 
-    const int difficulty = 75;
+    const int difficulty = 78;
     int remainingCells = 81 - difficulty;
     Random random = Random();
     while (remainingCells > 0) {
@@ -343,6 +343,7 @@ class _SudokuScreenState extends State<SudokuScreen>
                                   ? null
                                   : () {
                                       if (!isFixed) {
+                                        _stopTimer();
                                         setState(() {
                                           selectedRow = rowIndex;
                                           selectedCol = colIndex;
