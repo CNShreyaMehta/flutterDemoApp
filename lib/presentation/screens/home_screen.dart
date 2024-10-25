@@ -26,50 +26,96 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Game Zone'),
         backgroundColor:
             const Color.fromARGB(255, 210, 235, 247), // Set the background color to blue
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-                            _showLogoutConfirmation(context); // Show logout confirmation dialog
-
-            },
-          )
-        ],
+      
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Color.fromARGB(255, 210, 235, 247),),
-              child: Text('WELCOME'),
-            ),
-            ListTile(
-              title: const Text('Sudoku Game'),
+      // drawer: Drawer(
+      //   child: ListView(
+      //     padding: EdgeInsets.zero,
+      //     children: <Widget>[
+      //       const DrawerHeader(
+      //         decoration: BoxDecoration(color: Color.fromARGB(255, 210, 235, 247),),
+      //         child: Text('WELCOME'),
+      //       ),
+      //       ListTile(
+      //         title: const Text('Sudoku Game'),
+      //         onTap: () {
+      //           Navigator.push(
+      //         context,
+      //         MaterialPageRoute(builder: (context) => const SudokuScreen()),
+      //       );
+      //         },
+      //       ),
+      //       ListTile(
+      //         title: const Text('Game 2048'),
+      //         onTap: () {
+      //            Navigator.push(
+      //         context,
+      //         MaterialPageRoute(builder: (context) => const game2048()),
+      //       );
+      //         },
+      //       ),
+      //     ],
+      //   ),
+      // ),
+      body: Center(
+      child:  Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          InkWell(
+            onTap: () {
+                Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const game2048()),
+            );
+              },
+            child: Container(
+              width: MediaQuery.of(context).size.width *0.3,
+                    height: MediaQuery.of(context).size.height * 0.15,
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 238, 246, 150),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Center(
+                child: Text(
+                  '2048',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.black,
+                  ),
+                ),
+              
+              )),
+          ),
+            InkWell(
               onTap: () {
                 Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const SudokuScreen()),
             );
               },
-            ),
-            ListTile(
-              title: const Text('Game 2048'),
-              onTap: () {
-                 Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const game2048()),
-            );
-              },
-            ),
-          ],
-        ),
-      ),
-      body: Center(
-        child: _selectedIndex == 0 ? const Text('Home Tab') : const Text('Settings Tab'),
+              child: Container(
+              width: MediaQuery.of(context).size.width *0.3,
+                      height: MediaQuery.of(context).size.height * 0.15,
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 144, 234, 175),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Center(
+                child: Text(
+                  'Sudoku',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.black,
+                  ),
+                ),
+              
+              )),
+            )
+        ])
+       
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
