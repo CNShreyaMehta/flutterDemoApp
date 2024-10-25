@@ -1,4 +1,5 @@
 import 'package:demo_app/presentation/controllers/login_controller.dart';
+import 'package:demo_app/presentation/screens/game_2048.dart';
 import 'package:demo_app/presentation/screens/sudoku_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -51,14 +52,17 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SudokuScreen()),
+              MaterialPageRoute(builder: (context) => const SudokuScreen()),
             );
               },
             ),
             ListTile(
               title: const Text('Game 2048'),
               onTap: () {
-                Navigator.pop(context);
+                 Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const game2048()),
+            );
               },
             ),
           ],

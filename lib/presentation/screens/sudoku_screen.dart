@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:confetti/confetti.dart'; // Import confetti package
@@ -22,6 +23,7 @@ class SudokuScreen extends StatefulWidget {
   const SudokuScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SudokuScreenState createState() => _SudokuScreenState();
 }
 
@@ -37,10 +39,15 @@ class _SudokuScreenState extends State<SudokuScreen>
       []; // Controllers for multiple balloons
   final List<Animation<double>> _balloonAnimations =
       []; // Animations for multiple balloons
+  Timer? _timer;
+  int _elapsedTime = 0; // Time in seconds
+  bool _isRunning = false;
 
   @override
   void initState() {
     super.initState();
+    _startTimer();
+
     _confettiController = ConfettiController(
         duration: const Duration(seconds: 5)); // Initialize confetti controller
 
@@ -65,12 +72,38 @@ class _SudokuScreenState extends State<SudokuScreen>
     gridData = generateSudoku();
   }
 
+  void _startTimer() {
+    _isRunning = true;
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _elapsedTime++;
+      });
+    });
+  }
+
+ void _stopTimer() {
+    if (_timer != null) {
+      _timer!.cancel();
+      setState(() {
+        _isRunning = false;
+      });
+    }
+  }
+
+  String _formatTime(int seconds) {
+    final minutes = (seconds / 60).floor();
+    final secs = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
+  }
+
   @override
   void dispose() {
     _confettiController.dispose(); // Dispose confetti controller
     for (var controller in _balloonControllers) {
       controller.dispose(); // Dispose each balloon controller
     }
+    _timer?.cancel();
+
     super.dispose();
   }
 
@@ -148,17 +181,30 @@ class _SudokuScreenState extends State<SudokuScreen>
 
   void resetValue() {
     setState(() {
+      _timer!.cancel();
+      _isRunning = false;
+      _elapsedTime = 0;
       gridData = generateSudoku();
       selectedRow = null;
       selectedCol = null;
       gameWon = false;
     });
+    setState(() {
+      _startTimer();
+    });
   }
 
   void solveData() {
+    if (_timer != null) {
+      _timer!.cancel();
+      setState(() {
+        _isRunning = false;
+      });
+    }
     setState(() {
       solveSudoku(gridData);
-      //checkGameWon();
+      _isRunning = false;
+      checkGameWon();
     });
   }
 
@@ -215,29 +261,23 @@ class _SudokuScreenState extends State<SudokuScreen>
                   checkGameWon();
                 });
 //FIXME
-                if (gridData[0][0] != 0) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-  const SnackBar(
-    content: Text(
-      'Hooray You Won!',
-      style: TextStyle(color: Colors.black,fontWeight: FontWeight.w400,fontSize: 20), // Set text color to black
-    ),
-    backgroundColor: Colors.green, // Set background color to green
-  ),
-);
-                }
+                if (gridData[0][0] != 0) {}
                 // if() check empty grid data or not if not then call solveddata anomation
               } else {
                 // Optionally, you can show a message or visual feedback for invalid moves
-               ScaffoldMessenger.of(context).showSnackBar(
-  const SnackBar(
-    content: Text(
-      'Invalid Move!',
-      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400,fontSize: 20), // Set text color to black
-    ),
-    backgroundColor: Color.fromARGB(255, 255, 0, 0), // Set background color to green
-  ),
-);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'Invalid Move!',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 20), // Set text color to black
+                    ),
+                    backgroundColor: Color.fromARGB(
+                        255, 255, 0, 0), // Set background color to green
+                  ),
+                );
               }
             }
           },
@@ -246,15 +286,17 @@ class _SudokuScreenState extends State<SudokuScreen>
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sudoku'),
-          centerTitle: true, // Center the title
+        centerTitle: true, // Center the title
 
-        backgroundColor:
-            const Color.fromARGB(255, 210, 235, 247), // Set the background color to blue
+        backgroundColor: const Color.fromARGB(
+            255, 210, 235, 247), // Set the background color to blue
         actions: [
           IconButton(
             icon: const Icon(Icons.slow_motion_video),
@@ -272,8 +314,16 @@ class _SudokuScreenState extends State<SudokuScreen>
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(height: 20),
-
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    const Text(
+                      'Total Time: ',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Text(
+                      _formatTime(_elapsedTime),
+                      style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w600),
+                    ),
+                  ]),
                   Center(
                     child: Column(
                       children: gridData.map((row) {
@@ -289,14 +339,16 @@ class _SudokuScreenState extends State<SudokuScreen>
                             bool isFixed = fixedCells[rowIndex][colIndex];
 
                             return InkWell(
-                              onTap: () {
-                                if (!isFixed) {
-                                  setState(() {
-                                    selectedRow = rowIndex;
-                                    selectedCol = colIndex;
-                                  });
-                                }
-                              },
+                              onTap: colValue > 0
+                                  ? null
+                                  : () {
+                                      if (!isFixed) {
+                                        setState(() {
+                                          selectedRow = rowIndex;
+                                          selectedCol = colIndex;
+                                        });
+                                      }
+                                    },
                               child: Container(
                                 width: 40,
                                 height: 40,
@@ -307,13 +359,16 @@ class _SudokuScreenState extends State<SudokuScreen>
                                       : (colValue == 0
                                           ? Colors.white
                                           : (isFixed
-                                              ? const Color.fromARGB(255, 197, 196, 196)
-                                              : const Color.fromARGB(232, 123, 239, 168))),
+                                              ? const Color.fromARGB(
+                                                  255, 197, 196, 196)
+                                              : const Color.fromARGB(
+                                                  232, 123, 239, 168))),
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(
                                   colValue > 0 ? '$colValue' : '',
-                                  style: const TextStyle(fontSize: 20,color: Colors.black),
+                                  style: const TextStyle(
+                                      fontSize: 20, color: Colors.black),
                                 ),
                               ),
                             );
