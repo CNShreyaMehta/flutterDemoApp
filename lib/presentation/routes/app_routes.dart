@@ -11,5 +11,6 @@ class AppRoutes {
   static const profile = '/profile';
   static const profileDetails = '/profile-details';
   static const settings = '/settings';
+  static const gamesHome = '/games';
   static const sudoku = '/sudoku';
 }

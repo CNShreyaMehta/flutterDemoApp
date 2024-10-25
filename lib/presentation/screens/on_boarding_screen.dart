@@ -80,7 +80,7 @@ class OnBoardingScreen extends StatelessWidget {
             right: 30,
             child: TextButton(
               onPressed: () {
-                Get.offNamed(AppRoutes.sudoku);
+                Get.offNamed(AppRoutes.gamesHome);
               },
               child: const Text("Skip", style: TextStyle(color: Colors.black)),
             )),
@@ -120,6 +120,8 @@ class commonOnboardingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      
+      padding: const EdgeInsets.all(30),
       color: bgColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -27,6 +27,6 @@ class variables extends GetxController {
   
 
   void navigateToLogin() {
-    Get.offNamed(AppRoutes.sudoku);
+    Get.offNamed(AppRoutes.gamesHome);
   }
 }
