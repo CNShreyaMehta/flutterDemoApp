@@ -29,7 +29,7 @@ class AppPages {
     // Auth Flow
     GetPage(name: AppRoutes.splash, page: () => SplashScreen()),
     GetPage(name: AppRoutes.onboarding, page: () => const OnBoardingScreen()),
-    GetPage(name: AppRoutes.gamesHome, page: () => const GamesHomeScreen()),
+    GetPage(name: AppRoutes.gamesHome, page: () =>  GamesHomeScreen()),
     GetPage(name: AppRoutes.difficultyLevel, page: () => const DifficultyLevelScreen()),
     GetPage(name: AppRoutes.sudoku, page: () => const SudokuScreen()),
     GetPage(name: AppRoutes.login, page: () => const LoginScreen()),

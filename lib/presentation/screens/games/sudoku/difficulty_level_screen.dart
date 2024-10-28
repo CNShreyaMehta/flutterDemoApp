@@ -1,3 +1,4 @@
+import 'package:demo_app/presentation/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -17,6 +18,8 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
                   color: Colors.black)),
+                            backgroundColor:  TColors.sudokuPrimaryBlue,
+
       ),
       body: Center(
         child: Column(

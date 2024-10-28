@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:confetti/confetti.dart'; // Import confetti package
+import 'package:demo_app/presentation/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class SudokuScreen extends StatefulWidget {
@@ -313,9 +314,8 @@ class _SudokuScreenState extends State<SudokuScreen>
         appBar: AppBar(
           title:  Text(difficultyLevel),
           centerTitle: true, // Center the title
-      
-          backgroundColor: const Color.fromARGB(
-              255, 210, 235, 247), // Set the background color to blue
+                 backgroundColor:  TColors.sudokuPrimaryBlue,
+// Set the background color to blue
           actions: [
             IconButton(
               icon: const Icon(Icons.slow_motion_video),
