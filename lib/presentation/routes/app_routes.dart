@@ -13,4 +13,5 @@ class AppRoutes {
   static const settings = '/settings';
   static const gamesHome = '/games';
   static const sudoku = '/sudoku';
+  static const difficultyLevel = '/difficulty-level';
 }

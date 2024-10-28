@@ -1,5 +1,5 @@
-import 'package:demo_app/presentation/screens/games/game_2048.dart';
-import 'package:demo_app/presentation/screens/games/sudoku_screen.dart';
+import 'package:demo_app/presentation/screens/games/2048/game_2048.dart';
+import 'package:demo_app/presentation/screens/games/sudoku/difficulty_level_screen.dart';
 import 'package:flutter/material.dart';
 
 class GamesHomeScreen extends StatelessWidget {
@@ -45,7 +45,7 @@ class GamesHomeScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const SudokuScreen()),
+              MaterialPageRoute(builder: (context) => const DifficultyLevelScreen()),//SudokuScreen
             );
               },
               child: Container(
