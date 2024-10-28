@@ -1,4 +1,6 @@
 import 'package:demo_app/presentation/controllers/splash_controller.dart';
+import 'package:demo_app/presentation/utils/constants/colors.dart';
+import 'package:demo_app/presentation/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,6 +21,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
   @override
   Widget build(BuildContext context) {
+    final isDark = THeplerFunction.isDarkMode(context);
+
+
     return Scaffold(
         body: Stack(children: [
       AnimatedPositioned(
@@ -41,17 +46,17 @@ class _SplashScreenState extends State<SplashScreen> {
             Text(
               "Welcome",
               style: GoogleFonts.pacifico(
-                  fontSize: 40, fontWeight: FontWeight.w500, color: const Color.fromARGB(255, 56, 92, 108)),
+                  fontSize: 40, fontWeight: FontWeight.w500, color: isDark ? Colors.white : TColors.sudokuMediumBlue),
             ),
              Text(
               "to",
               style: GoogleFonts.pacifico(
-                  fontSize: 30, fontWeight: FontWeight.w500, color: const Color.fromARGB(255, 56, 92, 108)),
+                  fontSize: 30, fontWeight: FontWeight.w500, color: isDark ? Colors.white : TColors.sudokuMediumBlue),
             ),
              Text(
               "Flutter Learning",
               style:GoogleFonts.pacifico(
-                  fontSize: 30, fontWeight: FontWeight.w500, color: const Color.fromARGB(255, 56, 92, 108)),
+                  fontSize: 30, fontWeight: FontWeight.w500, color: isDark ? Colors.white : TColors.sudokuMediumBlue),
             )
           ]),
         ),

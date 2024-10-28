@@ -10,7 +10,7 @@ import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingScreen extends StatelessWidget {
-  const OnBoardingScreen({super.key});
+   const OnBoardingScreen({super.key});
 
   static BuildContext? get context => null;
   @override
@@ -31,37 +31,37 @@ class OnBoardingScreen extends StatelessWidget {
             pages: [
               commonOnboardingWidget(
                 size: size,
-                bgColor: TColors.onboardingColorOne,
+                bgColor: TColors.sudokuPrimaryBlue,
                 image: TImages.onBoardingScreenOne,
-                title: "Welcome to Flutter Learning Path",
+                title: "Welcome to Game Zone",
                 description: "In this course, you will learn Flutter",
               ),
               commonOnboardingWidget(
                 size: size,
-                bgColor: TColors.onboardingColorTwo,
+                bgColor: TColors.sudokuLightBlue,
                 image: TImages.onBoardingScreenTwo,
-                title: "Flutter is a cross-platform app development framework",
+                title: "Flutter is a cross-platform",
                 description:
-                    "Flutter is Google's UI toolkit for building beautiful, natively compiled applications on iOS and Android",
+                    "Flutter is Google's UI toolkit",
               ),
               commonOnboardingWidget(
                 size: size,
-                bgColor: TColors.onboardingColorThree,
+                bgColor: TColors.sudokuPrimaryBlue,
                 image: TImages.onBoardingScreenThree,
                 title:
-                    "Flutter is Google's UI toolkit for building beautiful, natively compiled applications on iOS and Android",
+                    "Flutter is Google's UI",
                 description:
-                    "Flutter is Google's UI toolkit for building beautiful, natively compiled applications on iOS and Android",
+                    "Flutter is Google's UI toolkit",
               ),
             ]),
         Positioned(
-          bottom: 60,
+          bottom: 80,
           child: OutlinedButton(
             onPressed: () {
               Get.offNamed(AppRoutes.login);
             },
             style: ElevatedButton.styleFrom(
-              side: const BorderSide(color: Colors.black),
+              side: BorderSide(color: isDark ? Colors.black : TColors.sudokuDarkBlue),
               shape: const CircleBorder(),
               padding: const EdgeInsets.all(20),
             ),
@@ -71,7 +71,7 @@ class OnBoardingScreen extends StatelessWidget {
                 color: Colors.black,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.arrow_forward_ios, color: Colors.white),
+              child: const Icon(Icons.arrow_forward_ios, color:  Colors.white ),
             ),
           ),
         ),
@@ -82,15 +82,27 @@ class OnBoardingScreen extends StatelessWidget {
               onPressed: () {
                 Get.offNamed(AppRoutes.gamesHome);
               },
-              child: const Text("Skip", style: TextStyle(color: Colors.black)),
+              child: const Text("Skip",
+                  style: TextStyle(
+                    color: Colors.black,
+                    decoration: TextDecoration.underline, // Underline the text
+                    decorationColor:
+                        Colors.black, // Set the underline color to black
+                    decorationThickness:
+                        1.0, // Optional: Set the thickness of the underline
+                  )),
             )),
         Positioned(
-          bottom: 30,
+          bottom: 40,
           child: SmoothPageIndicator(
             count: 4,
             controller: PageController(),
             effect: ExpandingDotsEffect(
-              activeDotColor: isDark ? Colors.white : Colors.black,
+              activeDotColor: isDark ? TColors.sudokuDarkBlue : TColors.sudokuMediumBlue,
+              dotColor: TColors.sudokuLightBlue,
+              dotHeight: 15,
+              dotWidth: 20,
+              spacing: 10,
             ),
           ),
         ),
@@ -119,9 +131,9 @@ class commonOnboardingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = THeplerFunction.isDarkMode(context);
     return Container(
-      
-      padding: const EdgeInsets.all(30),
+      padding:  const EdgeInsets.all(30),
       color: bgColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -134,27 +146,21 @@ class commonOnboardingWidget extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(fontSize: 20),
+                style:  TextStyle(fontSize: 22, color: isDark ? Colors.white : Colors.black,fontWeight: FontWeight.w500),
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 40,
-                  right: 40,
-                ),
-                child: Text(
-                  description,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 15),
-                ),
+              Text(
+                description,
+                textAlign: TextAlign.center,
+                style:  TextStyle(fontSize: 12,color: isDark ? Colors.white : Colors.black),
               ),
-              const Text(
-                "2/3",
-                style: TextStyle(fontSize: 20),
-              ),
+              // const Text(
+              //   "2/3",
+              //   style: TextStyle(fontSize: 20),
+              // ),
             ],
           ),
           const SizedBox(
-            height: 50,
+            height: 10,
           ),
         ],
       ),

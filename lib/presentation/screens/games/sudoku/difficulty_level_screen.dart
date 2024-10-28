@@ -31,15 +31,23 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
                   color: Colors.black),),
             const SizedBox(height: 10),
             GradientButton( onPressed: () {
-              Navigator.pushNamed(context, '/sudoku',arguments: 'Easy');
+              Navigator.pushNamed(context, '/sudoku',arguments: {
+    'text': 'Easy',
+    'number': 50,
+  });
             }, text: 'Easy'),
               const SizedBox(height: 20),
               GradientButton( onPressed: () {
-              Navigator.pushNamed(context, '/sudoku',arguments: 'Medium');
+              Navigator.pushNamed(context, '/sudoku',arguments: {
+    'text': 'Medium',
+    'number': 20,});
             }, text: 'Medium'),
               const SizedBox(height: 20),
               GradientButton( onPressed: () {
-              Navigator.pushNamed(context, '/sudoku',arguments: 'Hard');
+              Navigator.pushNamed(context, '/sudoku',arguments: {
+    'text': 'Hard',
+    'number': 10,
+              });
             }, text: 'Hard'),
           ],),
       ),

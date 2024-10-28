@@ -1,12 +1,12 @@
 flutter_native_splash:
   color: "#ffffff"
   color_dark: "#272727"
-  image: "assets/images/cart_icon.png"
-  image_dark: "assets/images/cart_icon.png"
+  image: "assets/images/game_icon.png"
+  image_dark: "assets/images/game_icon.png"
 
   android_12:
-    image: "assets/images/cart_icon.png"
-    image_dark: "assets/images/cart_icon.png"
+    image: "assets/images/game_icon.png"
+    image_dark: "assets/images/game_icon.png"
     color: "#ffffff"
     color_dark: "#272727"
 

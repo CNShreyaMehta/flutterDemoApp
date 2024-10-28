@@ -28,16 +28,27 @@ class _SudokuScreenState extends State<SudokuScreen>
   Timer? _timer;
   int _elapsedTime = 0; // Time in seconds
   bool _isRunning = false;
-  late String difficultyLevel;
+  //late String difficultyLevel;
+  String difficultyLevelText = '';
+  int difficultyLevelNumber = 0;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+     final arguments = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+     difficultyLevelText = arguments['text'];
+     difficultyLevelNumber = arguments['number'];
     // Retrieve the arguments passed from the previous screen
     final args = ModalRoute.of(context)!.settings.arguments;
     if (args is String) {
-      difficultyLevel = args; // Cast to String
+      difficultyLevelText = args; // Cast to String
+    }else if (args is int) {
+      difficultyLevelNumber = args; // Cast to int
     }
+        gridData = generateSudoku(difficultyLevelNumber);
+
+    print(difficultyLevelText);
+    print(difficultyLevelNumber);
   }
 
     Future<bool> _onWillPop() async {
@@ -86,7 +97,7 @@ class _SudokuScreenState extends State<SudokuScreen>
       _balloonAnimations.add(animation);
     }
 
-    gridData = generateSudoku();
+    //gridData = generateSudoku(difficultyLevelNumber);
   }
 
   void _startTimer() {
@@ -124,11 +135,11 @@ class _SudokuScreenState extends State<SudokuScreen>
     super.dispose();
   }
 
-  List<List<int>> generateSudoku() {
+  List<List<int>> generateSudoku(dynamic a) {
     List<List<int>> grid = List.generate(9, (_) => List.generate(9, (_) => 0));
     solveSudoku(grid);
-
-    const int difficulty = 78;
+   print("inside func >> $a, $difficultyLevelText");
+    int difficulty = a;
     int remainingCells = 81 - difficulty;
     Random random = Random();
     while (remainingCells > 0) {
@@ -201,7 +212,7 @@ class _SudokuScreenState extends State<SudokuScreen>
       _timer!.cancel();
       _isRunning = false;
       _elapsedTime = 0;
-      gridData = generateSudoku();
+      gridData = generateSudoku(difficultyLevelNumber);
       selectedRow = null;
       selectedCol = null;
       gameWon = false;
@@ -308,11 +319,14 @@ class _SudokuScreenState extends State<SudokuScreen>
   @override
   Widget build(BuildContext context) {
     // ignore: deprecated_member_use
+    
+
+    // Print the values
     return WillPopScope(
       onWillPop: () { return _onWillPop(); },
       child: Scaffold(
         appBar: AppBar(
-          title:  Text(difficultyLevel),
+          title:  Text(difficultyLevelText),
           centerTitle: true, // Center the title
                  backgroundColor:  TColors.sudokuPrimaryBlue,
 // Set the background color to blue
