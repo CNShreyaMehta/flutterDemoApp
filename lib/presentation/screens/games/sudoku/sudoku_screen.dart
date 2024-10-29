@@ -3,7 +3,9 @@ import 'dart:math';
 
 import 'package:confetti/confetti.dart'; // Import confetti package
 import 'package:demo_app/presentation/utils/constants/colors.dart';
+import 'package:demo_app/presentation/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SudokuScreen extends StatefulWidget {
   const SudokuScreen({super.key});
@@ -35,40 +37,42 @@ class _SudokuScreenState extends State<SudokuScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-     final arguments = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-     difficultyLevelText = arguments['text'];
-     difficultyLevelNumber = arguments['number'];
+    final arguments =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    difficultyLevelText = arguments['text'];
+    difficultyLevelNumber = arguments['number'];
     // Retrieve the arguments passed from the previous screen
     final args = ModalRoute.of(context)!.settings.arguments;
     if (args is String) {
       difficultyLevelText = args; // Cast to String
-    }else if (args is int) {
+    } else if (args is int) {
       difficultyLevelNumber = args; // Cast to int
     }
-        gridData = generateSudoku(difficultyLevelNumber);
+    gridData = generateSudoku(difficultyLevelNumber);
 
     print(difficultyLevelText);
     print(difficultyLevelNumber);
   }
 
-    Future<bool> _onWillPop() async {
+  Future<bool> _onWillPop() async {
     return (await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Confirm Exit'),
-        content: const Text('Are you sure you want to go back?'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false), // No
-            child: const Text('No'),
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Confirm Exit'),
+            content: const Text('Are you sure you want to go back?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false), // No
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true), // Yes
+                child: const Text('Yes'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true), // Yes
-            child: const Text('Yes'),
-          ),
-        ],
-      ),
-    )) ?? false; // Return false if dialog is dismissed
+        )) ??
+        false; // Return false if dialog is dismissed
   }
 
   @override
@@ -109,7 +113,7 @@ class _SudokuScreenState extends State<SudokuScreen>
     });
   }
 
- void _stopTimer() {
+  void _stopTimer() {
     if (_timer != null) {
       _timer!.cancel();
       setState(() {
@@ -138,7 +142,7 @@ class _SudokuScreenState extends State<SudokuScreen>
   List<List<int>> generateSudoku(dynamic a) {
     List<List<int>> grid = List.generate(9, (_) => List.generate(9, (_) => 0));
     solveSudoku(grid);
-   print("inside func >> $a, $difficultyLevelText");
+    print("inside func >> $a, $difficultyLevelText");
     int difficulty = a;
     int remainingCells = 81 - difficulty;
     Random random = Random();
@@ -208,18 +212,37 @@ class _SudokuScreenState extends State<SudokuScreen>
   }
 
   void resetValue() {
-    setState(() {
-      _timer!.cancel();
-      _isRunning = false;
-      _elapsedTime = 0;
-      gridData = generateSudoku(difficultyLevelNumber);
-      selectedRow = null;
-      selectedCol = null;
-      gameWon = false;
-    });
-    setState(() {
-      _startTimer();
-    });
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Exit'),
+          content: const Text('Are you sure you want to reset the game?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false), // No
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Yes
+                setState(() {
+                  _timer?.cancel();
+                  _isRunning = false;
+                  _elapsedTime = 0;
+                  gridData = generateSudoku(difficultyLevelNumber);
+                  selectedRow = null;
+                  selectedCol = null;
+                  gameWon = false;
+                });
+                _startTimer();
+              },
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void solveData() {
@@ -314,194 +337,168 @@ class _SudokuScreenState extends State<SudokuScreen>
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
+    final isDark = THeplerFunction.isDarkMode(context);
     // ignore: deprecated_member_use
-    
 
-    // Print the values
     return WillPopScope(
-      onWillPop: () { return _onWillPop(); },
+      onWillPop: () {
+        return _onWillPop();
+      },
       child: Scaffold(
         appBar: AppBar(
-          title:  Text(difficultyLevelText),
-          centerTitle: true, // Center the title
-                 backgroundColor:  TColors.sudokuPrimaryBlue,
-// Set the background color to blue
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.slow_motion_video),
-              onPressed: solveData,
+          title: Text(
+            difficultyLevelText,
+            style: GoogleFonts.dynaPuff(
+              fontSize: 25,
+              //fontWeight: FontWeight.w600,
+              color: Colors.white,
             ),
+          ),
+          //centerTitle: true, // Center the title
+          backgroundColor: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+            iconTheme: const IconThemeData(color: Colors.white), // Set back arrow color to white
+
+          actions: [
+            Text(
+              _formatTime(_elapsedTime),
+              style: GoogleFonts.dynaPuff(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white),
+            ),
+            // IconButton(
+            //   icon: const Icon(Icons.slow_motion_video),
+            //   onPressed: solveData,
+            // ),
             IconButton(
               icon: const Icon(Icons.restore),
+              color: Colors.white,
               onPressed: resetValue,
             )
           ],
         ),
-        body: Stack(
-          children: [
-            SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      const Text(
-                        'Total Time: ',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Text(
-                        _formatTime(_elapsedTime),
-                        style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w600),
-                      ),
-                    ]),
-                    Center(
-                      child: Column(
-                        children: gridData.map((row) {
-                          int rowIndex = gridData.indexOf(row);
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: row.asMap().entries.map((entry) {
-                              int colIndex = entry.key;
-                              int colValue = entry.value;
-      
-                              bool isSelected = (selectedRow == rowIndex &&
-                                  selectedCol == colIndex);
-                              bool isFixed = fixedCells[rowIndex][colIndex];
-      
-                              return InkWell(
-                                onTap: colValue > 0
-                                    ? null
-                                    : () {
-                                        if (!isFixed) {
-                                          _stopTimer();
-                                          setState(() {
-                                            selectedRow = rowIndex;
-                                            selectedCol = colIndex;
-                                          });
-                                        }
-                                      },
-                                child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black),
-                                    color: isSelected
-                                        ? Colors.blue
-                                        : (colValue == 0
-                                            ? Colors.white
-                                            : (isFixed
-                                                ? const Color.fromARGB(
-                                                    255, 197, 196, 196)
-                                                : const Color.fromARGB(
-                                                    232, 123, 239, 168))),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    colValue > 0 ? '$colValue' : '',
-                                    style: const TextStyle(
-                                        fontSize: 20, color: Colors.black),
-                                  ),
-                                ),
-                              );
-                            }).toList(),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    //FIXME box with be round with shadow and color
-                    const SizedBox(height: 5),
-                    Container(
-                      alignment: Alignment.center,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
+        body: Container(
+          color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+          child: Stack(
+            children: [
+              SafeArea(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      //   const Text(
+                      //     'Total Time: ',
+                      //     style: TextStyle(fontSize: 18),
+                      //   ),
+                      //   Text(
+                      //     _formatTime(_elapsedTime),
+                      //     style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w600),
+                      //   ),
+                      // ]),
+                      const SizedBox(height: 10),
+                      Center(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            buildRow(['1', '2', '3']),
-                            const SizedBox(height: 15),
-                            buildRow(['4', '5', '6']),
-                            const SizedBox(height: 15),
-                            buildRow(['7', '8', '9']),
-                          ],
+                          children: gridData.map((row) {
+                            int rowIndex = gridData.indexOf(row);
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: row.asMap().entries.map((entry) {
+                                int colIndex = entry.key;
+                                int colValue = entry.value;
+
+                                bool isSelected = (selectedRow == rowIndex &&
+                                    selectedCol == colIndex);
+                                bool isFixed = fixedCells[rowIndex][colIndex];
+
+                                return InkWell(
+                                  onTap: colValue > 0
+                                      ? null
+                                      : () {
+                                          if (!isFixed) {
+                                            _stopTimer();
+                                            setState(() {
+                                              selectedRow = rowIndex;
+                                              selectedCol = colIndex;
+                                            });
+                                          }
+                                        },
+                                  child: Container(
+                                    width: 40,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: !isDark
+                                              ? TColors.sudokuDarkBlue
+                                              : Colors.black),
+                                      color: isSelected
+                                          ? TColors.sudokuDarkBlue
+                                          : (colValue == 0
+                                              ? const Color.fromARGB(255, 188, 228, 255)
+                                              : (isFixed
+                                                  ? const Color.fromARGB(255, 188, 187, 187)
+                                                  : const Color.fromARGB(
+                                                      232, 123, 239, 168))),
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      colValue > 0 ? '$colValue' : '',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 20,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            );
+                          }).toList(),
                         ),
                       ),
-                    ),
-                    // Container(
-                    //   alignment: Alignment.center,
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //     children: [
-                    //       OutlinedButton(
-                    //         style: OutlinedButton.styleFrom(
-                    //           foregroundColor: Colors.black,
-                    //           side: const BorderSide(color: Colors.black),
-                    //           padding: const EdgeInsets.symmetric(
-                    //               vertical: 10, horizontal: 30),
-                    //           shape: RoundedRectangleBorder(
-                    //             borderRadius: BorderRadius.circular(10),
-                    //           ),
-                    //           textStyle: const TextStyle(
-                    //             fontSize: 16,
-                    //             fontWeight: FontWeight.bold,
-                    //             fontFamily: 'Poppins',
-                    //           ),
-                    //           backgroundColor: Colors.white,
-                    //         ),
-                    //         onPressed: solveData,
-                    //         child: const Text("Solve"),
-                    //       ),
-                    //       const SizedBox(width: 20),
-                    //       OutlinedButton(
-                    //         style: OutlinedButton.styleFrom(
-                    //           foregroundColor: Colors.black,
-                    //           side: const BorderSide(color: Colors.black),
-                    //           padding: const EdgeInsets.symmetric(
-                    //               vertical: 10, horizontal: 30),
-                    //           shape: RoundedRectangleBorder(
-                    //             borderRadius: BorderRadius.circular(10),
-                    //           ),
-                    //           textStyle: const TextStyle(
-                    //             fontSize: 16,
-                    //             fontWeight: FontWeight.bold,
-                    //             fontFamily: 'Poppins',
-                    //           ),
-                    //           backgroundColor: Colors.white,
-                    //         ),
-                    //         onPressed: resetValue,
-                    //         child: const Text("Reset"),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                  ],
+                      Container(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              buildRow(['1', '2', '3']),
+                              const SizedBox(height: 15),
+                              buildRow(['4', '5', '6']),
+                              const SizedBox(height: 15),
+                              buildRow(['7', '8', '9']),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            // Confetti animation widget
-            Align(
-              alignment: Alignment.topCenter,
-              child: ConfettiWidget(
-                confettiController: _confettiController,
-                blastDirection: pi / 2, // Direction is downward
-                blastDirectionality: BlastDirectionality.explosive,
-                shouldLoop: false,
-                gravity: 0.2, // Control how fast confetti falls
-                colors: const [
-                  Colors.green,
-                  Colors.blue,
-                  Colors.pink,
-                  Colors.orange,
-                  Colors.purple,
-                  Colors.red,
-                  Colors.lightBlue,
-                ], // Colors of the confetti
-                numberOfParticles: 60, // Adjust this for more/less confetti
+              // Confetti animation widget
+              Align(
+                alignment: Alignment.topCenter,
+                child: ConfettiWidget(
+                  confettiController: _confettiController,
+                  blastDirection: pi / 2, // Direction is downward
+                  blastDirectionality: BlastDirectionality.explosive,
+                  shouldLoop: false,
+                  gravity: 0.2, // Control how fast confetti falls
+                  colors: const [
+                    Colors.green,
+                    Colors.blue,
+                    Colors.pink,
+                    Colors.orange,
+                    Colors.purple,
+                    Colors.red,
+                    Colors.lightBlue,
+                  ], // Colors of the confetti
+                  numberOfParticles: 60, // Adjust this for more/less confetti
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -516,30 +513,35 @@ class NumberBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = THeplerFunction.isDarkMode(context);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: MediaQuery.of(context).size.width *
-            0.18, // Adjust the percentage as needed
+            0.15, // Adjust the percentage as needed
         height: MediaQuery.of(context).size.height * 0.08, // A
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.grey.shade300,
           borderRadius: BorderRadius.circular(100),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2), // Shadow color with opacity
+              color: TColors.sudokuMediumBlue, // Shadow color with opacity
               spreadRadius: 3, // Spread radius of shadow
               blurRadius: 4, // Blur effect to make the shadow softer
-              offset: const Offset(
-                  0, 4), // Offset the shadow to the bottom (x: 0, y: 4)
+              offset:
+                  Offset(0, 4), // Offset the shadow to the bottom (x: 0, y: 4)
             ),
           ],
         ),
         child: Text(
           text ?? '',
-          style: const TextStyle(
-              fontSize: 26, fontWeight: FontWeight.bold, color: Colors.black),
+          style: GoogleFonts.dynaPuff(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+            color: TColors.sudokuDarkBlue,
+          ),
         ),
       ),
     );

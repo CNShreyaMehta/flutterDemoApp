@@ -20,10 +20,13 @@ class GamesHomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Games',
-          style: TextStyle(color: isDark ? Colors.white : Colors.black),
+          style: GoogleFonts.dynaPuff(
+              fontSize: 20, fontWeight: FontWeight.w400, color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: TColors.sudokuPrimaryBlue,
+        backgroundColor: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+        iconTheme: const IconThemeData(
+            color: Colors.white), // Set back arrow color to white
         actions: [
           IconButton(
             icon: isDark
@@ -33,7 +36,7 @@ class GamesHomeScreen extends StatelessWidget {
                   )
                 : const Icon(
                     Icons.dark_mode_outlined,
-                    color: Colors.black,
+                    
                   ),
             onPressed: () {
               themeController.toggleTheme();
@@ -41,60 +44,78 @@ class GamesHomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Center(
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const game2048()),
-            );
-          },
-          child: Container(
-              width: MediaQuery.of(context).size.width * 0.3,
-              height: MediaQuery.of(context).size.height * 0.15,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 238, 246, 150),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child:  Center(
-                child: Text(
-                  '2048',
-                 style:GoogleFonts.poppins(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w600,
-                  color: isDark ? TColors.sudokuDarkBlue : Colors.black),
+      body: Container(
+        color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const game2048()),
+                  );
+                },
+                child: Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Image.asset(
+                        height: MediaQuery.of(context).size.height * 0.15,
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        'assets/images/2048_bg.png', // Replace with your image path
+                        fit: BoxFit.cover, // Ensures the image fills the area
+                      ),
+                    ),
+                    Text(
+                      '2048',
+                      style: GoogleFonts.dynaPuff(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w400,
+                          color:
+                              Colors.black),
+                    ),
+                  ],
                 ),
-              )),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const DifficultyLevelScreen()), //SudokuScreen
+                  );
+                },
+                child: Center(
+                  child: Column(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          height: MediaQuery.of(context).size.height * 0.15,
+
+                          'assets/images/sudoku_bg.jpeg', // Replace with your image path
+                          fit: BoxFit.cover, // Ensures the image fills the area
+                        ),
+                      ),
+                      Text(
+                        'Sudoku',
+                        style: GoogleFonts.dynaPuff(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ]),
+          ],
         ),
-        InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      const DifficultyLevelScreen()), //SudokuScreen
-            );
-          },
-          child: Container(
-              width: MediaQuery.of(context).size.width * 0.3,
-              height: MediaQuery.of(context).size.height * 0.15,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 144, 234, 175),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child:  Center(
-                child: Text(
-                  'Sudoku',
-                  style:GoogleFonts.poppins(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w600,
-                  color: isDark ? TColors.sudokuDarkBlue : Colors.black),
-                ),
-              )),
-        )
-      ])),
+      ),
     );
   }
 }

@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
           left: animated ? 0 : -20,
           child: Image.asset(
             "assets/images/purple-shape.png",
-            height: 150,
+            height: MediaQuery.of(context).size.height * 0.20,
           )),
       //SizedBox( height: 50, ),
       AnimatedPositioned(
@@ -73,7 +73,7 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               Image.asset(
                 "assets/images/happy-boy.png",
-                height: 400,
+                height: MediaQuery.of(context).size.height * 0.45,
               ),
               
             ],
@@ -84,7 +84,7 @@ class _SplashScreenState extends State<SplashScreen> {
         duration: const Duration(milliseconds: 1600),
         bottom: animated ? 0 : -50,
         right: animated ? -60 : -100,
-        height: 170,
+        height: MediaQuery.of(context).size.height * 0.25,
         child: Image.asset(
           "assets/images/brown-solid-color.png",
         ),

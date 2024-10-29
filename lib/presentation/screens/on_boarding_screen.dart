@@ -1,34 +1,31 @@
 // ignore_for_file: camel_case_types
 
-import 'package:demo_app/presentation/routes/app_routes.dart';
+import 'package:demo_app/presentation/controllers/on_boarding_controller.dart';
 import 'package:demo_app/presentation/utils/constants/colors.dart';
 import 'package:demo_app/presentation/utils/constants/image_strings.dart';
 import 'package:demo_app/presentation/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingScreen extends StatelessWidget {
-   const OnBoardingScreen({super.key});
-
+   OnBoardingScreen({super.key});
   static BuildContext? get context => null;
   @override
   Widget build(BuildContext context) {
+    
     final size = MediaQuery.of(context).size;
     final isDark = THeplerFunction.isDarkMode(context);
+    final controller = Get.put(OnBoardingController());
+    final dotController = OnBoardingController.instance;
     return Scaffold(
         body: Stack(
       alignment: Alignment.center,
       children: [
-        LiquidSwipe(
-            slideIconWidget: const Icon(
-              Icons.arrow_back_ios_new,
-              color: Colors.black,
-              size: 30,
-            ),
-            enableSideReveal: true,
-            pages: [
+        PageView(
+            controller: controller.pageController,
+            onPageChanged: controller.updateCurrentIndex,
+            children: [
               commonOnboardingWidget(
                 size: size,
                 bgColor: TColors.sudokuPrimaryBlue,
@@ -57,18 +54,20 @@ class OnBoardingScreen extends StatelessWidget {
         Positioned(
           bottom: 80,
           child: OutlinedButton(
-            onPressed: () {
-              Get.offNamed(AppRoutes.login);
+            onPressed:   () {
+              //Get.offNamed(AppRoutes.login);
+              OnBoardingController.instance.skipPage();
+              OnBoardingController.instance.nextPage();
             },
             style: ElevatedButton.styleFrom(
               side: BorderSide(color: isDark ? Colors.black : TColors.sudokuDarkBlue),
               shape: const CircleBorder(),
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(12),
             ),
             child: Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(15),
               decoration: const BoxDecoration(
-                color: Colors.black,
+                color: TColors.sudokuDarkBlue,
                 shape: BoxShape.circle,
               ),
               child: const Icon(Icons.arrow_forward_ios, color:  Colors.white ),
@@ -79,9 +78,11 @@ class OnBoardingScreen extends StatelessWidget {
             top: 50,
             right: 30,
             child: TextButton(
-              onPressed: () {
-                Get.offNamed(AppRoutes.gamesHome);
-              },
+              onPressed: () { OnBoardingController.instance.skipPage(); } ,
+              // () {
+              //   Get.offNamed(AppRoutes.gamesHome);
+              // }
+              
               child: const Text("Skip",
                   style: TextStyle(
                     color: Colors.black,
@@ -95,11 +96,12 @@ class OnBoardingScreen extends StatelessWidget {
         Positioned(
           bottom: 40,
           child: SmoothPageIndicator(
-            count: 4,
-            controller: PageController(),
+            count: 3,
+            controller: dotController.pageController,
+            onDotClicked: controller.dotNavigationClicked,
             effect: ExpandingDotsEffect(
               activeDotColor: isDark ? TColors.sudokuDarkBlue : TColors.sudokuMediumBlue,
-              dotColor: TColors.sudokuLightBlue,
+              dotColor: Colors.grey,
               dotHeight: 15,
               dotWidth: 20,
               spacing: 10,

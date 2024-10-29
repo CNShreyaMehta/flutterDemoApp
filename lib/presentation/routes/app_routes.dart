@@ -14,4 +14,5 @@ class AppRoutes {
   static const gamesHome = '/games';
   static const sudoku = '/sudoku';
   static const difficultyLevel = '/difficulty-level';
+  static const gameRoule = '/game-roule';
 }

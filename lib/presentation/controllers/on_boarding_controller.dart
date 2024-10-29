@@ -2,15 +2,10 @@ import 'package:demo_app/presentation/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class variables extends GetxController {
-  static variables get instance => Get.find();
+class OnBoardingController extends GetxController {
+  static OnBoardingController get instance => Get.find();
 
-  @override
-  void onInit() {
-    super.onInit();
-    //navigateToLogin();
-  }
-  // variables
+  // OnBoardingController instance
   final pageController = PageController();
   Rx<int> currentIndex = 0.obs;
 
@@ -20,13 +15,21 @@ class variables extends GetxController {
   }
 
   //jump to spacifec dot selected page
-  void jumpToPage(int index) {
+  void dotNavigationClicked(int index) {
   currentIndex.value = index;
   pageController.jumpToPage(index);
   }
   
 
-  void navigateToLogin() {
-    Get.offNamed(AppRoutes.gamesHome);
+  void nextPage() {
+    if (currentIndex.value == 2) {
+      Get.offNamed(AppRoutes.gamesHome);
+    }
+  }
+
+  void skipPage() {
+    //Get.offNamed(AppRoutes.gamesHome);
+    currentIndex.value = 2;
+    pageController.jumpToPage(2);
   }
 }
