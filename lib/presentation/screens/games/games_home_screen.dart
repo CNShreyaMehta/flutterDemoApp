@@ -29,7 +29,7 @@ class GamesHomeScreen extends StatelessWidget {
             color: Colors.white), // Set back arrow color to white
         actions: [
           IconButton(
-            icon: isDark
+            icon: !isDark
                 ? const Icon(
                     Icons.light_mode_outlined,
                     color: Colors.white,

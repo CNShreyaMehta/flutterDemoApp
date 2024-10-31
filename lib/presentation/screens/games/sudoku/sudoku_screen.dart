@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:confetti/confetti.dart'; // Import confetti package
+import 'package:demo_app/presentation/controllers/sudoku_result.dart';
 import 'package:demo_app/presentation/utils/constants/colors.dart';
 import 'package:demo_app/presentation/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class SudokuScreen extends StatefulWidget {
   const SudokuScreen({super.key});
 
@@ -261,7 +263,6 @@ class _SudokuScreenState extends State<SudokuScreen>
 
   void checkGameWon() {
     bool isComplete = true;
-
     // Check if any cell is empty
     for (int i = 0; i < 9; i++) {
       for (int j = 0; j < 9; j++) {
@@ -271,10 +272,9 @@ class _SudokuScreenState extends State<SudokuScreen>
         }
       }
     }
-
     // If complete, trigger confetti and balloon animations
     if (isComplete) {
-      setState(() {
+      setState(() async {
         gameWon = true;
         // _confettiController.play();
         for (int i = 0; i < 5; i++) {
@@ -282,13 +282,41 @@ class _SudokuScreenState extends State<SudokuScreen>
             _confettiController.play();
           });
         }
-
         // Start balloon animations
         for (var controller in _balloonControllers) {
           controller.forward();
         }
+        // Create a sample result
+        SudokuResult newResult = SudokuResult(
+          difficultyLevel: difficultyLevelText,
+          score: _elapsedTime,
+          timeStamp: DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now()),
+        );
+        // Save the result to SharedPreferences
+        await newResult.addSudokuResult(newResult);
+        // Wait for 2 seconds before navigating
+      await Future.delayed(const Duration(seconds: 3), () {
+        // ignore: use_build_context_synchronously
+        Navigator.pushNamed(context, '/gameResult', arguments: {
+          'difficultyLevel': difficultyLevelText,
+          'score': _elapsedTime,
+          'timeStamp': DateTime.now().toString(),
+        });
+        });
       });
     }
+  }
+
+// set list to shared preference local storage
+  static Future<void> saveList(String key, List<String> list) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(key, list);
+  }
+
+  // get list from shared preference local storage
+  static Future<List<String>?> getList(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList(key);
   }
 
   Row buildRow(List<String?> texts) {
@@ -358,7 +386,8 @@ class _SudokuScreenState extends State<SudokuScreen>
           ),
           //centerTitle: true, // Center the title
           backgroundColor: isDark ? TColors.sudocuDark : TColors.sudocuLight,
-            iconTheme: const IconThemeData(color: Colors.white), // Set back arrow color to white
+          iconTheme: const IconThemeData(
+              color: Colors.white), // Set back arrow color to white
 
           actions: [
             Text(
@@ -398,64 +427,93 @@ class _SudokuScreenState extends State<SudokuScreen>
                       //   ),
                       // ]),
                       const SizedBox(height: 10),
-                      Center(
-                        child: Column(
-                          children: gridData.map((row) {
-                            int rowIndex = gridData.indexOf(row);
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: row.asMap().entries.map((entry) {
-                                int colIndex = entry.key;
-                                int colValue = entry.value;
+                      Container(
+                        
+                        decoration: BoxDecoration(
+                         boxShadow: [
+                        BoxShadow(
+                          color: isDark ? const Color.fromARGB(255, 136, 134, 134) : TColors.sudokuDarkBlue.withOpacity(0.3),
+                          spreadRadius: isDark ? 1 : 1,
+                          blurRadius: isDark ? 30 : 12,
+                          offset: const Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                        ),
+                        child: Center(
+                          child: Column(
+                            children: gridData.map((row) {
+                              int rowIndex = gridData.indexOf(row);
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: row.asMap().entries.map((entry) {
+                                  int colIndex = entry.key;
+                                  int colValue = entry.value;
+                        
+                                  bool isSelected = (selectedRow == rowIndex &&
+                                      selectedCol == colIndex);
+                                  bool isFixed = fixedCells[rowIndex][colIndex];
+                        
+                                  return InkWell(
+                                    onTap: colValue > 0
+                                        ? null
+                                        : () {
+                                            if (!isFixed) {
+                                              // _stopTimer();
+                                              setState(() {
+                                                selectedRow = rowIndex;
+                                                selectedCol = colIndex;
+                                                
+                                              });
+                                            }
+                                          },
+                                    child: Container(
+                                                                              margin: EdgeInsets.only(bottom: .8,left: .8),
 
-                                bool isSelected = (selectedRow == rowIndex &&
-                                    selectedCol == colIndex);
-                                bool isFixed = fixedCells[rowIndex][colIndex];
-
-                                return InkWell(
-                                  onTap: colValue > 0
-                                      ? null
-                                      : () {
-                                          if (!isFixed) {
-                                            _stopTimer();
-                                            setState(() {
-                                              selectedRow = rowIndex;
-                                              selectedCol = colIndex;
-                                            });
-                                          }
-                                        },
-                                  child: Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: !isDark
-                                              ? TColors.sudokuDarkBlue
-                                              : Colors.black),
-                                      color: isSelected
-                                          ? TColors.sudokuDarkBlue
-                                          : (colValue == 0
-                                              ? const Color.fromARGB(255, 188, 228, 255)
-                                              : (isFixed
-                                                  ? const Color.fromARGB(255, 188, 187, 187)
-                                                  : const Color.fromARGB(
-                                                      232, 123, 239, 168))),
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      colValue > 0 ? '$colValue' : '',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 20,
-                                        color: Colors.black,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: .4,
+                                            color: Colors.black),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(5),
+                                        )
+                                      ),
+                                      child: Container(
+                                        width: 38.8,
+                                        height: 38.8,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                                          border: Border.all(
+                                            width: .8,
+                                              color: !isDark
+                                                  ? TColors.sudokuLightBlue
+                                                  : TColors.sudokuDarkBlue),
+                                          color: isSelected
+                                              ? TColors.sudocuLight
+                                              : (colValue == 0
+                                                  ? TColors.sudokuDarkBlue
+                                                  : (isFixed
+                                                      ? const Color.fromARGB(255, 255, 255, 255)
+                                                      : const Color.fromARGB(
+                                                          232, 123, 239, 168))),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          colValue > 0 ? '$colValue' : '',
+                                          style: GoogleFonts.dynaPuff(
+                                            fontSize: 18,
+                                            color: isDark ? TColors.sudokuDarkBlue : TColors.sudocuLight,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              }).toList(),
-                            );
-                          }).toList(),
+                                  );
+                                }).toList(),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
+                      const SizedBox(height: 0),
                       Container(
                         alignment: Alignment.center,
                         child: Padding(
@@ -523,24 +581,24 @@ class NumberBox extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.08, // A
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.grey.shade300,
-          borderRadius: BorderRadius.circular(100),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
           boxShadow: const [
             BoxShadow(
-              color: TColors.sudokuMediumBlue, // Shadow color with opacity
-              spreadRadius: 3, // Spread radius of shadow
-              blurRadius: 4, // Blur effect to make the shadow softer
+              color:Color.fromARGB(255, 136, 134, 134), // Shadow color with opacity
+              spreadRadius: 1, // Spread radius of shadow
+              blurRadius: 10, // Blur effect to make the shadow softer
               offset:
-                  Offset(0, 4), // Offset the shadow to the bottom (x: 0, y: 4)
+                  Offset(0, 2), // Offset the shadow to the bottom (x: 0, y: 4)
             ),
           ],
         ),
         child: Text(
           text ?? '',
           style: GoogleFonts.dynaPuff(
-            fontSize: 26,
+            fontSize: 28,
             fontWeight: FontWeight.bold,
-            color: TColors.sudokuDarkBlue,
+            color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
           ),
         ),
       ),

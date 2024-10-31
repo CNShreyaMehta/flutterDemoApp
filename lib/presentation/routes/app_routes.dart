@@ -15,4 +15,5 @@ class AppRoutes {
   static const sudoku = '/sudoku';
   static const difficultyLevel = '/difficulty-level';
   static const gameRoule = '/game-roule';
+  static const gameResult = '/gameResult';
 }

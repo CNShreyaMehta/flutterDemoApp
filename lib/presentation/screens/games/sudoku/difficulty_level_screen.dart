@@ -22,9 +22,19 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
                 color: Colors.white)),
-          backgroundColor: isDark ? TColors.sudocuDark : TColors.sudocuLight,
-          iconTheme: const IconThemeData(color: Colors.white), // Set back arrow color to white
-          centerTitle: false,
+        backgroundColor: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+        iconTheme: const IconThemeData(
+            color: Colors.white), // Set back arrow color to white
+        centerTitle: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.history_sharp),
+            onPressed: () {
+              Navigator.pushNamed(context, '/gameResult');
+            },
+            iconSize: 30,
+          ),
+        ],
       ),
       body: Container(
         color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
@@ -35,7 +45,7 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/sudoku', arguments: {
                     'text': 'Easy',
-                    'number': 80,
+                    'number': 79,
                   });
                 },
                 text: 'Easy'),
@@ -44,7 +54,7 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/sudoku', arguments: {
                     'text': 'Medium',
-                    'number': 20,
+                    'number': 80,
                   });
                 },
                 text: 'Medium'),
@@ -53,7 +63,7 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/sudoku', arguments: {
                     'text': 'Hard',
-                    'number': 10,
+                    'number': 80,
                   });
                 },
                 text: 'Hard'),
@@ -85,12 +95,14 @@ class GradientButton extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: !isDark
-                  ? [Colors.blue, const Color.fromARGB(255, 0, 47, 255)]
-                  : [
-                      const Color.fromARGB(255, 255, 255, 255),
-                      const Color.fromARGB(255, 106, 133, 255)
-                    ],
+              colors: 
+              //!isDark ? 
+              [Colors.blue, const Color.fromARGB(255, 0, 47, 255)]
+                  // : 
+                  // [
+                  //     const Color.fromARGB(255, 255, 255, 255),
+                  //     const Color.fromARGB(255, 106, 133, 255)
+                  //   ],
             ),
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
@@ -117,7 +129,7 @@ class GradientButton extends StatelessWidget {
                 style: GoogleFonts.dynaPuff(
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
-                    color: !isDark ? Colors.white : TColors.sudokuDarkBlue)),
+                    color: Colors.white)),
           ),
         ),
       ),

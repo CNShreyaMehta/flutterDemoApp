@@ -54,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   fontSize: 30, fontWeight: FontWeight.w500, color: isDark ? Colors.white : TColors.sudokuMediumBlue),
             ),
              Text(
-              "Flutter Learning",
+              "Game Zone",
               style:GoogleFonts.pacifico(
                   fontSize: 30, fontWeight: FontWeight.w500, color: isDark ? Colors.white : TColors.sudokuMediumBlue),
             )

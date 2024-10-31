@@ -11,6 +11,7 @@ import 'package:demo_app/presentation/routes/app_routes.dart';
 import 'package:demo_app/presentation/screens/forgot_password_screen.dart';
 import 'package:demo_app/presentation/screens/games/games_home_screen.dart';
 import 'package:demo_app/presentation/screens/games/sudoku/difficulty_level_screen.dart';
+import 'package:demo_app/presentation/screens/games/sudoku/game_result.dart';
 import 'package:demo_app/presentation/screens/games/sudoku/game_roule_screen.dart';
 import 'package:demo_app/presentation/screens/games/sudoku/sudoku_screen.dart';
 import 'package:demo_app/presentation/screens/home_screen.dart';
@@ -34,6 +35,7 @@ class AppPages {
     GetPage(name: AppRoutes.difficultyLevel, page: () => const DifficultyLevelScreen()),
     GetPage(name: AppRoutes.gameRoule, page: () => const GameRoule()),
     GetPage(name: AppRoutes.sudoku, page: () => const SudokuScreen()),
+    GetPage(name: AppRoutes.gameResult, page: () => const GameResult()),
     GetPage(name: AppRoutes.login, page: () => const LoginScreen()),
     GetPage(name: AppRoutes.signup, page: () => const SignupScreen()),
     GetPage(name: AppRoutes.forgotPassword, page: () => ForgotPasswordScreen()),
