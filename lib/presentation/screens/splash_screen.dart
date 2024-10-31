@@ -25,71 +25,87 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
     return Scaffold(
-        body: Stack(children: [
-      AnimatedPositioned(
-          duration: const Duration(milliseconds: 1600),
-          top: animated ? 0 : -30,
-          left: animated ? 0 : -20,
-          child: Image.asset(
-            "assets/images/purple-shape.png",
-            height: MediaQuery.of(context).size.height * 0.20,
-          )),
-      //SizedBox( height: 50, ),
-      AnimatedPositioned(
-        duration: const Duration(milliseconds: 1600),
-        top: 130,
-        left: animated ? 20 : -80,
-        child: AnimatedOpacity(
-          duration: const Duration(milliseconds: 1600),
-          opacity: animated ? 1 : 0,
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(
-              "Welcome",
-              style: GoogleFonts.pacifico(
-                  fontSize: 40, fontWeight: FontWeight.w500, color: isDark ? Colors.white : TColors.sudokuMediumBlue),
+        body: Container(
+            decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                TColors.sudokuDarkBlue,
+                TColors.sudokuMediumBlue,
+                TColors.sudokuPrimaryBlue,
+                const Color.fromARGB(255, 255, 255, 255),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              stops: [0.1, 0.4, 0.7, 1.0],
             ),
-             Text(
-              "to",
-              style: GoogleFonts.pacifico(
-                  fontSize: 30, fontWeight: FontWeight.w500, color: isDark ? Colors.white : TColors.sudokuMediumBlue),
-            ),
-             Text(
-              "Game Zone",
-              style:GoogleFonts.pacifico(
-                  fontSize: 30, fontWeight: FontWeight.w500, color: isDark ? Colors.white : TColors.sudokuMediumBlue),
-            )
-          ]),
-        ),
-      ),
-      AnimatedPositioned(
-        duration: const Duration(milliseconds: 2600),
-        top: 290,
-        left: 50,
-        //height: 100,
-        child: AnimatedOpacity(
-          duration: const Duration(milliseconds: 1600),
-          opacity: animated ? 1 : 0,
-          child: Column(
-            children: [
-              Image.asset(
-                "assets/images/happy-boy.png",
-                height: MediaQuery.of(context).size.height * 0.45,
-              ),
-              
-            ],
           ),
-        ),
-      ),
-      AnimatedPositioned(
-        duration: const Duration(milliseconds: 1600),
-        bottom: animated ? 0 : -50,
-        right: animated ? -60 : -100,
-        height: MediaQuery.of(context).size.height * 0.25,
-        child: Image.asset(
-          "assets/images/brown-solid-color.png",
-        ),
-      ),
-    ]));
+      //color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+          child: Stack(children: [
+                AnimatedPositioned(
+            duration: const Duration(milliseconds: 1600),
+            top: animated ? 0 : -30,
+            left: animated ? 0 : -20,
+            child: Image.asset(
+              "assets/images/purple-shape.png",
+              height: MediaQuery.of(context).size.height * 0.20,
+            )),
+                //SizedBox( height: 50, ),
+                AnimatedPositioned(
+          duration: const Duration(milliseconds: 1600),
+          top: 130,
+          left: animated ? 20 : -80,
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 1600),
+            opacity: animated ? 1 : 0,
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                "Welcome",
+                style: GoogleFonts.pacifico(
+                    fontSize: 40, fontWeight: FontWeight.w500, color: Colors.white),
+              ),
+               Text(
+                "to",
+                style: GoogleFonts.pacifico(
+                    fontSize: 30, fontWeight: FontWeight.w500, color: Colors.white),
+              ),
+               Text(
+                "Game Zone",
+                style:GoogleFonts.pacifico(
+                    fontSize: 30, fontWeight: FontWeight.w500, color: Colors.white),
+              )
+            ]),
+          ),
+                ),
+                AnimatedPositioned(
+          duration: const Duration(milliseconds: 2600),
+          top: 290,
+          left: 50,
+          //height: 100,
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 1600),
+            opacity: animated ? 1 : 0,
+            child: Column(
+              children: [
+                Image.asset(
+                  "assets/images/happy-boy.png",
+                  height: MediaQuery.of(context).size.height * 0.45,
+                ),
+                
+              ],
+            ),
+          ),
+                ),
+                AnimatedPositioned(
+          duration: const Duration(milliseconds: 1600),
+          bottom: animated ? 0 : -50,
+          right: animated ? -60 : -100,
+          height: MediaQuery.of(context).size.height * 0.25,
+          child: Image.asset(
+            "assets/images/brown-solid-color.png",
+          ),
+                ),
+              ]),
+        ));
   }
   
   Future startAnimation() async {

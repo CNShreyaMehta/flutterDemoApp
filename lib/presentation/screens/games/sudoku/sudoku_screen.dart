@@ -490,7 +490,9 @@ class _SudokuScreenState extends State<SudokuScreen>
                                           color: isSelected
                                               ? TColors.sudocuLight
                                               : (colValue == 0
-                                                  ? TColors.sudokuDarkBlue
+                                                  ? (isDark
+                                                  ? TColors.sudokuLightBlue
+                                                  : TColors.sudokuDarkBlue)
                                                   : (isFixed
                                                       ? const Color.fromARGB(255, 255, 255, 255)
                                                       : const Color.fromARGB(

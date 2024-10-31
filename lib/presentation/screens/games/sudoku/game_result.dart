@@ -64,7 +64,7 @@ String resultsText = "Loading results...";
                     margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: isDark ? TColors.sudocuLight : TColors.sudocuLight,
+                      color: Colors.white,
                       boxShadow: [
                         BoxShadow(
                           color: TColors.sudokuDarkBlue.withOpacity(0.5),
