@@ -286,6 +286,7 @@ class _SudokuScreenState extends State<SudokuScreen>
         for (var controller in _balloonControllers) {
           controller.forward();
         }
+        _stopTimer(); // Stop the timer
         // Create a sample result
         SudokuResult newResult = SudokuResult(
           difficultyLevel: difficultyLevelText,
@@ -297,7 +298,7 @@ class _SudokuScreenState extends State<SudokuScreen>
         // Wait for 2 seconds before navigating
       await Future.delayed(const Duration(seconds: 3), () {
         // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, '/gameResult', arguments: {
+        Navigator.pushNamed(context, '/gameWin', arguments: {
           'difficultyLevel': difficultyLevelText,
           'score': _elapsedTime,
           'timeStamp': DateTime.now().toString(),
@@ -370,195 +371,190 @@ class _SudokuScreenState extends State<SudokuScreen>
     final isDark = THeplerFunction.isDarkMode(context);
     // ignore: deprecated_member_use
 
-    return WillPopScope(
-      onWillPop: () {
-        return _onWillPop();
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            difficultyLevelText,
-            style: GoogleFonts.dynaPuff(
-              fontSize: 25,
-              //fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          difficultyLevelText,
+          style: GoogleFonts.dynaPuff(
+            fontSize: 25,
+            //fontWeight: FontWeight.w600,
+            color: Colors.white,
           ),
-          //centerTitle: true, // Center the title
-          backgroundColor: isDark ? TColors.sudocuDark : TColors.sudocuLight,
-          iconTheme: const IconThemeData(
-              color: Colors.white), // Set back arrow color to white
-
-          actions: [
-            Text(
-              _formatTime(_elapsedTime),
-              style: GoogleFonts.dynaPuff(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white),
-            ),
-            // IconButton(
-            //   icon: const Icon(Icons.slow_motion_video),
-            //   onPressed: solveData,
-            // ),
-            IconButton(
-              icon: const Icon(Icons.restore),
-              color: Colors.white,
-              onPressed: resetValue,
-            )
-          ],
         ),
-        body: Container(
-          color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
-          child: Stack(
-            children: [
-              SafeArea(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      // Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      //   const Text(
-                      //     'Total Time: ',
-                      //     style: TextStyle(fontSize: 18),
-                      //   ),
-                      //   Text(
-                      //     _formatTime(_elapsedTime),
-                      //     style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w600),
-                      //   ),
-                      // ]),
-                      const SizedBox(height: 10),
-                      Container(
-                        
-                        decoration: BoxDecoration(
-                         boxShadow: [
-                        BoxShadow(
-                          color: isDark ? const Color.fromARGB(255, 136, 134, 134) : TColors.sudokuDarkBlue.withOpacity(0.3),
-                          spreadRadius: isDark ? 1 : 1,
-                          blurRadius: isDark ? 30 : 12,
-                          offset: const Offset(0, 3), // changes position of shadow
-                        ),
-                      ],
-                        ),
-                        child: Center(
-                          child: Column(
-                            children: gridData.map((row) {
-                              int rowIndex = gridData.indexOf(row);
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: row.asMap().entries.map((entry) {
-                                  int colIndex = entry.key;
-                                  int colValue = entry.value;
-                        
-                                  bool isSelected = (selectedRow == rowIndex &&
-                                      selectedCol == colIndex);
-                                  bool isFixed = fixedCells[rowIndex][colIndex];
-                        
-                                  return InkWell(
-                                    onTap: colValue > 0
-                                        ? null
-                                        : () {
-                                            if (!isFixed) {
-                                              // _stopTimer();
-                                              setState(() {
-                                                selectedRow = rowIndex;
-                                                selectedCol = colIndex;
-                                                
-                                              });
-                                            }
-                                          },
+        //centerTitle: true, // Center the title
+        backgroundColor: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+        iconTheme: const IconThemeData(
+            color: Colors.white), // Set back arrow color to white
+    
+        actions: [
+          Text(
+            _formatTime(_elapsedTime),
+            style: GoogleFonts.dynaPuff(
+                fontSize: 25,
+                fontWeight: FontWeight.w600,
+                color: Colors.white),
+          ),
+          // IconButton(
+          //   icon: const Icon(Icons.slow_motion_video),
+          //   onPressed: solveData,
+          // ),
+          IconButton(
+            icon: const Icon(Icons.restore),
+            color: Colors.white,
+            onPressed: resetValue,
+          )
+        ],
+      ),
+      body: Container(
+        color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+        child: Stack(
+          children: [
+            SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    //   const Text(
+                    //     'Total Time: ',
+                    //     style: TextStyle(fontSize: 18),
+                    //   ),
+                    //   Text(
+                    //     _formatTime(_elapsedTime),
+                    //     style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w600),
+                    //   ),
+                    // ]),
+                    const SizedBox(height: 10),
+                    Container(
+                      
+                      decoration: BoxDecoration(
+                       boxShadow: [
+                      BoxShadow(
+                        color: isDark ? const Color.fromARGB(255, 136, 134, 134) : TColors.sudokuDarkBlue.withOpacity(0.3),
+                        spreadRadius: isDark ? 1 : 1,
+                        blurRadius: isDark ? 30 : 12,
+                        offset: const Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                      ),
+                      child: Center(
+                        child: Column(
+                          children: gridData.map((row) {
+                            int rowIndex = gridData.indexOf(row);
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: row.asMap().entries.map((entry) {
+                                int colIndex = entry.key;
+                                int colValue = entry.value;
+                      
+                                bool isSelected = (selectedRow == rowIndex &&
+                                    selectedCol == colIndex);
+                                bool isFixed = fixedCells[rowIndex][colIndex];
+                      
+                                return InkWell(
+                                  onTap: colValue > 0
+                                      ? null
+                                      : () {
+                                          if (!isFixed) {
+                                            // _stopTimer();
+                                            setState(() {
+                                              selectedRow = rowIndex;
+                                              selectedCol = colIndex;
+                                              
+                                            });
+                                          }
+                                        },
+                                  child: Container(
+                                                                            margin: const EdgeInsets.only(bottom: .8,left: .8),
+    
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: .4,
+                                          color: Colors.black),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(5),
+                                      )
+                                    ),
                                     child: Container(
-                                                                              margin: EdgeInsets.only(bottom: .8,left: .8),
-
+                                      width: 38.8,
+                                      height: 38.8,
                                       decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
                                         border: Border.all(
-                                            width: .4,
-                                            color: Colors.black),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5),
-                                        )
+                                          width: .8,
+                                            color: !isDark
+                                                ? TColors.sudokuLightBlue
+                                                : TColors.sudokuDarkBlue),
+                                        color: isSelected
+                                            ? TColors.sudocuLight
+                                            : (colValue == 0
+                                                ? (isDark
+                                                ? TColors.sudokuLightBlue
+                                                : TColors.sudokuDarkBlue)
+                                                : (isFixed
+                                                    ? const Color.fromARGB(255, 255, 255, 255)
+                                                    : const Color.fromARGB(
+                                                        232, 123, 239, 168))),
                                       ),
-                                      child: Container(
-                                        width: 38.8,
-                                        height: 38.8,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                                          border: Border.all(
-                                            width: .8,
-                                              color: !isDark
-                                                  ? TColors.sudokuLightBlue
-                                                  : TColors.sudokuDarkBlue),
-                                          color: isSelected
-                                              ? TColors.sudocuLight
-                                              : (colValue == 0
-                                                  ? (isDark
-                                                  ? TColors.sudokuLightBlue
-                                                  : TColors.sudokuDarkBlue)
-                                                  : (isFixed
-                                                      ? const Color.fromARGB(255, 255, 255, 255)
-                                                      : const Color.fromARGB(
-                                                          232, 123, 239, 168))),
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          colValue > 0 ? '$colValue' : '',
-                                          style: GoogleFonts.dynaPuff(
-                                            fontSize: 18,
-                                            color: isDark ? TColors.sudokuDarkBlue : TColors.sudocuLight,
-                                          ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        colValue > 0 ? '$colValue' : '',
+                                        style: GoogleFonts.dynaPuff(
+                                          fontSize: 18,
+                                          color: isDark ? TColors.sudokuDarkBlue : TColors.sudocuLight,
                                         ),
                                       ),
                                     ),
-                                  );
-                                }).toList(),
-                              );
-                            }).toList(),
-                          ),
+                                  ),
+                                );
+                              }).toList(),
+                            );
+                          }).toList(),
                         ),
                       ),
-                      const SizedBox(height: 0),
-                      Container(
-                        alignment: Alignment.center,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              buildRow(['1', '2', '3']),
-                              const SizedBox(height: 15),
-                              buildRow(['4', '5', '6']),
-                              const SizedBox(height: 15),
-                              buildRow(['7', '8', '9']),
-                            ],
-                          ),
+                    ),
+                    const SizedBox(height: 0),
+                    Container(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            buildRow(['1', '2', '3']),
+                            const SizedBox(height: 15),
+                            buildRow(['4', '5', '6']),
+                            const SizedBox(height: 15),
+                            buildRow(['7', '8', '9']),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-              // Confetti animation widget
-              Align(
-                alignment: Alignment.topCenter,
-                child: ConfettiWidget(
-                  confettiController: _confettiController,
-                  blastDirection: pi / 2, // Direction is downward
-                  blastDirectionality: BlastDirectionality.explosive,
-                  shouldLoop: false,
-                  gravity: 0.2, // Control how fast confetti falls
-                  colors: const [
-                    Colors.green,
-                    Colors.blue,
-                    Colors.pink,
-                    Colors.orange,
-                    Colors.purple,
-                    Colors.red,
-                    Colors.lightBlue,
-                  ], // Colors of the confetti
-                  numberOfParticles: 60, // Adjust this for more/less confetti
-                ),
+            ),
+            // Confetti animation widget
+            Align(
+              alignment: Alignment.topCenter,
+              child: ConfettiWidget(
+                confettiController: _confettiController,
+                blastDirection: pi / 2, // Direction is downward
+                blastDirectionality: BlastDirectionality.explosive,
+                shouldLoop: false,
+                gravity: 0.2, // Control how fast confetti falls
+                colors: const [
+                  Colors.green,
+                  Colors.blue,
+                  Colors.pink,
+                  Colors.orange,
+                  Colors.purple,
+                  Colors.red,
+                  Colors.lightBlue,
+                ], // Colors of the confetti
+                numberOfParticles: 60, // Adjust this for more/less confetti
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

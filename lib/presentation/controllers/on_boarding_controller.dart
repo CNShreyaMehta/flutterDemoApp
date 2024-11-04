@@ -28,7 +28,7 @@ class OnBoardingController extends GetxController {
   }
 
   void skipPage() {
-    //Get.offNamed(AppRoutes.gamesHome);
+    Get.offNamed(AppRoutes.gamesHome);
     currentIndex.value = 2;
     pageController.jumpToPage(2);
   }

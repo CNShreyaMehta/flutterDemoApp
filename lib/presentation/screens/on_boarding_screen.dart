@@ -31,24 +31,24 @@ class OnBoardingScreen extends StatelessWidget {
                 bgColor: TColors.sudokuPrimaryBlue,
                 image: TImages.onBoardingScreenOne,
                 title: "Welcome to Game Zone",
-                description: "In this course, you will learn Flutter",
+                description: "In this place, you will find all the games you need",
               ),
               commonOnboardingWidget(
                 size: size,
                 bgColor: TColors.sudokuLightBlue,
                 image: TImages.onBoardingScreenTwo,
-                title: "Flutter is a cross-platform",
+                title: "Interactive Games",
                 description:
-                    "Flutter is Google's UI toolkit",
+                    "Games that can be played in real time",
               ),
               commonOnboardingWidget(
                 size: size,
                 bgColor: TColors.sudokuPrimaryBlue,
                 image: TImages.onBoardingScreenThree,
                 title:
-                    "Flutter is Google's UI",
+                    "Play with your Friends",
                 description:
-                    "Flutter is Google's UI toolkit",
+                    "keep track of your scores and win prizes",
               ),
             ]),
         Positioned(
@@ -62,10 +62,10 @@ class OnBoardingScreen extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               side: BorderSide(color: isDark ? Colors.black : TColors.sudokuDarkBlue),
               shape: const CircleBorder(),
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(8),
             ),
             child: Container(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(10),
               decoration: const BoxDecoration(
                 color: TColors.sudokuDarkBlue,
                 shape: BoxShape.circle,
@@ -100,10 +100,10 @@ class OnBoardingScreen extends StatelessWidget {
             controller: dotController.pageController,
             onDotClicked: controller.dotNavigationClicked,
             effect: ExpandingDotsEffect(
-              activeDotColor: isDark ? TColors.sudokuDarkBlue : TColors.sudokuMediumBlue,
+              activeDotColor: isDark ? TColors.sudokuDarkBlue : TColors.sudokuDarkBlue,
               dotColor: Colors.grey,
-              dotHeight: 15,
-              dotWidth: 20,
+              dotHeight: 10,
+              dotWidth: 30,
               spacing: 10,
             ),
           ),
