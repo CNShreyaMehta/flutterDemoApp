@@ -214,21 +214,8 @@ class _SudokuScreenState extends State<SudokuScreen>
   }
 
   void resetValue() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm Exit'),
-          content: const Text('Are you sure you want to reset the game?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false), // No
-              child: const Text('No'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true); // Yes
-                setState(() {
+    final isDark = THeplerFunction.isDarkMode(context);
+     setState(() {
                   _timer?.cancel();
                   _isRunning = false;
                   _elapsedTime = 0;
@@ -238,13 +225,49 @@ class _SudokuScreenState extends State<SudokuScreen>
                   gameWon = false;
                 });
                 _startTimer();
-              },
-              child: const Text('Yes'),
-            ),
-          ],
-        );
-      },
-    );
+     ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'Your game is restart!',
+                      style: TextStyle(
+                          color: TColors.sudocuDark,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 20), // Set text color to black
+                    ),
+                    backgroundColor: Colors.white, // Set background color to green
+                  ),
+                );
+    // showDialog(
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     return AlertDialog(
+    //       title: const Text('Confirm Exit'),
+    //       content: const Text('Are you sure you want to reset the game?'),
+    //       actions: <Widget>[
+    //         TextButton(
+    //           onPressed: () => Navigator.of(context).pop(false), // No
+    //           child: const Text('No'),
+    //         ),
+    //         TextButton(
+    //           onPressed: () {
+    //             Navigator.of(context).pop(true); // Yes
+    //             setState(() {
+    //               _timer?.cancel();
+    //               _isRunning = false;
+    //               _elapsedTime = 0;
+    //               gridData = generateSudoku(difficultyLevelNumber);
+    //               selectedRow = null;
+    //               selectedCol = null;
+    //               gameWon = false;
+    //             });
+    //             _startTimer();
+    //           },
+    //           child: const Text('Yes'),
+    //         ),
+    //       ],
+    //     );
+    //   },
+    // );
   }
 
   void solveData() {
@@ -428,12 +451,12 @@ class _SudokuScreenState extends State<SudokuScreen>
                       
                       decoration: BoxDecoration(
                        boxShadow: [
-                      BoxShadow(
-                        color: isDark ? const Color.fromARGB(255, 136, 134, 134) : TColors.sudokuDarkBlue.withOpacity(0.3),
-                        spreadRadius: isDark ? 1 : 1,
-                        blurRadius: isDark ? 30 : 12,
-                        offset: const Offset(0, 3), // changes position of shadow
-                      ),
+                    //   BoxShadow(
+                    //  color: isDark ? const Color.fromARGB(255, 136, 134, 134) : TColors.sudokuDarkBlue.withOpacity(0.3),
+                    //     spreadRadius: isDark ? 1 : 1,
+                    //     blurRadius: isDark ? 10 : 12,
+                    //     offset: const Offset(0, 3), // changes position of shadow
+                    //   ),
                     ],
                       ),
                       child: Center(
@@ -512,7 +535,7 @@ class _SudokuScreenState extends State<SudokuScreen>
                         ),
                       ),
                     ),
-                    const SizedBox(height: 0),
+                    const SizedBox(height: 20),
                     Container(
                       alignment: Alignment.center,
                       child: Padding(
@@ -574,9 +597,8 @@ class NumberBox extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: MediaQuery.of(context).size.width *
-            0.15, // Adjust the percentage as needed
-        height: MediaQuery.of(context).size.height * 0.08, // A
+        width: MediaQuery.of(context).size.height * 0.07, // A, // Adjust the percentage as needed
+        height: MediaQuery.of(context).size.height * 0.07, // A
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.white,
