@@ -31,6 +31,20 @@ class _GameResultState extends State<GameResult> {
     });
   }
 
+  // Mapping difficulty levels to emojis
+  String _getEmojiForDifficulty(String difficulty) {
+    switch (difficulty) {
+      case 'Easy':
+        return '😊'; // Smiley for easy
+      case 'Medium':
+        return '😅'; // Smiling face with sweat for medium
+      case 'Hard':
+        return '😱'; // Scared for expert
+      default:
+        return '🤔'; // Thinking for unknown difficulty
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -52,20 +66,22 @@ class _GameResultState extends State<GameResult> {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: results.isEmpty
-          ?  Center(child: 
-              Text(
+          ? Center(
+              child: Text(
                 "No results found",
                 style: GoogleFonts.poppins(
-                            color: TColors.sudokuDarkBlue,
-                            fontWeight: FontWeight.bold),
-              ))
+                    color: TColors.sudokuDarkBlue,
+                    fontWeight: FontWeight.bold),
+              ),
+            )
           : Container(
               color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
               child: ListView.builder(
-                //reverse: true, // Reverses the order of items
                 itemCount: results.length,
                 itemBuilder: (context, index) {
                   final result = results[index];
+                  String emoji = _getEmojiForDifficulty(result.difficultyLevel);
+
                   return Container(
                     margin:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -77,14 +93,18 @@ class _GameResultState extends State<GameResult> {
                           color: TColors.sudokuDarkBlue.withOpacity(0.5),
                           spreadRadius: 2,
                           blurRadius: 7,
-                          offset:
-                              const Offset(0, 3), // changes position of shadow
+                          offset: const Offset(0, 3),
                         ),
                       ],
                     ),
                     child: ListTile(
-                      leading: const Icon(Icons.adjust_sharp,
-                          color: TColors.sudokuDarkBlue),
+                      leading: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(emoji, style: TextStyle(fontSize: 24)),
+                         
+                        ],
+                      ),
                       onTap: () {},
                       title: Text(
                         "Difficulty Level: ${result.difficultyLevel}",
@@ -95,12 +115,16 @@ class _GameResultState extends State<GameResult> {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Play Time: ${(result.score ~/ 60)}:${(result.score % 60).toString().padLeft(2, '0')} min",
-                              style: GoogleFonts.poppins(
-                                color: Colors.black,
-                              )),
-                          Text("Date: ${result.timeStamp}",
-                              style: GoogleFonts.poppins(color: Colors.black)),
+                          Text(
+                            "Play Time: ${(result.score ~/ 60)}:${(result.score % 60).toString().padLeft(2, '0')} mm:ss",
+                            style: GoogleFonts.poppins(
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "Date: ${result.timeStamp}",
+                            style: GoogleFonts.poppins(color: Colors.black),
+                          ),
                         ],
                       ),
                     ),

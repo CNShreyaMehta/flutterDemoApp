@@ -1,6 +1,8 @@
+import 'package:demo_app/presentation/controllers/Theme_controller.dart';
 import 'package:demo_app/presentation/utils/constants/colors.dart';
 import 'package:demo_app/presentation/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DifficultyLevelScreen extends StatefulWidget {
@@ -14,7 +16,8 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = THeplerFunction.isDarkMode(context);
-
+  final ThemeController themeController =
+        Get.put(ThemeController()); // Initialize the controller
     return Scaffold(
       appBar: AppBar(
         title: Text('Difficulty Level',
@@ -22,11 +25,12 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
                 color: Colors.white)),
-        backgroundColor: isDark ? const Color.fromARGB(255, 25, 27, 30) : TColors.sudocuLight,
+        backgroundColor: isDark ? TColors.sudocuDark : TColors.sudocuLight,
         iconTheme: const IconThemeData(
             color: Colors.white), // Set back arrow color to white
         centerTitle: false,
         actions: [
+           
           IconButton(
             icon: const Icon(Icons.history_sharp),
             onPressed: () {
@@ -34,6 +38,21 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
             },
             iconSize: 30,
           ),
+          IconButton(
+            icon: !isDark
+                ? const Icon(
+                    Icons.light_mode_outlined,
+                    color: Colors.white,
+                  )
+                : const Icon(
+                    Icons.dark_mode_outlined,
+                    
+                  ),
+            onPressed: () {
+              themeController.toggleTheme();
+            },
+             iconSize: 30,
+          )
         ],
       ),
       body: Container(
