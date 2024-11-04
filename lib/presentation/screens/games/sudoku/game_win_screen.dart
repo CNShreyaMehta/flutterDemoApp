@@ -1,3 +1,4 @@
+import 'package:demo_app/presentation/screens/games/sudoku/difficulty_level_screen.dart';
 import 'package:demo_app/presentation/utils/constants/colors.dart';
 import 'package:demo_app/presentation/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
@@ -38,9 +39,15 @@ class _GameWinScreenState extends State<GameWinScreen> {
               )),
           const SizedBox(height: 30),
           OutlinedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/difficultyLevel');
-            },
+           onPressed: () {
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(
+      builder: (context) => const DifficultyLevelScreen(),
+    ),
+    (Route<dynamic> route) => false, // This removes all previous routes
+  );
+},
             child: Text('Continue',
                 style: GoogleFonts.poppins(
                   fontSize: 20,

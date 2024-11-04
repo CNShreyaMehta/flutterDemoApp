@@ -1,6 +1,9 @@
 import 'dart:math';
 
+import 'package:demo_app/presentation/utils/constants/colors.dart';
+import 'package:demo_app/presentation/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // ignore: camel_case_types
 class game2048 extends StatefulWidget {
@@ -262,9 +265,16 @@ class _game2048State extends State<game2048> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = THeplerFunction.isDarkMode(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('2048'),
+        title: Text(
+          '2048',
+          style: GoogleFonts.dynaPuff(
+              fontSize: 20, fontWeight: FontWeight.w400, color: Colors.white),
+        ),
+        backgroundColor: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Center(
         child: Column(
@@ -273,12 +283,15 @@ class _game2048State extends State<game2048> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'Score: $_score',
-                style: const TextStyle(fontSize: 24),
+                'Score : $_score',
+                style: GoogleFonts.dynaPuff(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                    color: TColors.sudokuDarkBlue),
               ),
             ),
             const SizedBox(
-              height: 16,
+              height: 0,
             ),
             SizedBox(
               width: 300,
@@ -297,7 +310,7 @@ class _game2048State extends State<game2048> {
                   return Container(
                     decoration: BoxDecoration(
                       color: value == null
-                          ? Colors.grey[300]
+                          ? TColors.sudokuVeryLightBlue
                           : _tileColors[value]!,
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -326,18 +339,34 @@ class _game2048State extends State<game2048> {
               children: [
                 ElevatedButton(
                   onPressed: _gameOver ? null : swipeLeft,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: TColors
+                        .sudokuDarkBlue, // Set your background color here
+                  ),
                   child: const Icon(Icons.arrow_back),
                 ),
                 ElevatedButton(
                   onPressed: _gameOver ? null : swipeUp,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: TColors
+                        .sudokuDarkBlue, // Set your background color here
+                  ),
                   child: const Icon(Icons.arrow_upward),
                 ),
                 ElevatedButton(
                   onPressed: _gameOver ? null : swipeDown,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: TColors
+                        .sudokuDarkBlue, // Set your background color here
+                  ),
                   child: const Icon(Icons.arrow_downward),
                 ),
                 ElevatedButton(
                   onPressed: _gameOver ? null : swipeRight,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: TColors
+                        .sudokuDarkBlue, // Set your background color here
+                  ),
                   child: const Icon(Icons.arrow_forward),
                 ),
               ],

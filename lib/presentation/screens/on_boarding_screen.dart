@@ -56,8 +56,9 @@ class OnBoardingScreen extends StatelessWidget {
           child: OutlinedButton(
             onPressed:   () {
               //Get.offNamed(AppRoutes.login);
-              OnBoardingController.instance.skipPage();
-              OnBoardingController.instance.nextPage();
+              //OnBoardingController.instance.skipPage();
+              //OnBoardingController.instance.nextPage();
+              OnBoardingController.instance.completeOnboarding();
             },
             style: ElevatedButton.styleFrom(
               side: BorderSide(color: isDark ? Colors.black : TColors.sudokuDarkBlue),
