@@ -66,14 +66,17 @@ class _GameResultState extends State<GameResult> {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: results.isEmpty
-          ? Center(
-              child: Text(
-                "No results found",
-                style: GoogleFonts.poppins(
-                    color: TColors.sudokuDarkBlue,
-                    fontWeight: FontWeight.bold),
+          ? Container(
+            color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+            child: Center(
+                child: Text(
+                  "No results found",
+                  style: GoogleFonts.dynaPuff(
+                      color: Colors.white,
+                      ),
+                ),
               ),
-            )
+          )
           : Container(
               color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
               child: ListView.builder(

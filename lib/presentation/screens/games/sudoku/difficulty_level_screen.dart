@@ -64,7 +64,7 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/sudoku', arguments: {
                     'text': 'Easy',
-                    'number': 50,
+                    'number': 80,
                   });
                 },
                 text: 'Easy'),
