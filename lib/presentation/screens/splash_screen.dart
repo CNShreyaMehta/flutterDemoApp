@@ -70,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
               fontSize: 25, color: Colors.white),
               ),
                Text(
-                "Game Zone",
+                "Brain Block",
                 style:GoogleFonts.dynaPuff(
               fontSize: 25,color: Colors.white),
               )
@@ -80,7 +80,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 AnimatedPositioned(
           duration: const Duration(milliseconds: 2600),
           top: 290,
-          left: 50,
+          left: 14,
           //height: 100,
           child: AnimatedOpacity(
             duration: const Duration(milliseconds: 1600),

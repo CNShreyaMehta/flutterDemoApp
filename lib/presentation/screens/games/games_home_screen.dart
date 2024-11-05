@@ -1,6 +1,5 @@
 import 'package:demo_app/presentation/controllers/Theme_controller.dart';
 import 'package:demo_app/presentation/custom_widgets/custom_card.dart';
-import 'package:demo_app/presentation/screens/games/2048/game_2048.dart';
 import 'package:demo_app/presentation/screens/games/sudoku/difficulty_level_screen.dart';
 import 'package:demo_app/presentation/utils/constants/colors.dart';
 import 'package:demo_app/presentation/utils/helpers/helper_function.dart';
@@ -38,6 +37,8 @@ class GamesHomeScreen extends StatelessWidget {
                 : const Icon(
                     Icons.dark_mode_outlined,
                   ),
+                              iconSize: 30,
+
             onPressed: () {
               themeController.toggleTheme();
             },
@@ -112,7 +113,7 @@ class GamesHomeScreen extends StatelessWidget {
             // ),
            CustomCard(
           imageUrl:
-              'assets/images/sudokuImg.jpeg',
+              'assets/images/sudoku.png',
           title: 'Sudoku Game',
           subtitle: 'Solve Sudoku Puzzles',
           onTap: () {
@@ -126,16 +127,16 @@ class GamesHomeScreen extends StatelessWidget {
         ),
             CustomCard(
           imageUrl:
-              'assets/images/2048Img.png',
+              'assets/images/2048.png',
           title: '2048',
           subtitle: 'Solve 2048 Puzzles',
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const game2048(),
-              ),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => const game2048(),
+            //   ),
+            // );
             // AlertDialog(
             //       title: Text('Alert'),
             //       content: Text('This is a simple alert dialog.'),

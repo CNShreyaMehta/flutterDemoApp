@@ -6,6 +6,7 @@ import 'package:demo_app/presentation/utils/constants/image_strings.dart';
 import 'package:demo_app/presentation/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingScreen extends StatelessWidget {
@@ -30,29 +31,47 @@ class OnBoardingScreen extends StatelessWidget {
                 size: size,
                 bgColor: TColors.sudokuPrimaryBlue,
                 image: TImages.onBoardingScreenOne,
-                title: "Welcome to Game Zone",
-                description: "In this place, you will find all the games you need",
+                title: "Select Your Game",
+                description: "Pick from classic or timed modes and start your Sudoku journey.",
               ),
               commonOnboardingWidget(
                 size: size,
                 bgColor: TColors.sudokuLightBlue,
                 image: TImages.onBoardingScreenTwo,
-                title: "Interactive Games",
+                title: "Choose Your Difficulty",
                 description:
-                    "Games that can be played in real time",
+                    "From easy to expert, select a level that matches your skill.",
               ),
               commonOnboardingWidget(
                 size: size,
                 bgColor: TColors.sudokuPrimaryBlue,
                 image: TImages.onBoardingScreenThree,
                 title:
-                    "Play with your Friends",
+                    "View Your Game History",
                 description:
-                    "keep track of your scores and win prizes",
+                    "Monitor your progress, review completed puzzles, and improve over time.",
+              ),
+              commonOnboardingWidget(
+                size: size,
+                bgColor: TColors.sudokuLightBlue,
+                image: TImages.onBoardingScreenFour,
+                title:
+                    "Time to Play!",
+                description:
+                    "Tap a cell to select it, then choose a number to fill it in. The timer at the top keeps track of your speed.",
+              ),
+              commonOnboardingWidget(
+                size: size,
+                bgColor: TColors.sudokuPrimaryBlue,
+                image: TImages.onBoardingScreenFive,
+                title:
+                    "Congratulations!",
+                description:
+                    "You’ve completed the puzzle! Challenge yourself with the next one or try a harder level!.",
               ),
             ]),
         Positioned(
-          bottom: 80,
+          bottom: size.height * 12 / 100,
           child: OutlinedButton(
             onPressed:   () {
               //Get.offNamed(AppRoutes.login);
@@ -76,8 +95,8 @@ class OnBoardingScreen extends StatelessWidget {
           ),
         ),
         Positioned(
-            top: 50,
-            right: 30,
+            top: 35,
+            right: 15,
             child: TextButton(
               onPressed: () { OnBoardingController.instance.skipPage(); } ,
               // () {
@@ -86,31 +105,31 @@ class OnBoardingScreen extends StatelessWidget {
               
               child: const Text("Skip",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: TColors.sudokuDarkBlue,
                     decoration: TextDecoration.underline, // Underline the text
                     decorationColor:
-                        Colors.black, // Set the underline color to black
+                        TColors.sudokuDarkBlue, // Set the underline color to black
                     decorationThickness:
                         1.0, // Optional: Set the thickness of the underline
                   )),
             )),
         Positioned(
-          bottom: 40,
+          bottom: size.height * 0.05,
           child: SmoothPageIndicator(
-            count: 3,
+            count: 5,
             controller: dotController.pageController,
             onDotClicked: controller.dotNavigationClicked,
             effect: ExpandingDotsEffect(
               activeDotColor: isDark ? TColors.sudokuDarkBlue : TColors.sudokuDarkBlue,
               dotColor: Colors.grey,
-              dotHeight: 10,
-              dotWidth: 30,
+              dotHeight: 8,
+              dotWidth: 25,
               spacing: 10,
             ),
           ),
         ),
         const SizedBox(
-          height: 60,
+          height: 50,
         ),
       ],
     ));
@@ -139,28 +158,30 @@ class commonOnboardingWidget extends StatelessWidget {
       padding:  const EdgeInsets.all(30),
       color: bgColor,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+           SizedBox(
+            height: size.height * 0.05,
+          ),
           Image(
             image: AssetImage(image),
-            height: size.height * 0.4,
+            height: size.height * 0.5,
+            width: size.width * 0.8,
           ),
-          Column(
-            children: [
-              Text(
-                title,
-                style:  TextStyle(fontSize: 22, color: isDark ? Colors.white : Colors.black,fontWeight: FontWeight.w500),
-              ),
-              Text(
-                description,
-                textAlign: TextAlign.center,
-                style:  TextStyle(fontSize: 12,color: isDark ? Colors.white : Colors.black),
-              ),
-              // const Text(
-              //   "2/3",
-              //   style: TextStyle(fontSize: 20),
-              // ),
-            ],
+          const SizedBox(
+            height: 10,
+          ),
+          Text(
+            title,
+            style:  GoogleFonts.dynaPuff(fontSize: 26, color: Colors.white ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Text(
+            description,
+            textAlign: TextAlign.center,
+            style:  GoogleFonts.dynaPuff(fontSize: 14,color:Colors.white ),
           ),
           const SizedBox(
             height: 10,

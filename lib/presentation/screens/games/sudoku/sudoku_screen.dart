@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class SudokuScreen extends StatefulWidget {
   const SudokuScreen({super.key});
 
@@ -215,28 +216,29 @@ class _SudokuScreenState extends State<SudokuScreen>
 
   void resetValue() {
     final isDark = THeplerFunction.isDarkMode(context);
-     setState(() {
-                  _timer?.cancel();
-                  _isRunning = false;
-                  _elapsedTime = 0;
-                  gridData = generateSudoku(difficultyLevelNumber);
-                  selectedRow = null;
-                  selectedCol = null;
-                  gameWon = false;
-                });
-                _startTimer();
-     ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                      'Your game is restart!',
-                      style: TextStyle(
-                          color: TColors.sudokuDarkBlue,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20), // Set text color to black
-                    ),
-                    backgroundColor: Colors.white, // Set background color to green
-                  ),
-                );
+    setState(() {
+      _timer?.cancel();
+      _isRunning = false;
+      _elapsedTime = 0;
+      gridData = generateSudoku(difficultyLevelNumber);
+      selectedRow = null;
+      selectedCol = null;
+      gameWon = false;
+      
+    });
+    _startTimer();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Your game is restart!',
+          style: TextStyle(
+              color: TColors.sudokuDarkBlue,
+              fontWeight: FontWeight.w500,
+              fontSize: 20), // Set text color to black
+        ),
+        backgroundColor: Colors.white, // Set background color to green
+      ),
+    );
     // showDialog(
     //   context: context,
     //   builder: (BuildContext context) {
@@ -319,13 +321,13 @@ class _SudokuScreenState extends State<SudokuScreen>
         // Save the result to SharedPreferences
         await newResult.addSudokuResult(newResult);
         // Wait for 2 seconds before navigating
-      await Future.delayed(const Duration(seconds: 3), () {
-        // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, '/gameWin', arguments: {
-          'difficultyLevel': difficultyLevelText,
-          'score': _elapsedTime,
-          'timeStamp': DateTime.now().toString(),
-        });
+        await Future.delayed(const Duration(seconds: 3), () {
+          // ignore: use_build_context_synchronously
+          Navigator.pushNamed(context, '/gameWin', arguments: {
+            'difficultyLevel': difficultyLevelText,
+            'score': _elapsedTime,
+            'timeStamp': DateTime.now().toString(),
+          });
         });
       });
     }
@@ -408,14 +410,12 @@ class _SudokuScreenState extends State<SudokuScreen>
         backgroundColor: isDark ? TColors.sudocuDark : TColors.sudocuLight,
         iconTheme: const IconThemeData(
             color: Colors.white), // Set back arrow color to white
-    
+
         actions: [
           Text(
             _formatTime(_elapsedTime),
             style: GoogleFonts.dynaPuff(
-                fontSize: 25,
-                fontWeight: FontWeight.w600,
-                color: Colors.white),
+                fontSize: 25, fontWeight: FontWeight.w600, color: Colors.white),
           ),
           // IconButton(
           //   icon: const Icon(Icons.slow_motion_video),
@@ -448,16 +448,15 @@ class _SudokuScreenState extends State<SudokuScreen>
                     // ]),
                     const SizedBox(height: 10),
                     Container(
-                      
-                      decoration: BoxDecoration(
-                       boxShadow: [
-                    //   BoxShadow(
-                    //  color: isDark ? const Color.fromARGB(255, 136, 134, 134) : TColors.sudokuDarkBlue.withOpacity(0.3),
-                    //     spreadRadius: isDark ? 1 : 1,
-                    //     blurRadius: isDark ? 10 : 12,
-                    //     offset: const Offset(0, 3), // changes position of shadow
-                    //   ),
-                    ],
+                      decoration: const BoxDecoration(
+                        boxShadow: [
+                          //   BoxShadow(
+                          //  color: isDark ? const Color.fromARGB(255, 136, 134, 134) : TColors.sudokuDarkBlue.withOpacity(0.3),
+                          //     spreadRadius: isDark ? 1 : 1,
+                          //     blurRadius: isDark ? 10 : 12,
+                          //     offset: const Offset(0, 3), // changes position of shadow
+                          //   ),
+                        ],
                       ),
                       child: Center(
                         child: Column(
@@ -468,11 +467,11 @@ class _SudokuScreenState extends State<SudokuScreen>
                               children: row.asMap().entries.map((entry) {
                                 int colIndex = entry.key;
                                 int colValue = entry.value;
-                      
+
                                 bool isSelected = (selectedRow == rowIndex &&
                                     selectedCol == colIndex);
                                 bool isFixed = fixedCells[rowIndex][colIndex];
-                      
+
                                 return InkWell(
                                   onTap: colValue > 0
                                       ? null
@@ -482,39 +481,40 @@ class _SudokuScreenState extends State<SudokuScreen>
                                             setState(() {
                                               selectedRow = rowIndex;
                                               selectedCol = colIndex;
-                                              
                                             });
                                           }
                                         },
                                   child: Container(
-                                                                            margin: const EdgeInsets.only(bottom: .8,left: .8),
-    
+                                    margin: const EdgeInsets.only(
+                                        bottom: .8, left: .8),
                                     decoration: BoxDecoration(
-                                      border: Border.all(
-                                          width: .4,
-                                          color: Colors.black),
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(5),
-                                      )
-                                    ),
+                                        border: Border.all(
+                                            width: .4, color: Colors.black),
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(5),
+                                        )),
                                     child: Container(
                                       width: 38.8,
                                       height: 38.8,
                                       decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(5)),
                                         border: Border.all(
-                                          width: .8,
+                                            width: .8,
                                             color: !isDark
                                                 ? TColors.sudokuLightBlue
                                                 : TColors.sudokuDarkBlue),
                                         color: isSelected
-                                            ? (!isDark ? TColors.sudokuLightBlue : TColors.sudokuDarkBlue)
-                                            : (colValue == 0
-                                                ? (isDark
+                                            ? (!isDark
                                                 ? TColors.sudokuLightBlue
                                                 : TColors.sudokuDarkBlue)
+                                            : (colValue == 0
+                                                ? (isDark
+                                                    ? TColors.sudokuLightBlue
+                                                    : TColors.sudokuDarkBlue)
                                                 : (isFixed
-                                                    ? const Color.fromARGB(255, 255, 255, 255)
+                                                    ? const Color.fromARGB(
+                                                        255, 255, 255, 255)
                                                     : const Color.fromARGB(
                                                         232, 123, 239, 168))),
                                       ),
@@ -523,7 +523,9 @@ class _SudokuScreenState extends State<SudokuScreen>
                                         colValue > 0 ? '$colValue' : '',
                                         style: GoogleFonts.dynaPuff(
                                           fontSize: 18,
-                                          color: isDark ? TColors.sudokuDarkBlue : TColors.sudocuLight,
+                                          color: isDark
+                                              ? TColors.sudokuDarkBlue
+                                              : TColors.sudocuLight,
                                         ),
                                       ),
                                     ),
@@ -535,7 +537,7 @@ class _SudokuScreenState extends State<SudokuScreen>
                         ),
                       ),
                     ),
-                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                     Container(
                       alignment: Alignment.center,
                       child: Padding(
@@ -597,7 +599,8 @@ class NumberBox extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: MediaQuery.of(context).size.height * 0.07, // A, // Adjust the percentage as needed
+        width: MediaQuery.of(context).size.height *
+            0.07, // A, // Adjust the percentage as needed
         height: MediaQuery.of(context).size.height * 0.07, // A
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -605,7 +608,8 @@ class NumberBox extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           boxShadow: const [
             BoxShadow(
-              color:Color.fromARGB(255, 136, 134, 134), // Shadow color with opacity
+              color: Color.fromARGB(
+                  255, 136, 134, 134), // Shadow color with opacity
               spreadRadius: 1, // Spread radius of shadow
               blurRadius: 10, // Blur effect to make the shadow softer
               offset:

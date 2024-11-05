@@ -64,7 +64,7 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/sudoku', arguments: {
                     'text': 'Easy',
-                    'number': 80,
+                    'number': 62,
                   });
                 },
                 text: 'Easy'),
@@ -73,7 +73,7 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/sudoku', arguments: {
                     'text': 'Medium',
-                    'number': 30,
+                    'number': 41,
                   });
                 },
                 text: 'Medium'),
@@ -82,7 +82,7 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/sudoku', arguments: {
                     'text': 'Hard',
-                    'number': 10,
+                    'number': 11,
                   });
                 },
                 text: 'Hard'),
