@@ -25,7 +25,7 @@ class _SudokuScreenState extends State<SudokuScreen>
   int? selectedRow;
   int? selectedCol;
   bool gameWon = false; // Track if the game has been won
-  bool gameOver = false;
+  bool _hasStarted = false;
   late ConfettiController _confettiController; // Confetti controller
   final List<AnimationController> _balloonControllers =
       []; // Controllers for multiple balloons
@@ -250,7 +250,8 @@ class _SudokuScreenState extends State<SudokuScreen>
       selectedRow = null;
       selectedCol = null;
       gameWon = false;
-      gameOver = false;
+      _hasStarted = false; // Reset hasStarted to false
+
     });
     _startTimer();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -391,6 +392,7 @@ class _SudokuScreenState extends State<SudokuScreen>
                   selectedRow = null;
                   selectedCol = null;
                   checkGameWon();
+                  _hasStarted = true; // Enable restart button after first cell click
                 });
 //FIXME
                 if (gridData[0][0] != 0) {}
@@ -451,7 +453,8 @@ class _SudokuScreenState extends State<SudokuScreen>
           IconButton(
             icon: const Icon(Icons.restore),
             color: Colors.white,
-            onPressed: resetValue,
+            // onPressed: resetValue,
+            onPressed: _hasStarted ? resetValue : null, // Disable when _hasStarted is false
           )
         ],
       ),
