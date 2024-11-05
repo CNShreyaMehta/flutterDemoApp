@@ -16,18 +16,18 @@ class GameWinScreen extends StatefulWidget {
 
 class _GameWinScreenState extends State<GameWinScreen> {
   late ConfettiController _confettiController;
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  late AudioPlayer _audioPlayer;
+
   String difficultyLevelText = '';
   int difficultyLevelNumber = 0;
 
   @override
   void initState() {
     super.initState();
-    // Initialize the confetti controller with an indefinite duration
     _confettiController = ConfettiController(duration: const Duration(seconds: 50));
     _confettiController.play();
 
-    // Play success audio
+    _audioPlayer = AudioPlayer();
     _playSuccessMusic();
   }
 
@@ -39,19 +39,31 @@ class _GameWinScreenState extends State<GameWinScreen> {
     if (arguments != null) {
       difficultyLevelText = arguments['difficultyLevel'];
       difficultyLevelNumber = arguments['score'];
-
-      print('args.score>>><<<> ${difficultyLevelText ?? 'No score available'}');
     }
   }
 
-  void _playSuccessMusic() async {
-    await _audioPlayer.play('assets/audio/success.mp3', isLocal: true);
+  Future<void> _playSuccessMusic() async {
+    // await _audioPlayer.setSource(AssetSource('audio/success.mp3'));
+    // await _audioPlayer.resume();
+    try {
+    // Initialize the audio player only once
+    _audioPlayer = AudioPlayer();
+    
+    // Set the release mode to prevent stopping the audio prematurely
+    _audioPlayer.setReleaseMode(ReleaseMode.stop);
+
+    // Load and play the audio
+    await _audioPlayer.setSource(AssetSource('audio/success.mp3')); // Relative path under "assets"
+    await _audioPlayer.resume();
+  } catch (e) {
+    print("Error playing audio: $e");
+  }
   }
 
   @override
   void dispose() {
     _confettiController.dispose();
-    _audioPlayer.dispose(); // Dispose the audio player
+    _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -106,8 +118,7 @@ class _GameWinScreenState extends State<GameWinScreen> {
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            
-                            'Game Won in ${(difficultyLevelNumber ~/ 60)}:${(difficultyLevelNumber % 60).toString().padLeft(2, '0')} mm:ss', // Access score here
+                            'Game Won in ${(difficultyLevelNumber ~/ 60)}:${(difficultyLevelNumber % 60).toString().padLeft(2, '0')} mm:ss',
                             style: GoogleFonts.dynaPuff(
                               fontSize: 20,
                               fontWeight: FontWeight.w400,
@@ -136,7 +147,7 @@ class _GameWinScreenState extends State<GameWinScreen> {
                                 MaterialPageRoute(
                                   builder: (context) => const DifficultyLevelScreen(),
                                 ),
-                                (Route<dynamic> route) => false, // This removes all previous routes
+                                (Route<dynamic> route) => false,
                               );
                             },
                             style: OutlinedButton.styleFrom(
@@ -165,15 +176,14 @@ class _GameWinScreenState extends State<GameWinScreen> {
               ),
             ),
           ),
-          // Full-screen confetti animation
           Align(
             alignment: Alignment.topCenter,
             child: ConfettiWidget(
               confettiController: _confettiController,
-              blastDirection: pi / 2, // Direction is downward
+              blastDirection: pi / 2,
               blastDirectionality: BlastDirectionality.explosive,
               shouldLoop: false,
-              gravity: 0.2, // Control how fast confetti falls
+              gravity: 0.2,
               colors: const [
                 Colors.green,
                 Colors.blue,
@@ -182,8 +192,8 @@ class _GameWinScreenState extends State<GameWinScreen> {
                 Colors.purple,
                 Colors.red,
                 Colors.lightBlue,
-              ], // Colors of the confetti
-              numberOfParticles: 60, // Adjust this for more/less confetti
+              ],
+              numberOfParticles: 60,
             ),
           ),
         ],
