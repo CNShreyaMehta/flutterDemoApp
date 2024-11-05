@@ -25,6 +25,7 @@ class _SudokuScreenState extends State<SudokuScreen>
   int? selectedRow;
   int? selectedCol;
   bool gameWon = false; // Track if the game has been won
+  bool gameOver = false;
   late ConfettiController _confettiController; // Confetti controller
   final List<AnimationController> _balloonControllers =
       []; // Controllers for multiple balloons
@@ -112,6 +113,28 @@ class _SudokuScreenState extends State<SudokuScreen>
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _elapsedTime++;
+        if (_elapsedTime == 10 && difficultyLevelText == 'Easy') {
+          Navigator.pushNamed(context, '/gameWin', arguments: {
+            'difficultyLevel': difficultyLevelText,
+            'gameStatus': 'loss',
+            'score': _elapsedTime,
+            'timeStamp': DateTime.now().toString(),
+          });
+        }else if (_elapsedTime == 120 && difficultyLevelText == 'Medium') {
+          Navigator.pushNamed(context, '/gameWin', arguments: {
+            'difficultyLevel': difficultyLevelText,
+            'gameStatus': 'loss',
+            'score': _elapsedTime,
+            'timeStamp': DateTime.now().toString(),
+          });
+        }else if (_elapsedTime == 180 && difficultyLevelText == 'Hard') {
+          Navigator.pushNamed(context, '/gameWin', arguments: {
+            'difficultyLevel': difficultyLevelText,
+            'gameStatus': 'loss',
+            'score': _elapsedTime,
+            'timeStamp': DateTime.now().toString(),
+          });
+        }
       });
     });
   }
@@ -224,7 +247,7 @@ class _SudokuScreenState extends State<SudokuScreen>
       selectedRow = null;
       selectedCol = null;
       gameWon = false;
-      
+      gameOver = false;
     });
     _startTimer();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -325,6 +348,7 @@ class _SudokuScreenState extends State<SudokuScreen>
           // ignore: use_build_context_synchronously
           Navigator.pushNamed(context, '/gameWin', arguments: {
             'difficultyLevel': difficultyLevelText,
+            'gameStatus': 'win',
             'score': _elapsedTime,
             'timeStamp': DateTime.now().toString(),
           });
@@ -415,7 +439,7 @@ class _SudokuScreenState extends State<SudokuScreen>
           Text(
             _formatTime(_elapsedTime),
             style: GoogleFonts.dynaPuff(
-                fontSize: 25, fontWeight: FontWeight.w600, color: Colors.white),
+                fontSize: 25, color: Colors.white),
           ),
           // IconButton(
           //   icon: const Icon(Icons.slow_motion_video),

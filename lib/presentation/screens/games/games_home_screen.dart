@@ -131,6 +131,18 @@ class GamesHomeScreen extends StatelessWidget {
           title: '2048',
           subtitle: 'Solve 2048 Puzzles',
           onTap: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'game is coming soon!',
+          style: TextStyle(
+              color: TColors.sudokuDarkBlue,
+              fontWeight: FontWeight.w500,
+              fontSize: 20), // Set text color to black
+        ),
+        backgroundColor: Colors.white, // Set background color to green
+      ),
+    );
             // Navigator.push(
             //   context,
             //   MaterialPageRoute(
