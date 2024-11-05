@@ -230,8 +230,8 @@ class _SudokuScreenState extends State<SudokuScreen>
                     content: Text(
                       'Your game is restart!',
                       style: TextStyle(
-                          color: TColors.sudocuDark,
-                          fontWeight: FontWeight.w400,
+                          color: TColors.sudokuDarkBlue,
+                          fontWeight: FontWeight.w500,
                           fontSize: 20), // Set text color to black
                     ),
                     backgroundColor: Colors.white, // Set background color to green
@@ -508,7 +508,7 @@ class _SudokuScreenState extends State<SudokuScreen>
                                                 ? TColors.sudokuLightBlue
                                                 : TColors.sudokuDarkBlue),
                                         color: isSelected
-                                            ? TColors.sudocuLight
+                                            ? (!isDark ? TColors.sudokuLightBlue : TColors.sudokuDarkBlue)
                                             : (colValue == 0
                                                 ? (isDark
                                                 ? TColors.sudokuLightBlue
@@ -535,7 +535,7 @@ class _SudokuScreenState extends State<SudokuScreen>
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                     Container(
                       alignment: Alignment.center,
                       child: Padding(

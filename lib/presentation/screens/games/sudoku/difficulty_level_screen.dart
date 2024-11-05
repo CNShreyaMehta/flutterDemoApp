@@ -64,7 +64,7 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/sudoku', arguments: {
                     'text': 'Easy',
-                    'number': 79,
+                    'number': 50,
                   });
                 },
                 text: 'Easy'),
@@ -73,7 +73,7 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/sudoku', arguments: {
                     'text': 'Medium',
-                    'number': 80,
+                    'number': 30,
                   });
                 },
                 text: 'Medium'),
@@ -82,7 +82,7 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/sudoku', arguments: {
                     'text': 'Hard',
-                    'number': 80,
+                    'number': 10,
                   });
                 },
                 text: 'Hard'),
@@ -113,9 +113,9 @@ class GradientButton extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         child: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(colors:
+            gradient: const LinearGradient(colors:
                     //!isDark ?
-                    [Colors.blue, const Color.fromARGB(255, 0, 47, 255)]
+                    [Colors.blue, Color.fromARGB(255, 0, 47, 255)]
                 // :
                 // [
                 //     const Color.fromARGB(255, 255, 255, 255),
@@ -146,7 +146,7 @@ class GradientButton extends StatelessWidget {
             child: Text(text,
                 style: GoogleFonts.dynaPuff(
                     fontSize: 22,
-                    fontWeight: FontWeight.w600,
+                    //fontWeight: FontWeight.w600,
                     color: Colors.white)),
           ),
         ),

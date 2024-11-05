@@ -26,13 +26,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return Scaffold(
         body: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 TColors.sudokuDarkBlue,
                 TColors.sudokuMediumBlue,
                 TColors.sudokuPrimaryBlue,
-                const Color.fromARGB(255, 255, 255, 255),
+                Color.fromARGB(255, 255, 255, 255),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -58,20 +58,21 @@ class _SplashScreenState extends State<SplashScreen> {
             duration: const Duration(milliseconds: 1600),
             opacity: animated ? 1 : 0,
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const SizedBox(height: 10,),
               Text(
                 "Welcome",
-                style: GoogleFonts.pacifico(
-                    fontSize: 40, fontWeight: FontWeight.w500, color: Colors.white),
+                style: GoogleFonts.dynaPuff(
+              fontSize: 40, color: Colors.white),
               ),
                Text(
                 "to",
-                style: GoogleFonts.pacifico(
-                    fontSize: 30, fontWeight: FontWeight.w500, color: Colors.white),
+                style: GoogleFonts.dynaPuff(
+              fontSize: 25, color: Colors.white),
               ),
                Text(
                 "Game Zone",
-                style:GoogleFonts.pacifico(
-                    fontSize: 30, fontWeight: FontWeight.w500, color: Colors.white),
+                style:GoogleFonts.dynaPuff(
+              fontSize: 25,color: Colors.white),
               )
             ]),
           ),

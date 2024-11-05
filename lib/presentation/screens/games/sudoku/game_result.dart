@@ -101,29 +101,29 @@ class _GameResultState extends State<GameResult> {
                       leading: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(emoji, style: TextStyle(fontSize: 24)),
+                          Text(emoji, style: const TextStyle(fontSize: 24)),
                          
                         ],
                       ),
                       onTap: () {},
                       title: Text(
-                        "Difficulty Level: ${result.difficultyLevel}",
-                        style: GoogleFonts.poppins(
+                        "Difficulty Level : ${result.difficultyLevel}",
+                        style: GoogleFonts.dynaPuff(
                             color: TColors.sudokuDarkBlue,
-                            fontWeight: FontWeight.bold),
+                            ),
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Play Time: ${(result.score ~/ 60)}:${(result.score % 60).toString().padLeft(2, '0')} mm:ss",
-                            style: GoogleFonts.poppins(
+                            "Play Time : ${(result.score ~/ 60)}:${(result.score % 60).toString().padLeft(2, '0')} mm:ss",
+                            style: GoogleFonts.dynaPuff(
                               color: Colors.black,
                             ),
                           ),
                           Text(
-                            "Date: ${result.timeStamp}",
-                            style: GoogleFonts.poppins(color: Colors.black),
+                            "Date : ${result.timeStamp}",
+                            style: GoogleFonts.dynaPuff(color: Colors.black),
                           ),
                         ],
                       ),

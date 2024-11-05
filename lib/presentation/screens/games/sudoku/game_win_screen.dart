@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:confetti/confetti.dart';
 import 'package:demo_app/presentation/screens/games/sudoku/difficulty_level_screen.dart';
 import 'package:demo_app/presentation/utils/constants/colors.dart';
@@ -17,7 +16,6 @@ class GameWinScreen extends StatefulWidget {
 
 class _GameWinScreenState extends State<GameWinScreen> {
   late ConfettiController _confettiController;
-  final AudioPlayer _audioPlayer = AudioPlayer();
   String difficultyLevelText = '';
   int difficultyLevelNumber = 0;
 
@@ -28,8 +26,6 @@ class _GameWinScreenState extends State<GameWinScreen> {
     _confettiController = ConfettiController(duration: const Duration(seconds: 50));
     _confettiController.play();
 
-    // Play success audio
-    _playSuccessMusic();
   }
 
   @override
@@ -45,14 +41,10 @@ class _GameWinScreenState extends State<GameWinScreen> {
     }
   }
 
-  void _playSuccessMusic() async {
-    await _audioPlayer.play('assets/audio/success.mp3', isLocal: true);
-  }
 
   @override
   void dispose() {
     _confettiController.dispose();
-    _audioPlayer.dispose(); // Dispose the audio player
     super.dispose();
   }
 

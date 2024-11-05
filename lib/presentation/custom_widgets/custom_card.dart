@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomCard extends StatelessWidget {
   final String imageUrl;
@@ -30,7 +31,7 @@ class CustomCard extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             image: DecorationImage(
-              image: NetworkImage(imageUrl),
+              image: AssetImage(imageUrl),
               fit: BoxFit.cover,
             ),
           ),
@@ -59,19 +60,13 @@ class CustomCard extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: GoogleFonts.dynaPuff(
+              fontSize: 16, fontWeight: FontWeight.w200, color: Colors.white),
                     ),
                     Text(
                       subtitle,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: GoogleFonts.dynaPuff(
+              fontSize: 10, color: Colors.white),
                     ),
                   ],
                 ),

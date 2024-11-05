@@ -276,110 +276,113 @@ class _game2048State extends State<game2048> {
         backgroundColor: isDark ? TColors.sudocuDark : TColors.sudocuLight,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Score : $_score',
-                style: GoogleFonts.dynaPuff(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w400,
-                    color: TColors.sudokuDarkBlue),
-              ),
-            ),
-            const SizedBox(
-              height: 0,
-            ),
-            SizedBox(
-              width: 300,
-              height: 300,
-              child: GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: _size,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
+      body: Container(
+        color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Score : $_score',
+                  style: GoogleFonts.dynaPuff(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w400,
+                      color: TColors.sudokuDarkBlue),
                 ),
-                itemBuilder: (BuildContext context, int index) {
-                  int row = index ~/ _size;
-                  int col = index % _size;
-                  int? value = _grid[row][col];
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: value == null
-                          ? TColors.sudokuVeryLightBlue
-                          : _tileColors[value]!,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        value == null ? '' : value.toString(),
-                        style: TextStyle(
-                          color: value != null && value >= 8
-                              ? Colors.white
-                              : Colors.grey[800],
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
+              ),
+              const SizedBox(
+                height: 0,
+              ),
+              SizedBox(
+                width: 300,
+                height: 300,
+                child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: _size,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    int row = index ~/ _size;
+                    int col = index % _size;
+                    int? value = _grid[row][col];
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: value == null
+                            ? TColors.sudokuVeryLightBlue
+                            : _tileColors[value]!,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(
+                          value == null ? '' : value.toString(),
+                          style: TextStyle(
+                            color: value != null && value >= 8
+                                ? Colors.white
+                                : Colors.grey[800],
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
+                    );
+                  },
+                  itemCount: _size * _size,
+                ),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: _gameOver ? null : swipeLeft,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: TColors
+                          .sudokuDarkBlue, // Set your background color here
                     ),
-                  );
-                },
-                itemCount: _size * _size,
+                    child: const Icon(Icons.arrow_back),
+                  ),
+                  ElevatedButton(
+                    onPressed: _gameOver ? null : swipeUp,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: TColors
+                          .sudokuDarkBlue, // Set your background color here
+                    ),
+                    child: const Icon(Icons.arrow_upward),
+                  ),
+                  ElevatedButton(
+                    onPressed: _gameOver ? null : swipeDown,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: TColors
+                          .sudokuDarkBlue, // Set your background color here
+                    ),
+                    child: const Icon(Icons.arrow_downward),
+                  ),
+                  ElevatedButton(
+                    onPressed: _gameOver ? null : swipeRight,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: TColors
+                          .sudokuDarkBlue, // Set your background color here
+                    ),
+                    child: const Icon(Icons.arrow_forward),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: _gameOver ? null : swipeLeft,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: TColors
-                        .sudokuDarkBlue, // Set your background color here
-                  ),
-                  child: const Icon(Icons.arrow_back),
-                ),
-                ElevatedButton(
-                  onPressed: _gameOver ? null : swipeUp,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: TColors
-                        .sudokuDarkBlue, // Set your background color here
-                  ),
-                  child: const Icon(Icons.arrow_upward),
-                ),
-                ElevatedButton(
-                  onPressed: _gameOver ? null : swipeDown,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: TColors
-                        .sudokuDarkBlue, // Set your background color here
-                  ),
-                  child: const Icon(Icons.arrow_downward),
-                ),
-                ElevatedButton(
-                  onPressed: _gameOver ? null : swipeRight,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: TColors
-                        .sudokuDarkBlue, // Set your background color here
-                  ),
-                  child: const Icon(Icons.arrow_forward),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            if (_gameOver)
-              const Text(
-                'Game Over',
-                style: TextStyle(fontSize: 24),
+              const SizedBox(
+                height: 16,
               ),
-          ],
+              if (_gameOver)
+                const Text(
+                  'Game Over',
+                  style: TextStyle(fontSize: 24),
+                ),
+            ],
+          ),
         ),
       ),
     );

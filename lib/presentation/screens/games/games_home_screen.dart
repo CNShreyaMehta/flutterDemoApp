@@ -20,7 +20,7 @@ class GamesHomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Game Zone',
+          'Brain Block',
           style: GoogleFonts.dynaPuff(
               fontSize: 20, fontWeight: FontWeight.w400, color: Colors.white),
         ),
@@ -112,7 +112,7 @@ class GamesHomeScreen extends StatelessWidget {
             // ),
            CustomCard(
           imageUrl:
-              'https://store-images.s-microsoft.com/image/apps.31165.14033640835834198.3a111547-8464-4bed-bf71-f0ad50a78b8a.5a7aa2c0-04eb-483a-b01b-0bfd55a6f185?mode=scale&q=90&h=1080&w=1920',
+              'assets/images/sudokuImg.jpeg',
           title: 'Sudoku Game',
           subtitle: 'Solve Sudoku Puzzles',
           onTap: () {
@@ -126,7 +126,7 @@ class GamesHomeScreen extends StatelessWidget {
         ),
             CustomCard(
           imageUrl:
-              'https://lh3.googleusercontent.com/ZV0IXSCwUofCS6RabwNJ_yp4vwcxEenGYwscnbWtESd-6xt7JYRc6-PpWJAXUtbhJC74SCDt6970NS1ftvHTeC47XGE=s1280-w1280-h800',
+              'assets/images/2048Img.png',
           title: '2048',
           subtitle: 'Solve 2048 Puzzles',
           onTap: () {
