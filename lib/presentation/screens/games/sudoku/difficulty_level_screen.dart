@@ -1,9 +1,9 @@
-import 'package:demo_app/presentation/utils/constants/colors.dart';
 import 'package:demo_app/presentation/controllers/Theme_controller.dart';
+import 'package:demo_app/presentation/utils/constants/colors.dart';
 import 'package:demo_app/presentation/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DifficultyLevelScreen extends StatefulWidget {
   const DifficultyLevelScreen({super.key});
@@ -113,16 +113,15 @@ class GradientButton extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         child: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: 
-              //!isDark ? 
-              [Colors.blue, const Color.fromARGB(255, 0, 47, 255)]
-                  // : 
-                  // [
-                  //     const Color.fromARGB(255, 255, 255, 255),
-                  //     const Color.fromARGB(255, 106, 133, 255)
-                  //   ],
-            ),
+            gradient: LinearGradient(colors:
+                    //!isDark ?
+                    [Colors.blue, const Color.fromARGB(255, 0, 47, 255)]
+                // :
+                // [
+                //     const Color.fromARGB(255, 255, 255, 255),
+                //     const Color.fromARGB(255, 106, 133, 255)
+                //   ],
+                ),
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(

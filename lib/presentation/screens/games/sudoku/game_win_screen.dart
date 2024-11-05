@@ -1,11 +1,12 @@
+import 'dart:math';
+
+import 'package:audioplayers/audioplayers.dart';
+import 'package:confetti/confetti.dart';
 import 'package:demo_app/presentation/screens/games/sudoku/difficulty_level_screen.dart';
 import 'package:demo_app/presentation/utils/constants/colors.dart';
 import 'package:demo_app/presentation/utils/helpers/helper_function.dart';
-import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'dart:math';
 
 class GameWinScreen extends StatefulWidget {
   const GameWinScreen({super.key});
