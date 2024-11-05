@@ -134,7 +134,7 @@ class GamesHomeScreen extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(
-          'game is coming soon!',
+          'Game is coming soon!',
           style: TextStyle(
               color: TColors.sudokuDarkBlue,
               fontWeight: FontWeight.w500,

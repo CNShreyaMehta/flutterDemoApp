@@ -113,21 +113,24 @@ class _SudokuScreenState extends State<SudokuScreen>
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _elapsedTime++;
-        if (_elapsedTime == 10 && difficultyLevelText == 'Easy') {
+        // six minutes
+        if (_elapsedTime == 360 && difficultyLevelText == 'Easy') {  
           Navigator.pushNamed(context, '/gameWin', arguments: {
             'difficultyLevel': difficultyLevelText,
             'gameStatus': 'loss',
             'score': _elapsedTime,
             'timeStamp': DateTime.now().toString(),
           });
-        }else if (_elapsedTime == 120 && difficultyLevelText == 'Medium') {
+          // eight minutes
+        }else if (_elapsedTime == 480 && difficultyLevelText == 'Medium') {
           Navigator.pushNamed(context, '/gameWin', arguments: {
             'difficultyLevel': difficultyLevelText,
             'gameStatus': 'loss',
             'score': _elapsedTime,
             'timeStamp': DateTime.now().toString(),
           });
-        }else if (_elapsedTime == 180 && difficultyLevelText == 'Hard') {
+          // ten minutes
+        }else if (_elapsedTime == 600 && difficultyLevelText == 'Hard') {
           Navigator.pushNamed(context, '/gameWin', arguments: {
             'difficultyLevel': difficultyLevelText,
             'gameStatus': 'loss',
