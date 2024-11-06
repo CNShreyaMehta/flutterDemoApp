@@ -114,6 +114,31 @@ class _SudokuScreenState extends State<SudokuScreen>
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _elapsedTime++;
+        // six minutes
+        if (_elapsedTime == 360 && difficultyLevelText == 'Easy') {  
+          Navigator.pushNamed(context, '/gameWin', arguments: {
+            'difficultyLevel': difficultyLevelText,
+            'gameStatus': 'loss',
+            'score': _elapsedTime,
+            'timeStamp': DateTime.now().toString(),
+          });
+          // eight minutes
+        }else if (_elapsedTime == 480 && difficultyLevelText == 'Medium') {
+          Navigator.pushNamed(context, '/gameWin', arguments: {
+            'difficultyLevel': difficultyLevelText,
+            'gameStatus': 'loss',
+            'score': _elapsedTime,
+            'timeStamp': DateTime.now().toString(),
+          });
+          // ten minutes
+        }else if (_elapsedTime == 600 && difficultyLevelText == 'Hard') {
+          Navigator.pushNamed(context, '/gameWin', arguments: {
+            'difficultyLevel': difficultyLevelText,
+            'gameStatus': 'loss',
+            'score': _elapsedTime,
+            'timeStamp': DateTime.now().toString(),
+          });
+        }
       });
     });
   }
@@ -338,6 +363,7 @@ class _SudokuScreenState extends State<SudokuScreen>
           // ignore: use_build_context_synchronously
           Navigator.pushNamed(context, '/gameWin', arguments: {
             'difficultyLevel': difficultyLevelText,
+            'gameStatus': 'win',
             'score': _elapsedTime,
             'timeStamp': DateTime.now().toString(),
           });
@@ -432,7 +458,7 @@ class _SudokuScreenState extends State<SudokuScreen>
           Text(
             _formatTime(_elapsedTime),
             style: GoogleFonts.dynaPuff(
-                fontSize: 25, fontWeight: FontWeight.w600, color: Colors.white),
+                fontSize: 25, color: Colors.white),
           ),
           // RESOLVE GAME Button
           // IconButton(

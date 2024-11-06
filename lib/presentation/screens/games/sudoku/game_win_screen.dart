@@ -106,7 +106,7 @@ class _GameWinScreenState extends State<GameWinScreen> {
                             gameStatus == 'win' ? 'Congratulations!' : 'Game Over',
                             style: GoogleFonts.dynaPuff(
                               fontSize: 30,
-                              fontWeight: FontWeight.w600,
+                              
                               color: 
                               gameStatus == 'win' ?
                               isDark
@@ -123,8 +123,8 @@ class _GameWinScreenState extends State<GameWinScreen> {
                           Text(
                             gameStatus == 'win' ? 'You Won!' : 'Better luck next time!',
                             style: GoogleFonts.dynaPuff(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 23,
+                              
                               color: isDark
                                   ? TColors.sudokuDarkBlue
                                   : TColors.sudocuLight,
@@ -175,9 +175,8 @@ class _GameWinScreenState extends State<GameWinScreen> {
                             ),
                             child: Text(
                               'Go to Main',
-                              style: GoogleFonts.poppins(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
+                              style: GoogleFonts.dynaPuff(
+                                fontSize: 16,
                                 color: isDark
                                     ? TColors.sudokuDarkBlue
                                     : TColors.sudocuLight,
