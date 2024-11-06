@@ -20,6 +20,7 @@ class SudokuScreen extends StatefulWidget {
 
 class _SudokuScreenState extends State<SudokuScreen>
     with TickerProviderStateMixin {
+  List<Map<String, int>> undoStack = []; // Stack to track moves for undo
   List<List<int>> gridData = [];
   List<List<bool>> fixedCells = [];
   int? selectedRow;
@@ -143,6 +144,17 @@ class _SudokuScreenState extends State<SudokuScreen>
     super.dispose();
   }
 
+  void undoLastMove() {
+    if (undoStack.isNotEmpty) {
+      final lastMove = undoStack.removeLast();
+      setState(() {
+        gridData[lastMove['row']!][lastMove['col']!] = 0;
+        selectedRow = lastMove['row'];
+        selectedCol = lastMove['col'];
+      });
+    }
+  }
+
   List<List<int>> generateSudoku(dynamic a) {
     List<List<int>> grid = List.generate(9, (_) => List.generate(9, (_) => 0));
     solveSudoku(grid);
@@ -226,7 +238,6 @@ class _SudokuScreenState extends State<SudokuScreen>
       selectedCol = null;
       gameWon = false;
       _hasStarted = false; // Reset hasStarted to false
-
     });
     _startTimer();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -363,10 +374,12 @@ class _SudokuScreenState extends State<SudokuScreen>
                   gridData, selectedRow!, selectedCol!, numberToPlace)) {
                 setState(() {
                   gridData[selectedRow!][selectedCol!] = numberToPlace;
+                  undoStack.add({'row': selectedRow!, 'col': selectedCol!});
                   selectedRow = null;
                   selectedCol = null;
                   checkGameWon();
-                  _hasStarted = true; // Enable restart button after first cell click
+                  _hasStarted =
+                      true; // Enable restart button after first cell click
                 });
 //FIXME
                 if (gridData[0][0] != 0) {}
@@ -411,24 +424,47 @@ class _SudokuScreenState extends State<SudokuScreen>
         ),
         //centerTitle: true, // Center the title
         backgroundColor: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+        automaticallyImplyLeading: false, // back button hidden
+
         iconTheme: const IconThemeData(
             color: Colors.white), // Set back arrow color to white
-
         actions: [
           Text(
             _formatTime(_elapsedTime),
             style: GoogleFonts.dynaPuff(
                 fontSize: 25, fontWeight: FontWeight.w600, color: Colors.white),
           ),
+          // RESOLVE GAME Button
           // IconButton(
           //   icon: const Icon(Icons.slow_motion_video),
           //   onPressed: solveData,
           // ),
-          IconButton(
-            icon: const Icon(Icons.restore),
-            color: Colors.white,
+          SizedBox(width: MediaQuery.of(context).size.width * 0.15,),
+          IconButton.filledTonal(
+            tooltip: 'Undo your last input',
+            iconSize: 25,
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.white, // Set your desired color here
+            ),
+            icon: const Icon(Icons.undo),
+            color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
             // onPressed: resetValue,
-            onPressed: _hasStarted ? resetValue : null, // Disable when _hasStarted is false
+            onPressed: _hasStarted
+                ? undoLastMove
+                : null, // Disable when _hasStarted is false
+          ),
+          IconButton.filledTonal(
+            color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+            iconSize: 25,
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.white, // Set your desired color here
+            ),
+            tooltip: 'You can reset your game!',
+            icon: const Icon(Icons.refresh),
+            // onPressed: resetValue,
+            onPressed: _hasStarted
+                ? resetValue
+                : null, // Disable when _hasStarted is false
           )
         ],
       ),
