@@ -6,9 +6,11 @@ import 'package:demo_app/presentation/controllers/sudoku_result.dart';
 import 'package:demo_app/presentation/utils/constants/colors.dart';
 import 'package:demo_app/presentation/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class SudokuScreen extends StatefulWidget {
   const SudokuScreen({super.key});
@@ -38,6 +40,12 @@ class _SudokuScreenState extends State<SudokuScreen>
   //late String difficultyLevel;
   String difficultyLevelText = '';
   int difficultyLevelNumber = 0;
+  GlobalKey _one = GlobalKey();
+  GlobalKey _two = GlobalKey();
+  GlobalKey _three = GlobalKey();
+  final SudokuResult isShowCaseComplete =
+      Get.put(SudokuResult());
+        bool _isLoaded = false; // To track when the async operation is complete
 
   @override
   void didChangeDependencies() {
@@ -83,7 +91,7 @@ class _SudokuScreenState extends State<SudokuScreen>
   @override
   void initState() {
     super.initState();
-    _startTimer();
+    //_startTimer();
 
     _confettiController = ConfettiController(
         duration: const Duration(seconds: 5)); // Initialize confetti controller
@@ -105,8 +113,29 @@ class _SudokuScreenState extends State<SudokuScreen>
       _balloonControllers.add(controller);
       _balloonAnimations.add(animation);
     }
-
     //gridData = generateSudoku(difficultyLevelNumber);
+    
+    _initializeAsync();
+  }
+   // Define the async method
+  Future<void> _initializeAsync() async {
+    // Perform async operations here, e.g., API call, data loading
+    bool isComplete = await isShowCaseComplete.isCompleteShowCaseWidget();
+    //await Future.delayed(const Duration(seconds: 2)); // Simulate async operation
+    print('Async operation completed!');
+    print("isShowCaseComplete in Sudoku screen >>> $isComplete");
+    if (!isComplete) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ShowCaseWidget.of(context).startShowCase([_one, _two, _three]);
+    });
+    // Update the state to rebuild the widget after async completes
+    setState(() {
+      _isLoaded = true; // Set this to true to trigger the one-time rebuild
+    });
+    }else if (isComplete) {
+      print("???>> $_isLoaded ");
+        _startTimer();
+    }
   }
 
   void _startTimer() {
@@ -115,7 +144,7 @@ class _SudokuScreenState extends State<SudokuScreen>
       setState(() {
         _elapsedTime++;
         // six minutes
-        if (_elapsedTime == 360 && difficultyLevelText == 'Easy') {  
+        if (_elapsedTime == 360 && difficultyLevelText == 'Easy') {
           Navigator.pushNamed(context, '/gameWin', arguments: {
             'difficultyLevel': difficultyLevelText,
             'gameStatus': 'loss',
@@ -123,7 +152,7 @@ class _SudokuScreenState extends State<SudokuScreen>
             'timeStamp': DateTime.now().toString(),
           });
           // eight minutes
-        }else if (_elapsedTime == 480 && difficultyLevelText == 'Medium') {
+        } else if (_elapsedTime == 480 && difficultyLevelText == 'Medium') {
           Navigator.pushNamed(context, '/gameWin', arguments: {
             'difficultyLevel': difficultyLevelText,
             'gameStatus': 'loss',
@@ -131,7 +160,7 @@ class _SudokuScreenState extends State<SudokuScreen>
             'timeStamp': DateTime.now().toString(),
           });
           // ten minutes
-        }else if (_elapsedTime == 600 && difficultyLevelText == 'Hard') {
+        } else if (_elapsedTime == 600 && difficultyLevelText == 'Hard') {
           Navigator.pushNamed(context, '/gameWin', arguments: {
             'difficultyLevel': difficultyLevelText,
             'gameStatus': 'loss',
@@ -457,41 +486,51 @@ class _SudokuScreenState extends State<SudokuScreen>
         actions: [
           Text(
             _formatTime(_elapsedTime),
-            style: GoogleFonts.dynaPuff(
-                fontSize: 25, color: Colors.white),
+            style: GoogleFonts.dynaPuff(fontSize: 25, color: Colors.white),
           ),
           // RESOLVE GAME Button
           // IconButton(
           //   icon: const Icon(Icons.slow_motion_video),
           //   onPressed: solveData,
           // ),
-          SizedBox(width: MediaQuery.of(context).size.width * 0.15,),
-          IconButton.filledTonal(
-            tooltip: 'Undo your last input',
-            iconSize: 25,
-            style: IconButton.styleFrom(
-              backgroundColor: Colors.white, // Set your desired color here
-            ),
-            icon: const Icon(Icons.undo),
-            color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
-            // onPressed: resetValue,
-            onPressed: _hasStarted
-                ? undoLastMove
-                : null, // Disable when _hasStarted is false
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.15,
           ),
-          IconButton.filledTonal(
-            color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
-            iconSize: 25,
-            style: IconButton.styleFrom(
-              backgroundColor: Colors.white, // Set your desired color here
+          Showcase(
+            key: _two,
+            description: 'Undo your last input',
+            child: IconButton.filledTonal(
+              tooltip: 'Undo your last input',
+              iconSize: 25,
+              style: IconButton.styleFrom(
+                backgroundColor: Colors.white, // Set your desired color here
+              ),
+              icon: const Icon(Icons.undo),
+              color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+              // onPressed: resetValue,
+              onPressed: _hasStarted
+                  ? undoLastMove
+                  : null, // Disable when _hasStarted is false
             ),
-            tooltip: 'You can reset your game!',
-            icon: const Icon(Icons.refresh),
-            // onPressed: resetValue,
-            onPressed: _hasStarted
-                ? resetValue
-                : null, // Disable when _hasStarted is false
-          )
+          ),
+          Showcase(
+            key: _three,
+            description: 'Reset Your Game',
+            child: IconButton.filledTonal(
+              color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+              iconSize: 25,
+              style: IconButton.styleFrom(
+                backgroundColor: Colors.white, // Set your desired color here
+              ),
+              tooltip: 'You can reset your game!',
+              icon: const Icon(Icons.refresh),
+              // onPressed: resetValue,
+              onPressed: _hasStarted
+                  ? resetValue
+                  : null, // Disable when _hasStarted is false
+            ),
+          ),
+          const SizedBox(width: 10),
         ],
       ),
       body: Container(
@@ -513,93 +552,97 @@ class _SudokuScreenState extends State<SudokuScreen>
                     //   ),
                     // ]),
                     const SizedBox(height: 10),
-                    Container(
-                      decoration: const BoxDecoration(
-                        boxShadow: [
-                          //   BoxShadow(
-                          //  color: isDark ? const Color.fromARGB(255, 136, 134, 134) : TColors.sudokuDarkBlue.withOpacity(0.3),
-                          //     spreadRadius: isDark ? 1 : 1,
-                          //     blurRadius: isDark ? 10 : 12,
-                          //     offset: const Offset(0, 3), // changes position of shadow
-                          //   ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Column(
-                          children: gridData.map((row) {
-                            int rowIndex = gridData.indexOf(row);
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: row.asMap().entries.map((entry) {
-                                int colIndex = entry.key;
-                                int colValue = entry.value;
+                    Showcase(
+                      key: _one,
+                      description: 'Your Game Board',
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          boxShadow: [
+                            //   BoxShadow(
+                            //  color: isDark ? const Color.fromARGB(255, 136, 134, 134) : TColors.sudokuDarkBlue.withOpacity(0.3),
+                            //     spreadRadius: isDark ? 1 : 1,
+                            //     blurRadius: isDark ? 10 : 12,
+                            //     offset: const Offset(0, 3), // changes position of shadow
+                            //   ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Column(
+                            children: gridData.map((row) {
+                              int rowIndex = gridData.indexOf(row);
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: row.asMap().entries.map((entry) {
+                                  int colIndex = entry.key;
+                                  int colValue = entry.value;
 
-                                bool isSelected = (selectedRow == rowIndex &&
-                                    selectedCol == colIndex);
-                                bool isFixed = fixedCells[rowIndex][colIndex];
+                                  bool isSelected = (selectedRow == rowIndex &&
+                                      selectedCol == colIndex);
+                                  bool isFixed = fixedCells[rowIndex][colIndex];
 
-                                return InkWell(
-                                  onTap: colValue > 0
-                                      ? null
-                                      : () {
-                                          if (!isFixed) {
-                                            // _stopTimer();
-                                            setState(() {
-                                              selectedRow = rowIndex;
-                                              selectedCol = colIndex;
-                                            });
-                                          }
-                                        },
-                                  child: Container(
-                                    margin: const EdgeInsets.only(
-                                        bottom: .8, left: .8),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            width: .4, color: Colors.black),
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(5),
-                                        )),
+                                  return InkWell(
+                                    onTap: colValue > 0
+                                        ? null
+                                        : () {
+                                            if (!isFixed) {
+                                              // _stopTimer();
+                                              setState(() {
+                                                selectedRow = rowIndex;
+                                                selectedCol = colIndex;
+                                              });
+                                            }
+                                          },
                                     child: Container(
-                                      width: 38.8,
-                                      height: 38.8,
+                                      margin: const EdgeInsets.only(
+                                          bottom: .8, left: .8),
                                       decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(5)),
-                                        border: Border.all(
-                                            width: .8,
-                                            color: !isDark
-                                                ? TColors.sudokuLightBlue
-                                                : TColors.sudokuDarkBlue),
-                                        color: isSelected
-                                            ? (!isDark
-                                                ? TColors.sudokuLightBlue
-                                                : TColors.sudokuDarkBlue)
-                                            : (colValue == 0
-                                                ? (isDark
-                                                    ? TColors.sudokuLightBlue
-                                                    : TColors.sudokuDarkBlue)
-                                                : (isFixed
-                                                    ? const Color.fromARGB(
-                                                        255, 255, 255, 255)
-                                                    : const Color.fromARGB(
-                                                        232, 123, 239, 168))),
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        colValue > 0 ? '$colValue' : '',
-                                        style: GoogleFonts.dynaPuff(
-                                          fontSize: 18,
-                                          color: isDark
-                                              ? TColors.sudokuDarkBlue
-                                              : TColors.sudocuLight,
+                                          border: Border.all(
+                                              width: .4, color: Colors.black),
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(5),
+                                          )),
+                                      child: Container(
+                                        width: 38.8,
+                                        height: 38.8,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(5)),
+                                          border: Border.all(
+                                              width: .8,
+                                              color: !isDark
+                                                  ? TColors.sudokuLightBlue
+                                                  : TColors.sudokuDarkBlue),
+                                          color: isSelected
+                                              ? (!isDark
+                                                  ? TColors.sudokuLightBlue
+                                                  : TColors.sudokuDarkBlue)
+                                              : (colValue == 0
+                                                  ? (isDark
+                                                      ? TColors.sudokuLightBlue
+                                                      : TColors.sudokuDarkBlue)
+                                                  : (isFixed
+                                                      ? const Color.fromARGB(
+                                                          255, 255, 255, 255)
+                                                      : const Color.fromARGB(
+                                                          232, 123, 239, 168))),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          colValue > 0 ? '$colValue' : '',
+                                          style: GoogleFonts.dynaPuff(
+                                            fontSize: 18,
+                                            color: isDark
+                                                ? TColors.sudokuDarkBlue
+                                                : TColors.sudocuLight,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              }).toList(),
-                            );
-                          }).toList(),
+                                  );
+                                }).toList(),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
                     ),
@@ -687,7 +730,7 @@ class NumberBox extends StatelessWidget {
           text ?? '',
           style: GoogleFonts.dynaPuff(
             fontSize: 28,
-            fontWeight: FontWeight.bold,
+            //fontWeight: FontWeight.bold,
             color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
           ),
         ),

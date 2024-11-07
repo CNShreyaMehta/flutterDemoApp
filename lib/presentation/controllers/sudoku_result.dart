@@ -1,16 +1,20 @@
 import 'dart:convert'; // For JSON encoding and decoding
 
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SudokuResult {
-  final String difficultyLevel;
-  final int score;
-  final String timeStamp;
+class SudokuResult extends GetxController {
+  static SudokuResult get instance => Get.find();
+
+  dynamic  difficultyLevel;
+   dynamic score;
+   dynamic timeStamp;
+  static const String showcaseviewKey = 'isCompleteShowCaseWidget';
 
   SudokuResult({
-    required this.difficultyLevel,
-    required this.score,
-    required this.timeStamp,
+     this.difficultyLevel,
+     this.score,
+     this.timeStamp,
   });
 
   // Convert SudokuResult object to a Map for JSON encoding
@@ -33,30 +37,42 @@ class SudokuResult {
 
   // Add the SudokuResult object to SharedPreferences
   Future<void> addSudokuResult(SudokuResult result) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  // Retrieve the existing list
-  List<String> existingResults = prefs.getStringList('sudoku_result') ?? [];
+    // Retrieve the existing list
+    List<String> existingResults = prefs.getStringList('sudoku_result') ?? [];
 
-  // Convert the new result object to JSON and add it to the list
-  existingResults.add(jsonEncode(result.toMap()));
+    // Convert the new result object to JSON and add it to the list
+    existingResults.add(jsonEncode(result.toMap()));
 
-  // Save the updated list to SharedPreferences
-  await prefs.setStringList('sudoku_result', existingResults);
-}
+    // Save the updated list to SharedPreferences
+    await prefs.setStringList('sudoku_result', existingResults);
+  }
 
   // Get the list of SudokuResult objects
   Future<List<SudokuResult>> getSudokuResults() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  // Get the stored list of JSON strings
-  List<String> savedResults = prefs.getStringList('sudoku_result') ?? [];
+    // Get the stored list of JSON strings
+    List<String> savedResults = prefs.getStringList('sudoku_result') ?? [];
 
-  // Decode each JSON string and convert it to a SudokuResult object
-  List<SudokuResult> results = savedResults
-      .map((result) => SudokuResult.fromMap(jsonDecode(result)))
-      .toList();
-  return results;
-}
+    // Decode each JSON string and convert it to a SudokuResult object
+    List<SudokuResult> results = savedResults
+        .map((result) => SudokuResult.fromMap(jsonDecode(result)))
+        .toList();
+    return results;
+  }
 
+// Method to check if onboarding is complete
+  Future<bool> isCompleteShowCaseWidget() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(showcaseviewKey) ?? false;
+  }
+
+  // Method to set onboarding as complete
+  Future<void> completeShowCaseWidget() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(showcaseviewKey, true);
+    print('Showcase Widget complete');
+  }
 }

@@ -13,7 +13,6 @@ class SplashController extends GetxController {
     print(' >>>>> ????? $isComplete');
     isComplete ? navigateToGameHome() : navigateToOnBoarding();
   }
-
   void navigateToOnBoarding() async {
     await Future.delayed(const Duration(seconds: 4));
     Get.offNamed(AppRoutes.onboarding);
