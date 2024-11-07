@@ -19,7 +19,7 @@ class TElevatedButtonTheme {
       textStyle: const TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
-        fontFamily: 'Poppins',
+        //fontFamily: 'Poppins',
       ),
     ),
   );
@@ -37,7 +37,7 @@ class TElevatedButtonTheme {
       textStyle: const TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
-        fontFamily: 'Poppins',
+        //fontFamily: 'Poppins',
       ),
     ),
   );

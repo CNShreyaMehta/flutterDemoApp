@@ -1,18 +1,27 @@
 import 'package:demo_app/presentation/controllers/login_controller.dart';
+import 'package:demo_app/presentation/controllers/sudoku_result.dart';
 import 'package:demo_app/presentation/routes/app_pages.dart';
 import 'package:demo_app/presentation/screens/home_screen.dart';
 import 'package:demo_app/presentation/screens/splash_screen.dart';
 import 'package:demo_app/presentation/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
   final LoginController authController = Get.put(LoginController());
-
+  final SudokuResult showCaseController =
+      Get.put(SudokuResult());
+      
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return ShowCaseWidget(
+      onFinish: () {
+        //print('ShowCaseWidget on finish');
+        showCaseController.completeShowCaseWidget();
+      },
+      builder: (context) => GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Example App',
       initialRoute: AppPages.beforeAuthentication,
@@ -33,6 +42,7 @@ class MyApp extends StatelessWidget {
               :  SplashScreen());  //LoginScreen()
         },
       ),
+            ),
     );
   }
 }
