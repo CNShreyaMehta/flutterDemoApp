@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:confetti/confetti.dart'; // Import confetti package
 import 'package:demo_app/presentation/controllers/sudoku_result.dart';
 import 'package:demo_app/presentation/utils/constants/colors.dart';
@@ -27,7 +28,10 @@ class _SudokuScreenState extends State<SudokuScreen>
   int? selectedCol;
   bool gameWon = false; // Track if the game has been won
   bool _hasStarted = false;
+  bool isInvalidMove = false;  // Track invalid move status
+
   late ConfettiController _confettiController; // Confetti controller
+  late AudioPlayer _audioPlayer;
   final List<AnimationController> _balloonControllers =
       []; // Controllers for multiple balloons
   final List<Animation<double>> _balloonAnimations =
@@ -84,7 +88,7 @@ class _SudokuScreenState extends State<SudokuScreen>
   void initState() {
     super.initState();
     _startTimer();
-
+    _audioPlayer = AudioPlayer();
     _confettiController = ConfettiController(
         duration: const Duration(seconds: 5)); // Initialize confetti controller
 
@@ -152,6 +156,24 @@ class _SudokuScreenState extends State<SudokuScreen>
     }
   }
 
+Future<void> _playSuccessMusic() async {
+    try {
+      _audioPlayer.setReleaseMode(ReleaseMode.stop);
+      await _audioPlayer.setSource(AssetSource('audio/right.mp3'));
+      await _audioPlayer.resume();
+    } catch (e) {
+      print("Error playing audio: $e");
+    }
+  }
+Future<void> _playFailMusic() async {
+    try {
+      _audioPlayer.setReleaseMode(ReleaseMode.stop);
+      await _audioPlayer.setSource(AssetSource('audio/wrong.mp3'));
+      await _audioPlayer.resume();
+    } catch (e) {
+      print("Error playing audio: $e");
+    }
+  }
   String _formatTime(int seconds) {
     final minutes = (seconds / 60).floor();
     final secs = seconds % 60;
@@ -160,6 +182,7 @@ class _SudokuScreenState extends State<SudokuScreen>
 
   @override
   void dispose() {
+    _audioPlayer.dispose();
     _confettiController.dispose(); // Dispose confetti controller
     for (var controller in _balloonControllers) {
       controller.dispose(); // Dispose each balloon controller
@@ -398,7 +421,10 @@ class _SudokuScreenState extends State<SudokuScreen>
 
               if (isValidMove(
                   gridData, selectedRow!, selectedCol!, numberToPlace)) {
+                    _playSuccessMusic();
+                    print('playing music');
                 setState(() {
+                  isInvalidMove = false;
                   gridData[selectedRow!][selectedCol!] = numberToPlace;
                   undoStack.add({'row': selectedRow!, 'col': selectedCol!});
                   selectedRow = null;
@@ -407,13 +433,18 @@ class _SudokuScreenState extends State<SudokuScreen>
                   _hasStarted =
                       true; // Enable restart button after first cell click
                 });
+                
 //FIXME
                 if (gridData[0][0] != 0) {}
                 // if() check empty grid data or not if not then call solveddata anomation
               } else {
-                // Optionally, you can show a message or visual feedback for invalid moves
+                _playFailMusic();
+                setState(() {
+              isInvalidMove = true;  // Set invalid move status
+            });
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
+                    duration: Duration(seconds: 1), // Duration of the SnackBar
                     content: Text(
                       'Invalid Move!',
                       style: TextStyle(

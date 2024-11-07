@@ -269,9 +269,12 @@ class _game2048State extends State<game2048> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '2048',
+          '2048 Fusion Frenzy',
           style: GoogleFonts.dynaPuff(
-              fontSize: 20, fontWeight: FontWeight.w400, color: Colors.white),
+            fontSize: 28,
+            //fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
         ),
         backgroundColor: isDark ? TColors.sudocuDark : TColors.sudocuLight,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -280,20 +283,20 @@ class _game2048State extends State<game2048> {
         color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   'Score : $_score',
                   style: GoogleFonts.dynaPuff(
-                      fontSize: 30,
+                      fontSize: 25,
                       fontWeight: FontWeight.w400,
                       color: TColors.sudokuDarkBlue),
                 ),
               ),
-              const SizedBox(
-                height: 0,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
               ),
               SizedBox(
                 width: 300,
@@ -312,7 +315,9 @@ class _game2048State extends State<game2048> {
                     return Container(
                       decoration: BoxDecoration(
                         color: value == null
-                            ? TColors.sudokuVeryLightBlue
+                            ? isDark
+                                ? TColors.sudokuLightBlue
+                                : TColors.sudokuDarkBlue
                             : _tileColors[value]!,
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -333,8 +338,8 @@ class _game2048State extends State<game2048> {
                   itemCount: _size * _size,
                 ),
               ),
-              const SizedBox(
-                height: 16,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.05,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -342,34 +347,72 @@ class _game2048State extends State<game2048> {
                   ElevatedButton(
                     onPressed: _gameOver ? null : swipeLeft,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: TColors
-                          .sudokuDarkBlue, // Set your background color here
+                       shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12), // <-- Radius
+                        ),
+                      backgroundColor: isDark
+                          ? TColors.sudokuLightBlue
+                          : TColors.sudokuDarkBlue,
+                      // Set your background color here
                     ),
-                    child: const Icon(Icons.arrow_back),
+                    child: Icon(Icons.arrow_back,
+                    size: 30,
+                        color: !isDark
+                            ? TColors.sudokuLightBlue
+                            : TColors.sudokuDarkBlue),
                   ),
                   ElevatedButton(
                     onPressed: _gameOver ? null : swipeUp,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: TColors
-                          .sudokuDarkBlue, // Set your background color here
+                       shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12), // <-- Radius
+                        ),
+                        backgroundColor: isDark
+                            ? TColors.sudokuLightBlue
+                            : TColors
+                                .sudokuDarkBlue // Set your background color here
+                        ),
+                    child: Icon(
+                      size: 30,
+                      Icons.arrow_upward,
+                      color: !isDark
+                          ? TColors.sudokuLightBlue
+                          : TColors.sudokuDarkBlue,
                     ),
-                    child: const Icon(Icons.arrow_upward),
                   ),
                   ElevatedButton(
                     onPressed: _gameOver ? null : swipeDown,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: TColors
-                          .sudokuDarkBlue, // Set your background color here
+                       shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12), // <-- Radius
+                        ),
+                        backgroundColor: isDark
+                            ? TColors.sudokuLightBlue
+                            : TColors.sudokuDarkBlue),
+                    child: Icon(
+                       size: 30,
+                      Icons.arrow_downward,
+                      color: !isDark
+                          ? TColors.sudokuLightBlue
+                          : TColors.sudokuDarkBlue,
                     ),
-                    child: const Icon(Icons.arrow_downward),
                   ),
                   ElevatedButton(
                     onPressed: _gameOver ? null : swipeRight,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: TColors
-                          .sudokuDarkBlue, // Set your background color here
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12), // <-- Radius
+                        ),
+                        backgroundColor: isDark
+                            ? TColors.sudokuLightBlue
+                            : TColors.sudokuDarkBlue),
+                    child: Icon(
+                      Icons.arrow_forward,
+                      size: 30,
+                      color: !isDark
+                          ? TColors.sudokuLightBlue
+                          : TColors.sudokuDarkBlue,
                     ),
-                    child: const Icon(Icons.arrow_forward),
                   ),
                 ],
               ),

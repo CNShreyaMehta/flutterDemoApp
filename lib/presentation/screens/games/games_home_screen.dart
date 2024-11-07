@@ -1,5 +1,6 @@
 import 'package:demo_app/presentation/controllers/Theme_controller.dart';
 import 'package:demo_app/presentation/custom_widgets/custom_card.dart';
+import 'package:demo_app/presentation/screens/games/2048/game_2048.dart';
 import 'package:demo_app/presentation/screens/games/sudoku/difficulty_level_screen.dart';
 import 'package:demo_app/presentation/utils/constants/colors.dart';
 import 'package:demo_app/presentation/utils/helpers/helper_function.dart';
@@ -131,24 +132,25 @@ class GamesHomeScreen extends StatelessWidget {
           title: '2048',
           subtitle: 'Solve 2048 Puzzles',
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Game is coming soon!',
-          style: TextStyle(
-              color: TColors.sudokuDarkBlue,
-              fontWeight: FontWeight.w500,
-              fontSize: 20), // Set text color to black
-        ),
-        backgroundColor: Colors.white, // Set background color to green
-      ),
-    );
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => const game2048(),
-            //   ),
-            // );
+            // Navigator.pushNamed(context, '/game2048');
+    //         ScaffoldMessenger.of(context).showSnackBar(
+    //   const SnackBar(
+    //     content: Text(
+    //       'Game is coming soon!',
+    //       style: TextStyle(
+    //           color: TColors.sudokuDarkBlue,
+    //           fontWeight: FontWeight.w500,
+    //           fontSize: 20), // Set text color to black
+    //     ),
+    //     backgroundColor: Colors.white, // Set background color to green
+    //   ),
+    // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const game2048(),
+              ),
+            );
             // AlertDialog(
             //       title: Text('Alert'),
             //       content: Text('This is a simple alert dialog.'),

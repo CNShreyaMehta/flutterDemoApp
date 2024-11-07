@@ -17,4 +17,5 @@ class AppRoutes {
   static const gameRoule = '/game-roule';
   static const gameWin = '/gameWin';
   static const gameResult = '/gameResult';
+  static const game2048 = '/game2048';
 }

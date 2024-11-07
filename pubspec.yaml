@@ -84,6 +84,7 @@ flutter:
     - assets/images/
     - assets/audio/
     - assets/audio/success.mp3
+    - assets/audio/right.mp3
     - assets/images/onboarding_images/
     - assets/fonts/DynaPuff-Regular.ttf
   # An image asset can refer to one or more resolution-specific "variants", see
