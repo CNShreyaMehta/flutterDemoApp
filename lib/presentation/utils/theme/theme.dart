@@ -9,7 +9,7 @@ class TAppTheme {
 
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
-    fontFamily: GoogleFonts.poppins().fontFamily,
+    //fontFamily: GoogleFonts.poppins().fontFamily,
     brightness: Brightness.light,
     primaryColor: Colors.blue,
     scaffoldBackgroundColor: Colors.white,

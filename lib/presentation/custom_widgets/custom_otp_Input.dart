@@ -37,7 +37,7 @@ class CustomOtpInput extends StatelessWidget {
               "Verification Code",
               style: GoogleFonts.poppins(
                   fontSize: 22,
-                  fontWeight: FontWeight.w600,
+                  //fontWeight: FontWeight.w600,
                   color: Colors.black),
             ),
             const SizedBox(height: 10),

@@ -43,7 +43,7 @@ class OtpVerificationScreen extends StatelessWidget {
                           "Verification Code",
                           style: GoogleFonts.poppins(
                             fontSize: 25,
-                            fontWeight: FontWeight.w600,
+                            //fontWeight: FontWeight.w600,
                             color: Colors.black
                           ),
                         ),

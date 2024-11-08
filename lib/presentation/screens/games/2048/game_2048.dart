@@ -280,13 +280,23 @@ class _game2048State extends State<game2048> {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
+        decoration:  BoxDecoration(
         color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+          boxShadow: const [
+            BoxShadow(
+              color: Color.fromARGB(255, 69, 68, 68), // Shadow color with opacity
+              spreadRadius: 10, // Spread radius of shadow
+              blurRadius: 10, // Blur effect to make the shadow softer
+              offset: Offset(0, 10), // Offset the shadow to the bottom (x: 0, y: 4)
+            ),  
+          ]
+        ),
         child: Center(
           child: Column(
             //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(6.0),
                 child: Text(
                   'Score : $_score',
                   style: GoogleFonts.dynaPuff(
@@ -296,7 +306,7 @@ class _game2048State extends State<game2048> {
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.03,
+                height: MediaQuery.of(context).size.height * 0.01,
               ),
               SizedBox(
                 width: 300,
@@ -339,82 +349,116 @@ class _game2048State extends State<game2048> {
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
+                height: MediaQuery.of(context).size.height * 0.02,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: _gameOver ? null : swipeLeft,
-                    style: ElevatedButton.styleFrom(
-                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12), // <-- Radius
+              Container(
+                height: 205,
+                width: 205,
+                padding: EdgeInsets.all(5),
+               decoration: BoxDecoration(
+    color: const Color.fromARGB(255, 203, 212, 219), // Set the background color of the container
+    borderRadius: BorderRadius.circular(100), // Apply a border radius of 20
+  ),
+                
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      height: 55,
+                      width: 55,
+
+                      child: ElevatedButton(
+                        onPressed: _gameOver ? null : swipeLeft,
+                        style: ElevatedButton.styleFrom(
+                           shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12), // <-- Radius
+                            ),
+                          backgroundColor: isDark
+                              ? TColors.sudokuLightBlue
+                              : TColors.sudokuDarkBlue,
+                          // Set your background color here
                         ),
-                      backgroundColor: isDark
-                          ? TColors.sudokuLightBlue
-                          : TColors.sudokuDarkBlue,
-                      // Set your background color here
+                        child: Icon(Icons.arrow_back,
+                        size: 25,
+                            color: !isDark
+                                ? TColors.sudokuLightBlue
+                                : TColors.sudokuDarkBlue),
+                      ),
                     ),
-                    child: Icon(Icons.arrow_back,
-                    size: 30,
-                        color: !isDark
-                            ? TColors.sudokuLightBlue
-                            : TColors.sudokuDarkBlue),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                          SizedBox(
+                                 height: 55,
+                        width: 55,
+                            child: ElevatedButton(
+                                                  onPressed: _gameOver ? null : swipeUp,
+                                                  style: ElevatedButton.styleFrom(
+                             shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12), // <-- Radius
+                              ),
+                              backgroundColor: isDark
+                                  ? TColors.sudokuLightBlue
+                                  : TColors
+                                      .sudokuDarkBlue // Set your background color here
+                              ),
+                                                  child: Icon(
+                            size: 25,
+                            Icons.arrow_upward,
+                            color: !isDark
+                                ? TColors.sudokuLightBlue
+                                : TColors.sudokuDarkBlue,
+                                                  ),
+                                                ),
+                          ),
+                      SizedBox(
+                             height: 55,
+                        width: 55,
+                        child: ElevatedButton(
+                          onPressed: _gameOver ? null : swipeDown,
+                          style: ElevatedButton.styleFrom(
+                             shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12), // <-- Radius
+                              ),
+                              backgroundColor: isDark
+                                  ? TColors.sudokuLightBlue
+                                  : TColors.sudokuDarkBlue),
+                          child: Icon(
+                             size: 25,
+                            Icons.arrow_downward,
+                            color: !isDark
+                                ? TColors.sudokuLightBlue
+                                : TColors.sudokuDarkBlue,
+                          ),
+                        ),
+                      ),
+                      ]),
                   ),
-                  ElevatedButton(
-                    onPressed: _gameOver ? null : swipeUp,
-                    style: ElevatedButton.styleFrom(
-                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12), // <-- Radius
+                    SizedBox(
+                           height: 55,
+                      width: 55,
+                      child: ElevatedButton(
+                        onPressed: _gameOver ? null : swipeRight,
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12), // <-- Radius
+                            ),
+                            backgroundColor: isDark
+                                ? TColors.sudokuLightBlue
+                                : TColors.sudokuDarkBlue),
+                        child: Icon(
+                          Icons.arrow_forward,
+                          size: 25,
+                          color: !isDark
+                              ? TColors.sudokuLightBlue
+                              : TColors.sudokuDarkBlue,
                         ),
-                        backgroundColor: isDark
-                            ? TColors.sudokuLightBlue
-                            : TColors
-                                .sudokuDarkBlue // Set your background color here
-                        ),
-                    child: Icon(
-                      size: 30,
-                      Icons.arrow_upward,
-                      color: !isDark
-                          ? TColors.sudokuLightBlue
-                          : TColors.sudokuDarkBlue,
+                      ),
                     ),
-                  ),
-                  ElevatedButton(
-                    onPressed: _gameOver ? null : swipeDown,
-                    style: ElevatedButton.styleFrom(
-                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12), // <-- Radius
-                        ),
-                        backgroundColor: isDark
-                            ? TColors.sudokuLightBlue
-                            : TColors.sudokuDarkBlue),
-                    child: Icon(
-                       size: 30,
-                      Icons.arrow_downward,
-                      color: !isDark
-                          ? TColors.sudokuLightBlue
-                          : TColors.sudokuDarkBlue,
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: _gameOver ? null : swipeRight,
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12), // <-- Radius
-                        ),
-                        backgroundColor: isDark
-                            ? TColors.sudokuLightBlue
-                            : TColors.sudokuDarkBlue),
-                    child: Icon(
-                      Icons.arrow_forward,
-                      size: 30,
-                      color: !isDark
-                          ? TColors.sudokuLightBlue
-                          : TColors.sudokuDarkBlue,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 16,
