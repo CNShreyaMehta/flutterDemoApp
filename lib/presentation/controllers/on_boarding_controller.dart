@@ -49,4 +49,10 @@ class OnBoardingController extends GetxController {
     print('Onboarding complete');
     Get.offNamed(AppRoutes.gamesHome); // Navigate to Home Screen and clear previous routes
   }
+    Future<void> aboutCompleteOnboarding() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(onboardingKey, false);
+    print('aboutCompleteOnboarding false complete  >>> ');
+    Get.offNamed(AppRoutes.onboarding); // Navigate to Home Screen and clear previous routes
+  }
 }

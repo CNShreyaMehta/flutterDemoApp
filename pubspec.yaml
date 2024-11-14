@@ -58,6 +58,7 @@ dependencies:
   path: ^1.9.0
   tutorial_coach_mark: ^1.2.12
   showcaseview: ^3.0.0
+  flutter_speed_dial: ^7.0.0
 
 dev_dependencies:
   flutter_test:
@@ -87,6 +88,7 @@ flutter:
     - assets/audio/
     - assets/audio/success.mp3
     - assets/audio/right.mp3
+    - assets/audio/game_home_audio.mp3
     - assets/images/onboarding_images/
     - assets/fonts/DynaPuff-Regular.ttf
     

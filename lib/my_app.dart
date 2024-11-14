@@ -8,19 +8,39 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:showcaseview/showcaseview.dart';
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final LoginController authController = Get.put(LoginController());
+
   final SudokuResult showCaseController =
       Get.put(SudokuResult());
-      
+
+        final SudokuResult timerControllerMain = Get.put(SudokuResult());
+@override
+void didChangeDependencies() {
+  super.didChangeDependencies();
+  print("didChangeDependencies in ROOT my_app >>>");
+}
   @override
   Widget build(BuildContext context) {
     return ShowCaseWidget(
-      onFinish: () {
-        //print('ShowCaseWidget on finish');
-        showCaseController.completeShowCaseWidget();
-      },
+      // onFinish: () {
+      //   //print('ShowCaseWidget on finish');
+        
+      // },
+       onComplete: (index, key) {
+            if (index == 2) {
+              print('>>>>>>>>>>>>>>');
+              showCaseController.completeShowCaseWidget();
+              timerControllerMain.startTimer(timerControllerMain.firstGameLevel);  //timerControllerMain.firstGameLevel.value
+            }
+          },
       builder: (context) => GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Example App',

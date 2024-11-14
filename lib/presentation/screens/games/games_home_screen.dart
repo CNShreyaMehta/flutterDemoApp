@@ -1,15 +1,54 @@
+import 'package:audioplayers/audioplayers.dart';
+import 'package:confetti/confetti.dart';
 import 'package:demo_app/presentation/controllers/Theme_controller.dart';
+import 'package:demo_app/presentation/controllers/on_boarding_controller.dart';
+import 'package:demo_app/presentation/controllers/sudoku_result.dart';
 import 'package:demo_app/presentation/custom_widgets/custom_card.dart';
 import 'package:demo_app/presentation/screens/games/2048/game_2048.dart';
 import 'package:demo_app/presentation/screens/games/sudoku/difficulty_level_screen.dart';
 import 'package:demo_app/presentation/utils/constants/colors.dart';
 import 'package:demo_app/presentation/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class GamesHomeScreen extends StatelessWidget {
+class GamesHomeScreen extends StatefulWidget {
   const GamesHomeScreen({super.key});
+
+  @override
+  State<GamesHomeScreen> createState() => _GamesHomeScreenState();
+}
+
+class _GamesHomeScreenState extends State<GamesHomeScreen> {
+  final SudokuResult floatingButtonController = Get.put(SudokuResult());
+  final OnBoardingController aboutController = Get.put(OnBoardingController());
+    late ConfettiController _confettiController; // Confetti controller
+  late AudioPlayer _audioPlayer;
+
+@override
+  void initState() {
+    super.initState();
+    _audioPlayer = AudioPlayer();
+    _confettiController = ConfettiController(
+        duration: const Duration(seconds: 5)); // Initialize confetti controller
+              _confettiController.play();
+  floatingButtonController.playMusic();
+  }
+
+  @override
+  void dispose() {
+    _confettiController.dispose();
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+
+
+  Future<void> _pauseMusic() async {
+    await _audioPlayer.pause();
+    //setState(() => _audioPlayer = _audioPlayer.paused());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +77,7 @@ class GamesHomeScreen extends StatelessWidget {
                 : const Icon(
                     Icons.dark_mode_outlined,
                   ),
-                              iconSize: 30,
-
+            iconSize: 30,
             onPressed: () {
               themeController.toggleTheme();
             },
@@ -112,61 +150,85 @@ class GamesHomeScreen extends StatelessWidget {
             //     ),
             //   ),
             // ),
-           CustomCard(
-          imageUrl:
-              'assets/images/sudoku.png',
-          title: 'Sudoku Game',
-          subtitle: 'Solve Sudoku Puzzles',
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const DifficultyLevelScreen(),
-              ),
-            );
-          },
-        ),
             CustomCard(
-          imageUrl:
-              'assets/images/2048.png',
-          title: '2048',
-          subtitle: 'Solve 2048 Puzzles',
-          onTap: () {
-            // Navigator.pushNamed(context, '/game2048');
-    //         ScaffoldMessenger.of(context).showSnackBar(
-    //   const SnackBar(
-    //     content: Text(
-    //       'Game is coming soon!',
-    //       style: TextStyle(
-    //           color: TColors.sudokuDarkBlue,
-    //           fontWeight: FontWeight.w500,
-    //           fontSize: 20), // Set text color to black
-    //     ),
-    //     backgroundColor: Colors.white, // Set background color to green
-    //   ),
-    // );
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const game2048(),
-              ),
-            );
-            // AlertDialog(
-            //       title: Text('Alert'),
-            //       content: Text('This is a simple alert dialog.'),
-            //       actions: [
-            //         TextButton(
-            //           child: Text('OK'),
-            //           onPressed: () {
-            //             Navigator.of(context).pop(); // Close the dialog
-            //           },
-            //         ),
-            //       ],
-            //     );
-          },
-        ),
+              imageUrl: 'assets/images/sudoku.png',
+              title: 'Sudoku Game',
+              subtitle: 'Solve Sudoku Puzzles',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DifficultyLevelScreen(),
+                  ),
+                );
+              },
+            ),
+            CustomCard(
+              imageUrl: 'assets/images/2048.png',
+              title: '2048',
+              subtitle: 'Solve 2048 Puzzles',
+              onTap: () {
+                // Navigator.pushNamed(context, '/game2048');
+                //         ScaffoldMessenger.of(context).showSnackBar(
+                //   const SnackBar(
+                //     content: Text(
+                //       'Game is coming soon!',
+                //       style: TextStyle(
+                //           color: TColors.sudokuDarkBlue,
+                //           fontWeight: FontWeight.w500,
+                //           fontSize: 20), // Set text color to black
+                //     ),
+                //     backgroundColor: Colors.white, // Set background color to green
+                //   ),
+                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const game2048(),
+                  ),
+                );
+                // AlertDialog(
+                //       title: Text('Alert'),
+                //       content: Text('This is a simple alert dialog.'),
+                //       actions: [
+                //         TextButton(
+                //           child: Text('OK'),
+                //           onPressed: () {
+                //             Navigator.of(context).pop(); // Close the dialog
+                //           },
+                //         ),
+                //       ],
+                //     );
+              },
+            ),
           ],
         ),
+      ),
+      floatingActionButton: SpeedDial(
+        animatedIcon: AnimatedIcons.menu_close,
+        backgroundColor: TColors.sudokuMediumBlue,
+        overlayColor: isDark ? Colors.black : Colors.white,
+        overlayOpacity: 0.5,
+        spacing: 10,
+        spaceBetweenChildren: 10,
+        iconTheme:
+            const IconThemeData(color: Colors.white), // Change icon color here
+
+        children: [
+          SpeedDialChild(
+            child: Obx(() => floatingButtonController.isMuted.value
+                ? const Icon(Icons.volume_off)
+                : const Icon(Icons.volume_up)),
+            label: floatingButtonController.isMuted.value ? "Un-Mute" : "Mute",
+            onTap: () => floatingButtonController.mute(),
+          ),
+          SpeedDialChild(
+            child: const Icon(Icons.question_mark_rounded),
+            label: 'About',
+            // ignore: avoid_print
+            onTap: () => aboutController.aboutCompleteOnboarding(),
+          ),
+        ],
       ),
     );
   }

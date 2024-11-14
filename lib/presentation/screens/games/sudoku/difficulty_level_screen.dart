@@ -1,4 +1,5 @@
 import 'package:demo_app/presentation/controllers/Theme_controller.dart';
+import 'package:demo_app/presentation/controllers/sudoku_result.dart';
 import 'package:demo_app/presentation/utils/constants/colors.dart';
 import 'package:demo_app/presentation/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,10 @@ class DifficultyLevelScreen extends StatefulWidget {
   State<DifficultyLevelScreen> createState() => _DifficultyLevelScreenState();
 }
 
-class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
+class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> with TickerProviderStateMixin {
+
+      final SudokuResult trigerFirst = Get.put(SudokuResult());
+
   @override
   Widget build(BuildContext context) {
     final isDark = THeplerFunction.isDarkMode(context);
@@ -62,6 +66,7 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
           children: [
             GradientButton(
                 onPressed: () {
+                  //trigerFirst.firstGameLevel.value = 'Easy';
                   Navigator.pushNamed(context, '/sudoku', arguments: {
                     'text': 'Easy',
                     'number': 62,
@@ -71,6 +76,7 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
             const SizedBox(height: 20),
             GradientButton(
                 onPressed: () {
+                  //trigerFirst.firstGameLevel.value = 'Medium';
                   Navigator.pushNamed(context, '/sudoku', arguments: {
                     'text': 'Medium',
                     'number': 41,
@@ -80,6 +86,7 @@ class _DifficultyLevelScreenState extends State<DifficultyLevelScreen> {
             const SizedBox(height: 20),
             GradientButton(
                 onPressed: () {
+                                    //trigerFirst.firstGameLevel.value = 'Hard';
                   Navigator.pushNamed(context, '/sudoku', arguments: {
                     'text': 'Hard',
                     'number': 11,

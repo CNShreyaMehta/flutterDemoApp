@@ -2,7 +2,6 @@
 import 'package:demo_app/presentation/utils/theme/custom_theme/elevated_button_theme.dart';
 import 'package:demo_app/presentation/utils/theme/custom_theme/text_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class TAppTheme {
    TAppTheme._();
@@ -18,7 +17,7 @@ class TAppTheme {
   );
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
-    fontFamily: GoogleFonts.poppins().fontFamily,
+    //fontFamily: GoogleFonts.poppins().fontFamily,
     brightness: Brightness.dark,
     primaryColor: Colors.blue,
     scaffoldBackgroundColor: Colors.black,

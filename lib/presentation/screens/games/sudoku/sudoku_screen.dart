@@ -30,7 +30,7 @@ class _SudokuScreenState extends State<SudokuScreen>
   int? selectedCol;
   bool gameWon = false; // Track if the game has been won
   bool _hasStarted = false;
-  bool isInvalidMove = false;  // Track invalid move status
+  bool isInvalidMove = false; // Track invalid move status
 
   late ConfettiController _confettiController; // Confetti controller
   late AudioPlayer _audioPlayer;
@@ -47,9 +47,9 @@ class _SudokuScreenState extends State<SudokuScreen>
   GlobalKey _one = GlobalKey();
   GlobalKey _two = GlobalKey();
   GlobalKey _three = GlobalKey();
-  final SudokuResult isShowCaseComplete =
-      Get.put(SudokuResult());
-        bool _isLoaded = false; // To track when the async operation is complete
+  final SudokuResult isShowCaseComplete = Get.put(SudokuResult());
+  bool _isLoaded = false; // To track when the async operation is complete
+  final SudokuResult timerController = Get.put(SudokuResult());
 
   @override
   void didChangeDependencies() {
@@ -66,7 +66,7 @@ class _SudokuScreenState extends State<SudokuScreen>
       difficultyLevelNumber = args; // Cast to int
     }
     gridData = generateSudoku(difficultyLevelNumber);
-
+    timerController.firstGameLevel = difficultyLevelText;
     print(difficultyLevelText);
     print(difficultyLevelNumber);
   }
@@ -118,10 +118,11 @@ class _SudokuScreenState extends State<SudokuScreen>
       _balloonAnimations.add(animation);
     }
     //gridData = generateSudoku(difficultyLevelNumber);
-    
+
     _initializeAsync();
   }
-   // Define the async method
+
+  // Define the async method
   Future<void> _initializeAsync() async {
     // Perform async operations here, e.g., API call, data loading
     bool isComplete = await isShowCaseComplete.isCompleteShowCaseWidget();
@@ -129,52 +130,53 @@ class _SudokuScreenState extends State<SudokuScreen>
     print('Async operation completed!');
     print("isShowCaseComplete in Sudoku screen >>> $isComplete");
     if (!isComplete) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ShowCaseWidget.of(context).startShowCase([_one, _two, _three]);
-    });
-    // Update the state to rebuild the widget after async completes
-    setState(() {
-      _isLoaded = true; // Set this to true to trigger the one-time rebuild
-    });
-    }else if (isComplete) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ShowCaseWidget.of(context).startShowCase([_one, _two, _three]);
+      });
+      // Update the state to rebuild the widget after async completes
+      setState(() {
+        _isLoaded = true; // Set this to true to trigger the one-time rebuild
+      });
+    } else if (isComplete) {
       print("???>> $_isLoaded ");
-        _startTimer();
+      // _startTimer();
+      timerController.startTimer(difficultyLevelText);
     }
   }
 
-  void _startTimer() {
-    _isRunning = true;
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        _elapsedTime++;
-        // six minutes
-        if (_elapsedTime == 360 && difficultyLevelText == 'Easy') {
-          Navigator.pushNamed(context, '/gameWin', arguments: {
-            'difficultyLevel': difficultyLevelText,
-            'gameStatus': 'loss',
-            'score': _elapsedTime,
-            'timeStamp': DateTime.now().toString(),
-          });
-          // eight minutes
-        } else if (_elapsedTime == 480 && difficultyLevelText == 'Medium') {
-          Navigator.pushNamed(context, '/gameWin', arguments: {
-            'difficultyLevel': difficultyLevelText,
-            'gameStatus': 'loss',
-            'score': _elapsedTime,
-            'timeStamp': DateTime.now().toString(),
-          });
-          // ten minutes
-        } else if (_elapsedTime == 600 && difficultyLevelText == 'Hard') {
-          Navigator.pushNamed(context, '/gameWin', arguments: {
-            'difficultyLevel': difficultyLevelText,
-            'gameStatus': 'loss',
-            'score': _elapsedTime,
-            'timeStamp': DateTime.now().toString(),
-          });
-        }
-      });
-    });
-  }
+  // void _startTimer() {
+  //   _isRunning = true;
+  //   _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+  //     setState(() {
+  //       _elapsedTime++;
+  //       // six minutes
+  //       if (_elapsedTime == 360 && difficultyLevelText == 'Easy') {
+  //         Navigator.pushNamed(context, '/gameWin', arguments: {
+  //           'difficultyLevel': difficultyLevelText,
+  //           'gameStatus': 'loss',
+  //           'score': _elapsedTime,
+  //           'timeStamp': DateTime.now().toString(),
+  //         });
+  //         // eight minutes
+  //       } else if (_elapsedTime == 480 && difficultyLevelText == 'Medium') {
+  //         Navigator.pushNamed(context, '/gameWin', arguments: {
+  //           'difficultyLevel': difficultyLevelText,
+  //           'gameStatus': 'loss',
+  //           'score': _elapsedTime,
+  //           'timeStamp': DateTime.now().toString(),
+  //         });
+  //         // ten minutes
+  //       } else if (_elapsedTime == 600 && difficultyLevelText == 'Hard') {
+  //         Navigator.pushNamed(context, '/gameWin', arguments: {
+  //           'difficultyLevel': difficultyLevelText,
+  //           'gameStatus': 'loss',
+  //           'score': _elapsedTime,
+  //           'timeStamp': DateTime.now().toString(),
+  //         });
+  //       }
+  //     });
+  //   });
+  // }
 
   void _stopTimer() {
     if (_timer != null) {
@@ -185,7 +187,7 @@ class _SudokuScreenState extends State<SudokuScreen>
     }
   }
 
-Future<void> _playSuccessMusic() async {
+  Future<void> _playSuccessMusic() async {
     try {
       _audioPlayer.setReleaseMode(ReleaseMode.stop);
       await _audioPlayer.setSource(AssetSource('audio/right.mp3'));
@@ -194,7 +196,8 @@ Future<void> _playSuccessMusic() async {
       print("Error playing audio: $e");
     }
   }
-Future<void> _playFailMusic() async {
+
+  Future<void> _playFailMusic() async {
     try {
       _audioPlayer.setReleaseMode(ReleaseMode.stop);
       await _audioPlayer.setSource(AssetSource('audio/wrong.mp3'));
@@ -203,6 +206,7 @@ Future<void> _playFailMusic() async {
       print("Error playing audio: $e");
     }
   }
+
   String _formatTime(int seconds) {
     final minutes = (seconds / 60).floor();
     final secs = seconds % 60;
@@ -219,6 +223,7 @@ Future<void> _playFailMusic() async {
     _timer?.cancel();
 
     super.dispose();
+    timerController.stopTimer();
   }
 
   void undoLastMove() {
@@ -309,14 +314,15 @@ Future<void> _playFailMusic() async {
     setState(() {
       _timer?.cancel();
       _isRunning = false;
-      _elapsedTime = 0;
+      timerController.elapsedTime.value = 0;
       gridData = generateSudoku(difficultyLevelNumber);
       selectedRow = null;
       selectedCol = null;
       gameWon = false;
       _hasStarted = false; // Reset hasStarted to false
     });
-    _startTimer();
+    //_startTimer();
+    timerController.startTimer(difficultyLevelText);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(
@@ -401,11 +407,12 @@ Future<void> _playFailMusic() async {
         for (var controller in _balloonControllers) {
           controller.forward();
         }
-        _stopTimer(); // Stop the timer
+        //_stopTimer(); // Stop the timer
+        timerController.stopTimer();
         // Create a sample result
         SudokuResult newResult = SudokuResult(
           difficultyLevel: difficultyLevelText,
-          score: _elapsedTime,
+          score: timerController.elapsedTime.value,
           timeStamp: DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now()),
         );
         // Save the result to SharedPreferences
@@ -416,7 +423,7 @@ Future<void> _playFailMusic() async {
           Navigator.pushNamed(context, '/gameWin', arguments: {
             'difficultyLevel': difficultyLevelText,
             'gameStatus': 'win',
-            'score': _elapsedTime,
+            'score': timerController.elapsedTime.value,
             'timeStamp': DateTime.now().toString(),
           });
         });
@@ -450,8 +457,8 @@ Future<void> _playFailMusic() async {
 
               if (isValidMove(
                   gridData, selectedRow!, selectedCol!, numberToPlace)) {
-                    _playSuccessMusic();
-                    print('playing music');
+                _playSuccessMusic();
+                print('playing music');
                 setState(() {
                   isInvalidMove = false;
                   gridData[selectedRow!][selectedCol!] = numberToPlace;
@@ -462,15 +469,15 @@ Future<void> _playFailMusic() async {
                   _hasStarted =
                       true; // Enable restart button after first cell click
                 });
-                
+
 //FIXME
                 if (gridData[0][0] != 0) {}
                 // if() check empty grid data or not if not then call solveddata anomation
               } else {
                 _playFailMusic();
                 setState(() {
-              isInvalidMove = true;  // Set invalid move status
-            });
+                  isInvalidMove = true; // Set invalid move status
+                });
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     duration: Duration(seconds: 1), // Duration of the SnackBar
@@ -515,18 +522,30 @@ Future<void> _playFailMusic() async {
         iconTheme: const IconThemeData(
             color: Colors.white), // Set back arrow color to white
         actions: [
-          Text(
-            _formatTime(_elapsedTime),
-            style: GoogleFonts.dynaPuff(fontSize: 25, color: Colors.white),
-          ),
+          Obx(() => Text(
+                _formatTime(timerController.elapsedTime.value),
+                style: GoogleFonts.dynaPuff(fontSize: 25, color: Colors.white),
+              )),
           // RESOLVE GAME Button
           // IconButton(
           //   icon: const Icon(Icons.slow_motion_video),
           //   onPressed: solveData,
           // ),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.15,
+            width: MediaQuery.of(context).size.width * 0.04,
           ),
+          Obx(() => IconButton.filledTonal(
+              tooltip: 'Undo your last input',
+              iconSize: 25,
+              style: IconButton.styleFrom(
+                backgroundColor: Colors.white, // Set your desired color here
+              ),
+              icon: !timerController.paused.value
+                  ? const Icon(Icons.play_arrow)
+                  : const Icon(Icons.pause),
+              color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
+              // onPressed: resetValue,
+              onPressed: timerController.pauseTimer)),
           Showcase(
             key: _two,
             description: 'Undo your last input',
@@ -625,16 +644,16 @@ Future<void> _playFailMusic() async {
                                           },
                                     child: Container(
                                       margin: const EdgeInsets.only(
-                                          bottom: .8, left: .8),
+                                          bottom: 1.5, left: 1.5),
                                       decoration: BoxDecoration(
                                           border: Border.all(
-                                              width: .4, color: Colors.black),
+                                              width: .5, color: Colors.black),
                                           borderRadius: const BorderRadius.all(
                                             Radius.circular(5),
                                           )),
                                       child: Container(
-                                        width: 38.8,
-                                        height: 38.8,
+                                        width: MediaQuery.of(context).size.height * 0.057,
+                                        height: MediaQuery.of(context).size.height * 0.057,
                                         decoration: BoxDecoration(
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(5)),
