@@ -362,6 +362,16 @@ class _game2048State extends State<game2048> {
                       219), // Set the background color of the container
                   borderRadius:
                       BorderRadius.circular(100), // Apply a border radius of 20
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color.fromARGB(255, 155, 155, 155)
+                          .withOpacity(1), // Shadow color with opacity
+                      spreadRadius: 5, // Spread radius of shadow
+                      blurRadius: 7, // Blur effect to make the shadow softer
+                      offset: const Offset(
+                          0, 3), // Offset the shadow to the bottom (x: 0, y: 4)
+                    ),
+                  ],
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

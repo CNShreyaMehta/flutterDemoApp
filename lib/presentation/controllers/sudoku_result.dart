@@ -12,7 +12,7 @@ class SudokuResult extends GetxController {
   RxBool paused = false.obs;
   dynamic firstGameLevel = ''.obs;
   dynamic gameLevel = ''.obs;
-  Timer? _timer;
+  Timer? timer;
   dynamic  difficultyLevel;
    dynamic score;
    dynamic timeStamp;
@@ -90,7 +90,7 @@ class SudokuResult extends GetxController {
 
   void startTimer(String gameLevel) {
     // Set the initial elapsed time based on difficulty level
-   if (!paused.value) {
+  // if (!paused.value) {
       switch (gameLevel) {
       case 'Easy':
         elapsedTime.value = 360; // six minutes
@@ -103,13 +103,13 @@ class SudokuResult extends GetxController {
         break;
       default:
         elapsedTime.value = 360;
-    }
+   // }
    }
 
     // Start the timer
     isRunning.value = true;
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (paused.value) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (isRunning.value) {       //paused.value
         // Decrement the elapsed time
       elapsedTime.value--;
       // Check if time has run out
@@ -133,13 +133,14 @@ class SudokuResult extends GetxController {
 
   void pauseTimer() {
     print("PAUSED >> $paused");
+    isRunning.value = !isRunning.value;
   paused.value = !paused.value; // Toggles between pause and play
 }
 
   void stopTimer() {
     isRunning.value = false;
     paused.value = false;
-    _timer?.cancel();
+    timer?.cancel();
     print('Timer stopped when screen is closed >>> ');
   }
   
@@ -171,7 +172,7 @@ class SudokuResult extends GetxController {
 
   @override
   void onClose() {
-    _timer?.cancel(); // Clean up the timer when the controller is disposed
+    timer?.cancel(); // Clean up the timer when the controller is disposed
     super.onClose();
     //_audioPlayer.dispose();
   }

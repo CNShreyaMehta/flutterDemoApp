@@ -312,9 +312,11 @@ class _SudokuScreenState extends State<SudokuScreen>
   void resetValue() {
     final isDark = THeplerFunction.isDarkMode(context);
     setState(() {
-      _timer?.cancel();
-      _isRunning = false;
       timerController.elapsedTime.value = 0;
+      timerController.timer?.cancel();
+      timerController.isRunning.value = false;
+      //_timer?.cancel();
+      //_isRunning = false;
       gridData = generateSudoku(difficultyLevelNumber);
       selectedRow = null;
       selectedCol = null;
@@ -540,7 +542,7 @@ class _SudokuScreenState extends State<SudokuScreen>
               style: IconButton.styleFrom(
                 backgroundColor: Colors.white, // Set your desired color here
               ),
-              icon: !timerController.paused.value
+              icon: timerController.paused.value
                   ? const Icon(Icons.play_arrow)
                   : const Icon(Icons.pause),
               color: isDark ? TColors.sudocuDark : TColors.sudocuLight,
@@ -652,8 +654,12 @@ class _SudokuScreenState extends State<SudokuScreen>
                                             Radius.circular(5),
                                           )),
                                       child: Container(
-                                        width: MediaQuery.of(context).size.height * 0.057,
-                                        height: MediaQuery.of(context).size.height * 0.057,
+                                        width:
+                                            MediaQuery.of(context).size.height *
+                                                0.057,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.057,
                                         decoration: BoxDecoration(
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(5)),

@@ -23,17 +23,17 @@ class GamesHomeScreen extends StatefulWidget {
 class _GamesHomeScreenState extends State<GamesHomeScreen> {
   final SudokuResult floatingButtonController = Get.put(SudokuResult());
   final OnBoardingController aboutController = Get.put(OnBoardingController());
-    late ConfettiController _confettiController; // Confetti controller
+  late ConfettiController _confettiController; // Confetti controller
   late AudioPlayer _audioPlayer;
 
-@override
+  @override
   void initState() {
     super.initState();
     _audioPlayer = AudioPlayer();
     _confettiController = ConfettiController(
         duration: const Duration(seconds: 5)); // Initialize confetti controller
-              _confettiController.play();
-  floatingButtonController.playMusic();
+    _confettiController.play();
+    floatingButtonController.playMusic();
   }
 
   @override
@@ -42,8 +42,6 @@ class _GamesHomeScreenState extends State<GamesHomeScreen> {
     _audioPlayer.dispose();
     super.dispose();
   }
-
-
 
   Future<void> _pauseMusic() async {
     await _audioPlayer.pause();
@@ -205,7 +203,8 @@ class _GamesHomeScreenState extends State<GamesHomeScreen> {
         ),
       ),
       floatingActionButton: SpeedDial(
-        animatedIcon: AnimatedIcons.menu_close,
+        animatedIcon: AnimatedIcons.menu_home,
+        animatedIconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: TColors.sudokuMediumBlue,
         overlayColor: isDark ? Colors.black : Colors.white,
         overlayOpacity: 0.5,
@@ -213,18 +212,17 @@ class _GamesHomeScreenState extends State<GamesHomeScreen> {
         spaceBetweenChildren: 10,
         iconTheme:
             const IconThemeData(color: Colors.white), // Change icon color here
-
         children: [
           SpeedDialChild(
             child: Obx(() => floatingButtonController.isMuted.value
                 ? const Icon(Icons.volume_off)
                 : const Icon(Icons.volume_up)),
-            label: floatingButtonController.isMuted.value ? "Un-Mute" : "Mute",
+            label: "Sound/Mute",
             onTap: () => floatingButtonController.mute(),
           ),
           SpeedDialChild(
-            child: const Icon(Icons.question_mark_rounded),
-            label: 'About',
+            child: const Icon(Icons.info_outline),
+            label: 'How to play',
             // ignore: avoid_print
             onTap: () => aboutController.aboutCompleteOnboarding(),
           ),
