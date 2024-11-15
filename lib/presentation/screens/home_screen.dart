@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:demo_app/presentation/controllers/Theme_controller.dart';
 import 'package:demo_app/presentation/controllers/home_controller.dart';
 import 'package:demo_app/presentation/controllers/login_controller.dart';
+import 'package:demo_app/presentation/custom_widgets/header.dart';
 import 'package:demo_app/presentation/routes/app_routes.dart';
 import 'package:demo_app/presentation/screens/cart_screen.dart';
 import 'package:demo_app/presentation/screens/categories_screen.dart';
@@ -38,59 +39,60 @@ class _HomeScreenState extends State<HomeScreen> {
   //     _selectedIndex = index;
   //   });
   // }
-  final ThemeController themeController = Get.put(ThemeController());  // Initialize the controller
+  final ThemeController themeController =
+      Get.put(ThemeController()); // Initialize the controller
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.yellow.shade300,
-        title: const Text('Home'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            color: Colors.black,
-            onPressed: () {
-              _showLogoutConfirmation(
-                  context); // Show logout confirmation dialog
-            },
-          )
-        ],
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text('Menu'),
-            ),
-            ListTile(
-              title: const Text('Item 1'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Item 2'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-             Obx(
-              () => SwitchListTile(
-                title: Text(themeController.isDarkMode.value
-                    ? 'Dark Mode'
-                    : 'Light Mode'),
-                value: themeController.isDarkMode.value,
-                onChanged: (value) {
-                  themeController.toggleTheme();  // Toggle the theme
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.yellow.shade300,
+      //   title: const Text('Home'),
+      //   actions: [
+      //     IconButton(
+      //       icon: const Icon(Icons.logout),
+      //       color: Colors.black,
+      //       onPressed: () {
+      //         _showLogoutConfirmation(
+      //             context); // Show logout confirmation dialog
+      //       },
+      //     )
+      //   ],
+      // ),
+      // drawer: Drawer(
+      //   child: ListView(
+      //     padding: EdgeInsets.zero,
+      //     children: <Widget>[
+      //       const DrawerHeader(
+      //         decoration: BoxDecoration(color: Colors.blue),
+      //         child: Text('Menu'),
+      //       ),
+      //       ListTile(
+      //         title: const Text('Item 1'),
+      //         onTap: () {
+      //           Navigator.pop(context);
+      //         },
+      //       ),
+      //       ListTile(
+      //         title: const Text('Item 2'),
+      //         onTap: () {
+      //           Navigator.pop(context);
+      //         },
+      //       ),
+      //        Obx(
+      //         () => SwitchListTile(
+      //           title: Text(themeController.isDarkMode.value
+      //               ? 'Dark Mode'
+      //               : 'Light Mode'),
+      //           value: themeController.isDarkMode.value,
+      //           onChanged: (value) {
+      //             themeController.toggleTheme();  // Toggle the theme
+      //           },
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
       body: _screens[_page], // Display the current selected screen
       // bottomNavigationBar: BottomNavigationBar(
       //   items: const <BottomNavigationBarItem>[
@@ -186,107 +188,229 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Obx(() {
-      if (productController.isLoading.value) {
-        return const Center(child: CircularProgressIndicator());
-      } else {
-        return GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Number of columns
-            crossAxisSpacing: 5.0, // Horizontal space between cards
-            mainAxisSpacing: 5.0, // Vertical space between cards
-            childAspectRatio:0.55, // Adjust this to control the card's height and width ratio
-          ),
-          itemCount: productController.productList.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: GestureDetector(
-                onTap: () {
-                  Get.to(() => ProductDetails(
-                        productInfo: productController.productList[index],
-                      ),
-                      transition: Transition.zoom
-                            
-                    // Get.toNamed('/product-details', arguments: {
-                    //   'productInfo': productController.productList[index],
-                    // },
-                    
-                      );
-                },
-                child: Card(
-                  elevation: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Stack(
-                          children: [
-                            Container(
-                              height: 180,
-                              width: double.infinity,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                    color: Colors.transparent,  // Transparent background
-
-                              ),
-                              child: Image.network(
-                                productController.productList[index].imageLink,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          productController.productList[index].name,
-                          maxLines: 2,
-                          style: const TextStyle(
-                              fontFamily: 'avenir', fontWeight: FontWeight.w800),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 8),
-                        if (productController.productList[index].rating != null)
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 2),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  productController.productList[index].rating
-                                      .toString(),
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                const Icon(
-                                  Icons.star,
-                                  size: 16,
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
-                          ),
-                        //const SizedBox(height: 8),
-                        Text('\$${productController.productList[index].price}',
-                            style: const TextStyle(
-                                fontSize: 25, fontFamily: 'avenir')),
-                      ],
-                    ),
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          child: Column(
+            children: [
+              const Header(
+                showBellIcon: true,
+                title: "Home",
+                backgroundColor: Color.fromARGB(255, 255, 217, 0),
+              ),
+              Container(
+                  //margin: const EdgeInsets.symmetric(horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 255, 217, 0),
                   ),
+                  child: Row(
+                    children: [
+                      Container(
+                          width: 280,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          child: const Text(
+                            "Search",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          )),
+                      const SizedBox(width: 10),
+                      Container(
+                          child: IconButton(
+                        icon: const Icon(Icons.keyboard_voice_rounded),
+                        onPressed: () {},
+                      )),
+                    ],
+                  )),
+              Container(
+                  width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 255, 217, 0),
+                  ),
+                  child: const Text(
+                    "TOP TRATEDING DEALS",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  )),
+              Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 255, 217, 0),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(children: [
+                        const Text(
+                          "UP TO 50% OFF",
+                          style:
+                              TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                        ),
+                        const Text(
+                          "",
+                          style:
+                              TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Image.network(
+                            "https://marketplace.canva.com/EAE54xVnIvo/1/0/1600w/canva-beige-green-simple-product-feature-instagram-posts-4DHnplrmIp0.jpg",
+                            height: 70),
+                      ]),
+                    ),
+                     Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(children: [
+                        const Text(
+                          "Top Rated Products",
+                          style:
+                              TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const Text(
+                          "View All",
+                          style:
+                              TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Image.network(
+                            "https://marketplace.canva.com/EAE54xVnIvo/1/0/1600w/canva-beige-green-simple-product-feature-instagram-posts-4DHnplrmIp0.jpg",
+                            height: 70),
+                      ]),
+                    ),
+                  ],
                 ),
               ),
-            );
-          },
-        );
-      }
-    }),
-    floatingActionButton: FloatingActionButton(
+              Obx(() {
+                if (productController.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  return Expanded(
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2, // Number of columns
+                        crossAxisSpacing: 5.0, // Horizontal space between cards
+                        mainAxisSpacing: 5.0, // Vertical space between cards
+                        childAspectRatio:
+                            0.55, // Adjust this to control the card's height and width ratio
+                      ),
+                      itemCount: productController.productList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              Get.to(
+                                  () => ProductDetails(
+                                        productInfo: productController
+                                            .productList[index],
+                                      ),
+                                  transition: Transition.zoom
+
+                                  // Get.toNamed('/product-details', arguments: {
+                                  //   'productInfo': productController.productList[index],
+                                  // },
+
+                                  );
+                            },
+                            child: Card(
+                              elevation: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Stack(
+                                      children: [
+                                        Container(
+                                          height: 180,
+                                          width: double.infinity,
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            color: Colors
+                                                .transparent, // Transparent background
+                                          ),
+                                          child: Image.network(
+                                            productController
+                                                .productList[index].imageLink,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      productController.productList[index].name,
+                                      maxLines: 2,
+                                      style: const TextStyle(
+                                          fontFamily: 'avenir',
+                                          fontWeight: FontWeight.w800),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    if (productController
+                                            .productList[index].rating !=
+                                        null)
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 4, vertical: 2),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              productController
+                                                  .productList[index].rating
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            const Icon(
+                                              Icons.star,
+                                              size: 16,
+                                              color: Colors.white,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    //const SizedBox(height: 8),
+                                    Text(
+                                        '\$${productController.productList[index].price}',
+                                        style: const TextStyle(
+                                            fontSize: 25,
+                                            fontFamily: 'avenir')),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
+              }),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           Get.toNamed(AppRoutes.profile);
         },
