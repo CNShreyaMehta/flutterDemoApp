@@ -91,6 +91,7 @@ flutter:
     - assets/audio/game_home_audio.mp3
     - assets/images/onboarding_images/
     - assets/fonts/DynaPuff-Regular.ttf
+    - assets/fonts/Poppins/Poppins-Regular.ttf
     
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

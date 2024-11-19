@@ -18,76 +18,82 @@ class Header extends StatelessWidget {
       width: double.infinity,
       //padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
       color: backgroundColor,
-      child: Row(
-        mainAxisAlignment:
-            MainAxisAlignment.spaceBetween, // Spread items across the row
-        children: [
-          Row(
-            children: [
-              // IconButton(
-              //   icon: const Icon(Icons.arrow_back),
-              //   onPressed: () {
-              //     Get.back(); // Navigate to the previous screen
-              //   },
-              // ),
-
-              // if (title != null) // If title is provided, display it
-              //   Text(
-              //     title!,
-              //     style: GoogleFonts.poppins(
-              //       fontSize: 20,
-              //       fontWeight: FontWeight.bold,
-              //       color: Colors.black,
-              //     ),
-              //   ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                Text(
-                  'Insta Mart',
-                  style: GoogleFonts.poppins(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+      child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+        child: Row(
+          mainAxisAlignment:
+              MainAxisAlignment.spaceBetween, // Spread items across the row
+          children: [
+            Row(
+              children: [
+                // IconButton(
+                //   icon: const Icon(Icons.arrow_back),
+                //   onPressed: () {
+                //     Get.back(); // Navigate to the previous screen
+                //   },
+                // ),
+        
+                // if (title != null) // If title is provided, display it
+                //   Text(
+                //     title!,
+                //     style: GoogleFonts.poppins(
+                //       fontSize: 20,
+                //       fontWeight: FontWeight.bold,
+                //       color: Colors.black,
+                //     ),
+                //   ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+        
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Text(
+                      'Insta Mart',
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
-                ),
-                Text(
-                  '8 minutes',
-                  style: GoogleFonts.poppins(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                Row(children: [
                   Text(
-                    'Action area 1, NewTown, NewYork',
+                    '8 minutes',
                     style: GoogleFonts.poppins(
-                      fontSize: 12,
+                      fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
                   ),
-                  const Icon(
-                    Icons.arrow_drop_down_sharp,
-                    color: Colors.black,
-                  ),
-                ])
-              ]),
-            ],
-          ),
-          Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(100),
+                  Row(children: [
+                    Text(
+                      'Action area 1, NewTown, NewYork',
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
-                    child: IconButton(
-                      icon: const Icon(Icons.person),
-                      onPressed: () {},
-                    )
-                  ),
-        ],
+                    const Icon(
+                      Icons.arrow_drop_down_sharp,
+                      color: Colors.black,
+                    ),
+                  ])
+                ]),
+              ],
+            ),
+            Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.person),
+                        onPressed: () {},
+                      )
+                    ),
+          ],
+        ),
       ),
     );
   }
