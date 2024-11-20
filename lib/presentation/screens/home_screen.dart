@@ -113,15 +113,15 @@ class _HomeScreenState extends State<HomeScreen> {
         key: _bottomNavigationKey,
         index: 0,
         items: const <Widget>[
-          Icon(Icons.home, size: 30),
-          Icon(Icons.category, size: 30),
-          Icon(Icons.shopping_cart, size: 30),
-          Icon(Icons.person, size: 30),
-          Icon(Icons.get_app_rounded, size: 30),
+          Icon(Icons.home, size: 30,color: Colors.black,),
+          Icon(Icons.category, size: 30,color: Colors.black,),
+          Icon(Icons.shopping_cart, size: 30,color: Colors.black,),
+          Icon(Icons.person, size: 30,color: Colors.black,),
+          Icon(Icons.get_app_rounded, size: 30,color: Colors.black,),
         ],
-        color: Color.fromARGB(255, 255, 217, 0),
-        buttonBackgroundColor: Color.fromARGB(255, 255, 217, 0),
-        backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+        color: const Color.fromARGB(255, 255, 217, 0),
+        buttonBackgroundColor: const Color.fromARGB(255, 255, 217, 0),
+        backgroundColor: Colors.transparent,
         animationCurve: Curves.easeInOut,
         animationDuration: const Duration(milliseconds: 600),
         onTap: (index) {
@@ -228,20 +228,33 @@ class _HomeState extends State<Home> {
                   child: Row(
                     children: [
                       Container(
-                        width: 280,
-                        decoration: const BoxDecoration(
+                        width: 350,
+                        height: 40,
+                        decoration: BoxDecoration(
                           color: Colors.white,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(color: Colors.grey, width: 1),
                         ),
-                        child: const Text(
-                          "Search",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(left: 15),
+                              child: Text(
+                                "Search \"Pooja Needs\"",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            IconButton(
+                              icon: const Icon(Icons.keyboard_voice_rounded),
+                              onPressed: () {},
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      IconButton(
-                        icon: const Icon(Icons.keyboard_voice_rounded),
-                        onPressed: () {},
                       ),
                     ],
                   ),
@@ -294,24 +307,40 @@ class _HomeState extends State<Home> {
                                 const EdgeInsets.all(8.0), // Adjust padding
                           ),
                           child: Column(
+                            
                             mainAxisSize:
                                 MainAxisSize.min, // Minimize space usage
                             children: [
-                              Stack(children: [
-                                const Icon(Icons.wallet_giftcard_outlined,
-                                    size: 24, color: Colors.black54),
-                                Positioned(
-                                    top: 0,
-                                    right: 0,
-                                    child: Container(
-                                      width: 10,
-                                      height: 10,
-                                      decoration: const BoxDecoration(
-                                        color: Color.fromARGB(255, 255, 17, 0),
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ))
-                              ]), // Icon widget
+                              Container(
+                                
+                                width: 40,
+                                //color: Colors.white,
+                                child: Stack(children: [
+                                  const Icon(Icons.wallet_giftcard_outlined,
+                                      size: 24, color: Colors.black54),
+                                  Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        width: 30,
+                                        height: 15,
+                                        decoration: const BoxDecoration(
+                                          color: Color.fromARGB(255, 255, 17, 0),
+                                          borderRadius: BorderRadius.horizontal(
+                                              left: Radius.circular(10),
+                                              right: Radius.circular(10)),
+                                        ),
+                                      child: const Text(
+                                        "New",
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold
+                                        )),
+                                      ))
+                                ]),
+                              ), // Icon widget
                               // Space between icon and text
                               const Text(
                                 "christmas",
@@ -400,7 +429,6 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                   ),
-                  // Dynamic Content
                   Expanded(
                     child: _pages[_selectedIndex2],
                   ),
@@ -414,13 +442,22 @@ class _HomeState extends State<Home> {
                     child: const Text(
                       "TOP TRADING DEALS",
                       style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                   ),
                   Container(
-                    color: Color.fromARGB(255, 255, 217, 0),
-                    height: 140,
+                    height: 160,
                     width: double.infinity,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                           Color.fromARGB(255, 255, 217, 0),
+                          Colors.white
+                        ], // Gradient colors
+                        begin: Alignment.topCenter, // Start position of gradient
+                        end: Alignment.bottomCenter, // End position of gradient
+                      ),
+                    ),
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: staticProducts.length,
@@ -430,9 +467,9 @@ class _HomeState extends State<Home> {
                       },
                     ),
                   ),
- Container(
-                    color: Color.fromARGB(255, 255, 217, 0),
-                    height: 200,
+                  Container(
+                    color: Colors.white,
+                    height: 150,
                     width: double.infinity,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -442,7 +479,21 @@ class _HomeState extends State<Home> {
                         return my4Card(product: product);
                       },
                     ),
-                  ),                  Obx(() {
+                  ),
+                  Container(
+                    width: double.infinity,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: const Text(
+                      "TRENDING PRODUCTS",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  Obx(() {
                     if (productController.isLoading.value) {
                       return const Center(child: CircularProgressIndicator());
                     } else {
@@ -506,7 +557,7 @@ class _HomeState extends State<Home> {
                                             bottom: 10,
                                             right: 10,
                                             child: Container(
-                                              padding: EdgeInsets.all(10),
+                                                padding: EdgeInsets.all(10),
                                                 decoration: BoxDecoration(
                                                   color: Colors.green[50],
                                                   borderRadius:
@@ -515,7 +566,9 @@ class _HomeState extends State<Home> {
                                                 child: Text(
                                                   "ADD",
                                                   style: TextStyle(
-                                                      color: Colors.green[900],fontWeight: FontWeight.w900),
+                                                      color: Colors.green[900],
+                                                      fontWeight:
+                                                          FontWeight.w900),
                                                 )),
                                           ),
                                         ],
@@ -561,8 +614,7 @@ class _HomeState extends State<Home> {
                                             ],
                                           ),
                                         ),
-                                                                              const SizedBox(height: 5),
-
+                                      const SizedBox(height: 5),
                                       Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
@@ -575,11 +627,12 @@ class _HomeState extends State<Home> {
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.bold,
                                                 )),
-                                                const SizedBox(width: 5),
+                                            const SizedBox(width: 5),
                                             Text(
                                               ' MRP${productController.productList[index].price}',
                                               style: const TextStyle(
-                                                decoration: TextDecoration.lineThrough,
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
                                                   fontSize: 13,
                                                   fontFamily: 'avenir'),
                                             ),
@@ -666,34 +719,33 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 150,
       padding: const EdgeInsets.all(5.0), // Add padding to the container
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.grey[300],
         border: Border.all(
             color: const Color.fromARGB(255, 14, 81, 226),
-            width: 3.0), // Add border
+            width: 2.5), // Add border
         borderRadius: BorderRadius.circular(8.0), // Rounded corners
       ),
       margin: const EdgeInsets.all(8.0),
-      child: Stack(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8.0), // Set the desired radius
             child: Image.network(
               product.imageUrl,
-              height: 120,
+              height: 100,
               width: 100,
               fit: BoxFit.cover,
             ),
           ),
-          SizedBox(width: 10),
-          Positioned(
-            bottom: 5,
-            left: 10,
-            child: Text(
-              product.name,
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-            ),
+          const SizedBox(width: 10),
+          Text(
+            product.name,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
           ),
         ],
       ),
@@ -708,77 +760,84 @@ class my4Card extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return   Container(
-                    width: 130,
-                    height: 180,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    decoration: const BoxDecoration(
-                      color:Colors.white24,
-                      
+    return Container(
+      width: 130,
+      height: 180,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      decoration: const BoxDecoration(
+        color: Colors.white24,
+      ),
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(
+                      product.imageList[0],
+                      height: 40,
+                      width: 40,
+                      fit: BoxFit.cover,
                     ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.network(
-                                product.imageList[0],
-                                height: 40,
-                                width: 40,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Image.network(
-                              product.imageList[1],
-                              height: 40,
-                              width: 40,
-                              fit: BoxFit.cover,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                              child: Image.network(
-                                product.imageList[2],
-                                height: 40,
-                                width: 40,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
-                              child: Image.network(
-                                product.imageList[3],
-                                height: 40,
-                                width: 40,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                          child: Text(
-                            product.name,
-                            style: const TextStyle(
-                                fontSize: 10,),
-                            ),
-                        ),
-                        Text(
-                          product.description,
-                          style: const TextStyle(
-                              fontSize: 15),
-                        )
-                      ],
+                  ),
+                  Image.network(
+                    product.imageList[1],
+                    height: 40,
+                    width: 40,
+                    fit: BoxFit.cover,
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                    child: Image.network(
+                      product.imageList[2],
+                      height: 40,
+                      width: 40,
+                      fit: BoxFit.cover,
                     ),
-                  );
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
+                    child: Image.network(
+                      product.imageList[3],
+                      height: 40,
+                      width: 40,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              ),
+              Text(
+                product.description,
+                style: const TextStyle(fontSize: 15),
+              )
+            ],
+          ),
+          Positioned(
+            top: 85,
+            right: 40,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 1),
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                product.name,
+                style: const TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

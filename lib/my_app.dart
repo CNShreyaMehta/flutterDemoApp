@@ -30,10 +30,6 @@ void didChangeDependencies() {
   @override
   Widget build(BuildContext context) {
     return ShowCaseWidget(
-      // onFinish: () {
-      //   //print('ShowCaseWidget on finish');
-        
-      // },
        onComplete: (index, key) {
             if (index == 2) {
               print('>>>>>>>>>>>>>>');

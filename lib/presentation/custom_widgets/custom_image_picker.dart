@@ -60,8 +60,8 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
         if (_selectedImage != null)
           Image.file(
             _selectedImage!,
-            width: 200,
-            height: 200,
+            width: 100,
+            height: 100,
             fit: BoxFit.cover,
           )
         else

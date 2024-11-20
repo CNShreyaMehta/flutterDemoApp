@@ -6,7 +6,6 @@ import 'package:demo_app/presentation/custom_widgets/custom_image_picker.dart';
 import 'package:demo_app/presentation/custom_widgets/custom_otp_Input.dart';
 import 'package:demo_app/presentation/custom_widgets/custom_spinner.dart';
 import 'package:demo_app/presentation/custom_widgets/dropdown.dart';
-import 'package:demo_app/presentation/custom_widgets/header.dart';
 import 'package:demo_app/presentation/custom_widgets/text_input.dart';
 import 'package:demo_app/presentation/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -91,20 +90,13 @@ class _SignupScreenState extends State<SignupScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Header with optional title
-                    const Header(
-                        //title: "Login in Your Account",
-                        //backgroundColor: Colors.blueAccent,
-                        //showBellIcon: true, // Show the bell icon in this screen
-                        ),
                     Text(
                       "Create a New",
-                      style: Theme.of(context).textTheme.displayLarge,
+                      style: Theme.of(context).textTheme.displaySmall,
                     ),
-                    const SizedBox(height: 5),
                     Text(
                       "Account",
-                      style: Theme.of(context).textTheme.displayLarge,
+                      style: Theme.of(context).textTheme.displaySmall,
                     ),
                      CustomImagePicker(
               onImageSelected: _handleImageSelected, // Handle image selection
@@ -116,8 +108,6 @@ class _SignupScreenState extends State<SignupScreen> {
                 style: const TextStyle(fontSize: 16),
               )
             else
-              const Text('No image selected yet.'),
-                    const SizedBox(height: 40),
                     TextInput(
                       label: "First Name*",
                       hint: "first name",
@@ -236,14 +226,19 @@ class _SignupScreenState extends State<SignupScreen> {
                           activeColor: Colors.black,
                           checkColor: Colors.white,
                         ),
-                        const Text("Yes, I agree to the"),
+                         Text("Yes, I agree to the",
+                            style: TextStyle(color: Colors.grey[700])),
                         TextButton(
                           onPressed: () {
                             _launchURL();
                           },
                           child: Text(
-                            "terms & service.",
-                            style: Theme.of(context).textTheme.displaySmall,
+                            "terms & conditions",
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              color: Colors.black,                          decoration: TextDecoration.underline,
+
+                            ),
                           ),
                         ),
                       ],
