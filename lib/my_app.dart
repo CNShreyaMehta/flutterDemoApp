@@ -2,7 +2,7 @@ import 'package:demo_app/presentation/controllers/login_controller.dart';
 import 'package:demo_app/presentation/controllers/sudoku_result.dart';
 import 'package:demo_app/presentation/routes/app_pages.dart';
 import 'package:demo_app/presentation/screens/home_screen.dart';
-import 'package:demo_app/presentation/screens/login_screen.dart';
+import 'package:demo_app/presentation/screens/splash_screen.dart';
 import 'package:demo_app/presentation/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -59,7 +59,7 @@ void didChangeDependencies() {
           // If logged in, show Home screen, otherwise show Login screen
           return Obx(() => authController.isLoggedIn.value
               ? const HomeScreen()
-              : const LoginScreen());  //SplashScreen()
+              :  SplashScreen());  //SplashScreen()
         },
       ),
             ),
