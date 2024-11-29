@@ -32,14 +32,20 @@ class LoginController extends GetxController {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
 
-    if (email.isEmpty || password.isEmpty) {
+    if (email.isEmpty && password.isEmpty) {
+      Fluttertoast.showToast(msg: "Please fill all the fields!");
+      emailError.value = 'Email is required!';
+      passwordError.value = 'Password is required';
+    }else if (email.isEmpty || password.isEmpty) {
       Fluttertoast.showToast(msg: "Please fill all the fields");
-      emailError.value = 'Email is required';
+      emailError.value = 'Email is required!';
     } else if (password.isEmpty) {//!GetUtils.isEmail(email)
       Fluttertoast.showToast(msg: "Please enter password");
       passwordError.value = 'Password is required';
     } else if (password.length < 8) {
       Fluttertoast.showToast(msg: "Password must be at least 8 characters");
+    }else if (rememberMe.value == false) {
+      Fluttertoast.showToast(msg: "Please accept terms and conditions");
     } else {
       //await Future.delayed(const Duration(seconds: 2)); // Simulate network delay
 

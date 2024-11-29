@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     )),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Obx(
                       () => Row(
@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             checkColor: Colors
                                 .white, // Changes the color of the checkmark inside the box
                           ),
-                          const Text("Remember me"),
+                          const Text("terms and conditions"),
                         ],
                       ),
                     ),

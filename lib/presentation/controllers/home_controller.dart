@@ -11,6 +11,11 @@ class HomeController extends GetxController {
    var isLoading = true.obs;
   var productList = List<Product>.empty().obs;
     var currentIndex = 0.obs;
+     // Observable variable
+  var counter = 0.0.obs;
+  var counter2 = 0.0.obs;
+
+
 void changeTabIndex(int index) {
     currentIndex.value = index;
   }
@@ -18,6 +23,22 @@ void changeTabIndex(int index) {
   void onInit() {
     fetchProducts();
     super.onInit();
+  }
+    // Method to increment
+  void increment() => {
+    counter.value = counter.value + 0.1,
+    if (counter.value >= 0.9) {
+      print("MAX REACHED"),
+      counter2.value = 1.0
+    }
+  } ;
+
+  // Method to decrement
+  void decrement() {
+    if (counter > 0) {
+      counter.value = counter.value - 0.1; // Prevent going below 0
+      counter2.value = 0.0;
+    }
   }
   void validateAndforgotPass() {
     String email = emailController.text.trim();

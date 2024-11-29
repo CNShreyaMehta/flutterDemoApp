@@ -429,7 +429,7 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                   ),
-                  Expanded(
+                  Container(
                     child: _pages[_selectedIndex2],
                   ),
                   Container(

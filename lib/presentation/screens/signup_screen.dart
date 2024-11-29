@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:demo_app/presentation/custom_widgets/custom_autocomplete.dart';
 import 'package:demo_app/presentation/custom_widgets/custom_date_picker.dart';
 import 'package:demo_app/presentation/custom_widgets/custom_image_picker.dart';
 import 'package:demo_app/presentation/custom_widgets/custom_otp_Input.dart';
@@ -59,14 +58,13 @@ class _SignupScreenState extends State<SignupScreen> {
     super.dispose();
   }
 
- File? _image;
+  File? _image;
 
   void _handleImageSelected(File image) {
     setState(() {
       _image = image;
     });
   }
-
 
   final List<String> countries = [
     'India',
@@ -98,23 +96,24 @@ class _SignupScreenState extends State<SignupScreen> {
                       "Account",
                       style: Theme.of(context).textTheme.displaySmall,
                     ),
-                     CustomImagePicker(
-              onImageSelected: _handleImageSelected, // Handle image selection
-            ),
-            const SizedBox(height: 20),
-            if (_image != null)
-              Text(
-                'Selected Image Path: ${_image!.path}',
-                style: const TextStyle(fontSize: 16),
-              )
-            else
-                    TextInput(
-                      label: "First Name*",
-                      hint: "first name",
-                      controller: controller.firstNameController,
-                      obscureText: false,
-                      onTogglePassword: () {}, // Not required for email
+                    CustomImagePicker(
+                      onImageSelected:
+                          _handleImageSelected, // Handle image selection
                     ),
+                    const SizedBox(height: 20),
+                    if (_image != null)
+                      Text(
+                        'Selected Image Path: ${_image!.path}',
+                        style: const TextStyle(fontSize: 16),
+                      )
+                    else
+                      TextInput(
+                        label: "First Name*",
+                        hint: "first name",
+                        controller: controller.firstNameController,
+                        obscureText: false,
+                        onTogglePassword: () {}, // Not required for email
+                      ),
                     TextInput(
                       label: "Last Name*",
                       hint: "last name",
@@ -122,25 +121,25 @@ class _SignupScreenState extends State<SignupScreen> {
                       obscureText: false,
                       onTogglePassword: () {}, // Not required for email
                     ),
-                    const SizedBox(height: 15),
-                    CustomAutocomplete<String>(
-                      options: countries,
-                      displayStringForOption: (String option) => option,
-                      onSelected: (String selection) {
-                        setState(() {
-                          selectedCountry = selection;
-                        });
-                      },
-                      labelText: 'Select Country',
-                    ),
-                    const SizedBox(height: 20),
-                    Text('Selected Country: $selectedCountry'),
+                    //const SizedBox(height: 15),
+                    // CustomAutocomplete<String>(
+                    //   options: countries,
+                    //   displayStringForOption: (String option) => option,
+                    //   onSelected: (String selection) {
+                    //     setState(() {
+                    //       selectedCountry = selection;
+                    //     });
+                    //   },
+                    //   labelText: 'Select Country',
+                    // ),
+                    // const SizedBox(height: 20),
+                    // Text('Selected Country: $selectedCountry'),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "Gender",
+                          "Gender*",
                           style: GoogleFonts.poppins(
                               fontSize: 16, color: Colors.black),
                         ),
@@ -182,7 +181,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     //_buildDateField(context, "DOB", "Choose date of birth"),
                     CustomDatePicker(
                       controller: _dateController,
-                      label: "DOB",
+                      label: "DOB*",
                       hint: "Choose date of birth",
                     ),
                     TextInput(
@@ -193,7 +192,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       onTogglePassword: () {}, // Not required for email
                     ),
                     TextInput(
-                      label: "Choose Password*",
+                      label: "Password*",
                       hint: "Minimum 8 characters",
                       controller: controller.passwordController,
                       obscureText: false,
@@ -207,12 +206,12 @@ class _SignupScreenState extends State<SignupScreen> {
                       onTogglePassword: () {}, // Not required for email
                     ),
                     Dropdown(
-                      label: "Country",
+                      label: "Country*",
                       items: const ["USA", "India", "UK"],
                       selectedItem: controller.selectedCountry,
                     ),
                     Dropdown(
-                      label: "City",
+                      label: "City*",
                       items: const ["Mumbai", "New York", "London"],
                       selectedItem: controller.selectedCity,
                     ),
@@ -226,7 +225,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           activeColor: Colors.black,
                           checkColor: Colors.white,
                         ),
-                         Text("Yes, I agree to the",
+                        Text("Yes, I agree to the",
                             style: TextStyle(color: Colors.grey[700])),
                         TextButton(
                           onPressed: () {
@@ -236,14 +235,14 @@ class _SignupScreenState extends State<SignupScreen> {
                             "terms & conditions",
                             style: GoogleFonts.poppins(
                               fontSize: 16,
-                              color: Colors.black,                          decoration: TextDecoration.underline,
-
+                              color: Colors.black,
+                              decoration: TextDecoration.underline,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () {
                         controller.validateAndSignup();
@@ -258,7 +257,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -272,7 +271,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     const Center(
                       child: Text("Or sign up with"),
                     ),
@@ -293,7 +292,6 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
                     Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

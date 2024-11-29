@@ -5,7 +5,7 @@ class TColors {
 
   static const Color primary = Color.fromARGB(255, 0, 0, 0);
   static const Color secondary = Color.fromARGB(255, 242, 255, 0);
-  static const Color accent = Color.fromARGB(255, 255, 255, 255);
+  static const Color accent = Color.fromARGB(255, 235, 236, 154);
 
   static const textPrimary = Color.fromARGB(255, 0, 0, 0);
   static const textSecondary = Color.fromARGB(255, 255, 255, 255);

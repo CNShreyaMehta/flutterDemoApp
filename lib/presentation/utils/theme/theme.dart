@@ -8,18 +8,16 @@ class TAppTheme {
 
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
-    //fontFamily: GoogleFonts.poppins().fontFamily,
     brightness: Brightness.light,
-    primaryColor: Colors.blue,
+    primaryColor: Colors.teal,
     scaffoldBackgroundColor: Colors.white,
     textTheme: TTextTheme.lightTextTheme,
     elevatedButtonTheme: TElevatedButtonTheme.lightElevatedButtonTheme,
   );
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
-    //fontFamily: GoogleFonts.poppins().fontFamily,
     brightness: Brightness.dark,
-    primaryColor: Colors.blue,
+    primaryColor: Colors.teal,
     scaffoldBackgroundColor: Colors.black,
     textTheme: TTextTheme.darkTextTheme,
     elevatedButtonTheme: TElevatedButtonTheme.darkElevatedButtonTheme,

@@ -25,11 +25,12 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
       setState(() {
         _selectedImage = File(pickedImage.path);
       });
-      widget.onImageSelected(File(pickedImage.path)); // Pass the selected image to the parent
+      widget.onImageSelected(
+          File(pickedImage.path)); // Pass the selected image to the parent
     }
   }
 
-    void _showBottomSheet(BuildContext context) {
+  void _showBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -60,31 +61,50 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
         if (_selectedImage != null)
           Image.file(
             _selectedImage!,
-            width: 100,
-            height: 100,
+            width: 110,
+            height: 110,
             fit: BoxFit.cover,
           )
         else
           Container(
-            width: 200,
-            height: 200,
-            color: Colors.grey[300],
-            child: const Icon(Icons.image, size: 50, color: Colors.grey),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.grey,
+                width: 2,
+              ),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(100),
+              ),
+            ),
+            width: 110,
+            height: 110,
+            child: const Icon(Icons.person, size: 50, color: Colors.grey),
           ),
         const SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
+              ),
               onPressed: () => _pickImage(ImageSource.gallery),
-              icon: const Icon(Icons.photo),
-              label: const Text("Gallery"),
+              icon: const Icon(Icons.photo, size: 20),
+              label: const Text("Gallery", style: TextStyle(fontSize: 15)),
             ),
             const SizedBox(width: 10),
             ElevatedButton.icon(
-              onPressed: () => _showBottomSheet(context), //_pickImage(ImageSource.camera),
-              icon: const Icon(Icons.camera_alt),
-              label: const Text("Camera"),
+               style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
+              ),
+              onPressed: () =>
+                  _showBottomSheet(context), //_pickImage(ImageSource.camera),
+              icon: const Icon(Icons.camera_alt, size: 20),
+              label: const Text("Camera", style: TextStyle(fontSize: 15)),
             ),
           ],
         ),
