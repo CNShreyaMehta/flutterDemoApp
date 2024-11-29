@@ -7,8 +7,15 @@ import 'package:image_picker/image_picker.dart';
 
 class CustomImagePicker extends StatefulWidget {
   final Function(File) onImageSelected; // Callback to handle image selection
+final Color? backgroundColor; // Optional background color
+  final Color textColor;
+  final Color iconColor;
+  const CustomImagePicker({super.key, 
+  required this.onImageSelected , 
+  this.backgroundColor, 
+  required this.textColor, 
+  required this.iconColor});
 
-  const CustomImagePicker({super.key, required this.onImageSelected});
 
   @override
   _CustomImagePickerState createState() => _CustomImagePickerState();
@@ -86,24 +93,26 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
           children: [
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
+                backgroundColor: widget.backgroundColor,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
                 ),
               ),
               onPressed: () => _pickImage(ImageSource.gallery),
-              icon: const Icon(Icons.photo, size: 20),
+              icon:  Icon(Icons.photo, size: 20, color: widget.iconColor),
               label: const Text("Gallery", style: TextStyle(fontSize: 15)),
             ),
             const SizedBox(width: 10),
             ElevatedButton.icon(
                style: ElevatedButton.styleFrom(
+                backgroundColor: widget.backgroundColor,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
                 ),
               ),
               onPressed: () =>
                   _showBottomSheet(context), //_pickImage(ImageSource.camera),
-              icon: const Icon(Icons.camera_alt, size: 20),
+              icon: Icon(Icons.camera_alt, size: 20, color: widget.iconColor),
               label: const Text("Camera", style: TextStyle(fontSize: 15)),
             ),
           ],

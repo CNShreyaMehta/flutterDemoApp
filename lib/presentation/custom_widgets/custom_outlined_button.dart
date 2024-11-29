@@ -30,6 +30,7 @@ class CustomOutlinedButton extends StatelessWidget {
         style: TextStyle(color: labelColor),
       ), // Label text and style
       style: OutlinedButton.styleFrom(
+        
         padding: padding,
         side: borderSide, // Pass the border style
         shape: RoundedRectangleBorder(

@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 class TColors {
   TColors._();
 
-  static const Color primary = Color.fromARGB(255, 0, 0, 0);
-  static const Color secondary = Color.fromARGB(255, 242, 255, 0);
-  static const Color accent = Color.fromARGB(255, 235, 236, 154);
+  static const Color primary = Color.fromARGB(255, 255, 234, 0);
+  static const Color secondary = Color.fromARGB(255, 0, 0, 0);
+  static const Color surface = Color.fromARGB(255, 255, 249, 222);
+
+  static const Color secondary1 = Color(0xFF96b85d);
+  static const Color primary1 = Color(0xFF445626);
+  static const Color surface1 = Color.fromARGB(255, 156, 187, 154);
 
   static const textPrimary = Color.fromARGB(255, 0, 0, 0);
   static const textSecondary = Color.fromARGB(255, 255, 255, 255);

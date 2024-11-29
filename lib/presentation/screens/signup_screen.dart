@@ -78,6 +78,11 @@ class _SignupScreenState extends State<SignupScreen> {
   String selectedCountry = '';
   @override
   Widget build(BuildContext context) {
+     final theme = Theme.of(context);
+    //final paddingScheme = theme.extension<PaddingScheme>()!;
+    //final marginScheme = theme.extension<MarginScheme>()!;
+    final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -97,6 +102,9 @@ class _SignupScreenState extends State<SignupScreen> {
                       style: Theme.of(context).textTheme.displaySmall,
                     ),
                     CustomImagePicker(
+                      backgroundColor: colorScheme.secondary,
+                      textColor: colorScheme.onSecondary,
+                      iconColor: colorScheme.secondary,
                       onImageSelected:
                           _handleImageSelected, // Handle image selection
                     ),
@@ -258,19 +266,19 @@ class _SignupScreenState extends State<SignupScreen> {
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
+                        backgroundColor: colorScheme.primary,
+                     
                       ),
-                      child: const Row(
+                      child:  Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Sign Up"),
-                          SizedBox(width: 10),
-                          Icon(Icons.arrow_forward),
+                          Text("Sign Up",style: TextStyle(color: colorScheme.secondary),),
+                          const SizedBox(width: 10),
+                          Icon(Icons.arrow_forward,color: colorScheme.secondary,),
                         ],
                       ),
                     ),
+                    
                     const SizedBox(height: 10),
                     const Center(
                       child: Text("Or sign up with"),
@@ -282,10 +290,10 @@ class _SignupScreenState extends State<SignupScreen> {
                         onPressed: _simulateLoading,
                         icon: Image.asset('assets/images/google.png',
                             width: 30, height: 30),
-                        label: const Text("Google"),
+                        label:  Text("Google",style: TextStyle(color:colorScheme.secondary),),
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 10),
-                          side: const BorderSide(color: Colors.black),
+                          side:  BorderSide(color: colorScheme.secondary, width: 2.0),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),

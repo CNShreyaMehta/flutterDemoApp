@@ -22,28 +22,37 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    //final paddingScheme = theme.extension<PaddingScheme>()!;
+    //final marginScheme = theme.extension<MarginScheme>()!;
+    final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
+          child: Container(
+            decoration: BoxDecoration(
+              color: colorScheme.surface,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "Login in Your",
-                  style:TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(
+                      fontSize: textTheme.headlineLarge!.fontSize,
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.secondary),
                 ),
-                const SizedBox(height: 5),
-                const Text(
+                const SizedBox(height: 0),
+                Text(
                   "Account",
                   style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      fontSize: textTheme.headlineLarge!.fontSize,
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.secondary),
                 ),
                 const SizedBox(height: 20),
                 // _buildTextField("Email*", "example@site.com",
@@ -89,8 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                             activeColor: Colors
                                 .black, // Changes the color when the checkbox is active (checked)
-                            checkColor: Colors
-                                .white, // Changes the color of the checkmark inside the box
+                            checkColor: colorScheme.primary, // Changes the color of the checkmark inside the box
                           ),
                           const Text("terms and conditions"),
                         ],
@@ -100,23 +108,23 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {
                         Get.offNamed(AppRoutes.forgotPassword);
                       },
-                      child: const Text(
+                      child: Text(
                         "Forgot password?",
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: colorScheme.secondary,
                           decoration: TextDecoration.underline,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                           fontStyle: FontStyle.italic,
-
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 // Use the custom button
                 CustomElevatedButton(
+                  backgroundColor: colorScheme.primary,
                   onPressed: () async {
                     await controller.validateAndLogin();
                     // await LoginController().login(
@@ -124,13 +132,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     //     controller.passwordController.text);
                   },
                   text: "Login",
+                  textColor: colorScheme.secondary,
                   icon: Icons.arrow_forward,
+                  iconColor: colorScheme.secondary,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 const Center(
                   child: Text("Or login with"),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 SizedBox(
                   width: double.infinity,
                   child: CustomOutlinedButton(
