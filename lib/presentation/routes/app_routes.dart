@@ -7,6 +7,7 @@ class AppRoutes {
   static const otpVerification = '/otp-verification';
   static const base = '/base';
   static const home = '/home';
+  static const search = '/search';
   static const productDetails = '/product-details';
   static const profile = '/profile';
   static const profileDetails = '/profile-details';

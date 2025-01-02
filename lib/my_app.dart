@@ -4,6 +4,7 @@ import 'package:demo_app/presentation/routes/app_pages.dart';
 import 'package:demo_app/presentation/screens/home_screen.dart';
 import 'package:demo_app/presentation/screens/splash_screen.dart';
 import 'package:demo_app/presentation/utils/theme/theme.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -49,6 +50,9 @@ void didChangeDependencies() {
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
       themeMode: ThemeMode.system,
+      navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+        ],
       home: FutureBuilder(
         future: authController.checkAuthToken(), // Check token on app startup
         builder: (context, snapshot) {

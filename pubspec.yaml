@@ -59,6 +59,8 @@ dependencies:
   tutorial_coach_mark: ^1.2.12
   showcaseview: ^3.0.0
   flutter_speed_dial: ^7.0.0
+  firebase_core: 
+  firebase_analytics:
 
 dev_dependencies:
   flutter_test:

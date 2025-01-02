@@ -9,6 +9,7 @@ import 'package:demo_app/presentation/screens/categories_screen.dart';
 import 'package:demo_app/presentation/screens/product_details.dart';
 import 'package:demo_app/presentation/screens/product_tile.dart';
 import 'package:demo_app/presentation/screens/profile_screen.dart';
+import 'package:demo_app/presentation/screens/search_screen.dart';
 import 'package:demo_app/presentation/screens/settings_screen.dart';
 import 'package:demo_app/presentation/utils/helpers/static_products.dart';
 import 'package:flutter/material.dart';
@@ -221,31 +222,44 @@ class _HomeState extends State<Home> {
             SliverAppBar(
               pinned: true,
               backgroundColor: const Color.fromARGB(255, 255, 217, 0),
-              flexibleSpace: FlexibleSpaceBar(
-                background: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 280,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
+              flexibleSpace: GestureDetector(
+                 onTap: () {
+                Get.to(() => const SearchScreen());
+              },
+                child: Container(
+                          height: double.infinity,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: Colors.white,
+                            border: Border.fromBorderSide(BorderSide(color: Colors.black, width: 0.5)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black,
+                                blurRadius: 7,
+                                offset: Offset(0, 1),
+                              ),
+                            ],
+                          ),
+                          alignment: Alignment.center,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10),
+                        margin: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                            "Search for food",
+                            style: TextStyle(
+                                fontSize: 15),
+                          ),
+                        const SizedBox(width: 10),
+                        IconButton(
+                          icon: const Icon(Icons.keyboard_voice_rounded),
+                          onPressed: () {},
                         ),
-                        child: const Text(
-                          "Search",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      IconButton(
-                        icon: const Icon(Icons.keyboard_voice_rounded),
-                        onPressed: () {},
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
               ),
               toolbarHeight: 60, // Height of the sticky search bar
             ),

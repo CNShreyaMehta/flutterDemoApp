@@ -20,6 +20,7 @@ import 'package:demo_app/presentation/screens/login_screen.dart';
 import 'package:demo_app/presentation/screens/on_boarding_screen.dart';
 import 'package:demo_app/presentation/screens/otp_verification_screen.dart';
 import 'package:demo_app/presentation/screens/product_details.dart';
+import 'package:demo_app/presentation/screens/search_screen.dart';
 import 'package:demo_app/presentation/screens/signup_screen.dart';
 import 'package:demo_app/presentation/screens/splash_screen.dart';
 import 'package:get/get.dart';
@@ -54,6 +55,7 @@ class AppPages {
     page: () => const HomeScreen(),
     binding: HomeBinding(),
     ),
+    GetPage(name: AppRoutes.search, page: () => const SearchScreen()),
     //page: () => const HomeView(),
     //binding: HomeBinding(),
     GetPage(

@@ -8,6 +8,7 @@ import 'package:demo_app/presentation/screens/games/2048/game_2048.dart';
 import 'package:demo_app/presentation/screens/games/sudoku/difficulty_level_screen.dart';
 import 'package:demo_app/presentation/utils/constants/colors.dart';
 import 'package:demo_app/presentation/utils/helpers/helper_function.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
@@ -25,6 +26,7 @@ class _GamesHomeScreenState extends State<GamesHomeScreen> {
   final OnBoardingController aboutController = Get.put(OnBoardingController());
   late ConfettiController _confettiController; // Confetti controller
   late AudioPlayer _audioPlayer;
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   void initState() {
@@ -34,6 +36,15 @@ class _GamesHomeScreenState extends State<GamesHomeScreen> {
         duration: const Duration(seconds: 5)); // Initialize confetti controller
     _confettiController.play();
     floatingButtonController.playMusic();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // add setCurrentScreeninstead of initState because might not always give you the
+    // expected results because initState() is called before the widget
+    // is fully initialized, so the screen might not be visible yet.
+    FirebaseAnalytics.instance.logScreenView(screenName: "Game Home Screen");
   }
 
   @override
@@ -153,6 +164,13 @@ class _GamesHomeScreenState extends State<GamesHomeScreen> {
               title: 'Sudoku Game',
               subtitle: 'Solve Sudoku Puzzles',
               onTap: () {
+                FirebaseAnalytics.instance.logEvent(
+                  name: 'event_name',
+                  parameters: {
+                    'string_parameter': 'string',
+                    'int_parameter': 42,
+                  },
+                );
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -179,6 +197,13 @@ class _GamesHomeScreenState extends State<GamesHomeScreen> {
                 //     backgroundColor: Colors.white, // Set background color to green
                 //   ),
                 // );
+                FirebaseAnalytics.instance.logEvent(
+                  name: 'button_clicked',
+                  parameters: {
+                    'sample_string': 'clicked',
+                    'sample_int': 1,
+                  },
+                );
                 Navigator.push(
                   context,
                   MaterialPageRoute(
